@@ -1,0 +1,379 @@
+\begin{titlepage}
+\flushright
+\vspace*{7cm}
+
+{\garet\fontsize{48}{54}\bfseries
+\text{Analysis I} %main title
+}
+
+\vspace{0.2cm}
+% \Large{\cjkserif{}} %subtitle
+   
+\vspace{2 cm}
+\Large{by Poshen Chang}%your name
+
+\large{v.1}%YOUR NUMBER
+
+\vspace{3.5 cm}
+\Large{\today}%date
+
+% \vspace{0.25 cm}
+% \Large{\myfont }%place
+
+\vfill
+\end{titlepage}
+
+\tableofcontents
+
+\resetcounters
+\justifying
+% \thispagestyle{fancy}
+\setlength{\parindent}{2em}
+
+% \newtcolorbox{mybox}[2][]{}
+
+% \tcbset{after title={\hfill\colorbox{black}{\mdseries\color{white} solved}}}
+
+% 以下輸入正文
+%\setcounter{chapter}{0}
+\tableofcontents
+
+\chapter{Topological Spaces}
+
+In the language of calculus, we defined convergence, continuity and such concepts on the real numbers $\R$. We would like to generalize this concept.
+
+\section{Metric Spaces}
+
+\begin{df}
+    A metric space is a nonempty set $M$, together with a metric $d : M\times M\to \R$. $d(x, y)$ is a real number defined for all $x, y\in M$, which can be thought of as the distance between $x$ and $y$. $d$ satisfies the following properties:
+    \begin{enumerate}[label={\alph*)}]
+        \item (Positive definiteness) $d(x, y) \geq 0$, and $d(x, y) = 0$ iff $x = y$.
+        \item (Symmetry) $d(x, y) = d(y, x)$.
+        \item (Triangle inequality) $d(x, z) \leq d(x, y) + d(y, z)$.
+    \end{enumerate}
+    We say that the pair $(M, d)$ is a metric space. The metric $d$ can be omitted if it is clear from the context.
+\end{df}
+
+\begin{ex}
+    The following are some examples of metric spaces:
+    \begin{itemize}
+        \item $(\R, d)$, where $d(x, y) = |x - y|$.
+        \item $(\R^n, d)$, where
+        \[
+        d(\mathbf x, \mathbf y) = \sqrt{(x_1 - y_1)^2 + \cdots + (x_n + y_n)^2}.
+        \]
+        \item $(M, d)$, where $M\neq\emptyset$, and
+        \[
+        d(x, y) = \begin{cases}
+            0, \quad \text{if } x = y, \\
+            1, \quad \text{if } x \neq y.
+        \end{cases}
+        \]
+        This metric is called the \textbf{discrete metric} on $M$.
+    \end{itemize}
+\end{ex}
+
+If $\emptyset \neq A \subseteq M$, and if $M$ is a metric, then $(A, d)$ is also a metric space. We call $A$ a metric subspace of $M$, or $A$ inherits its metric from $M$.
+
+\begin{df}
+    We say that a sequence $(x_n)$ in $M$ converges to the limit $x$ in $M$ if for any given $\epsilon > 0$, $\exists N \in \N$ such that $n\geq N$ and $n \in \N$ implies $d(x_n, x) < \epsilon$.
+\end{df}
+
+It's easy to check that limits are unique. Also, every subsequence of a convergent sequence converges, and it converges to the same limit as the original sequence.
+
+\section{Continuity}
+
+\begin{df}
+    Let $(M, d_M)$ and $(N, d_N)$ be metric spaces. We say that $f: M\to N$ is continuous if it preserves sequential convergence, i.e. for each $(x_n)$ in $M$ which converges to $x$ in $M$, the image sequence $(f(x_n))$ converges to $f(x)$.
+\end{df}
+
+\begin{prop}
+    Composition of continuous functions is continuous
+    \begin{proof}
+        Let $M, N, P$ be metric spaces, and let $f: M\to N$, $g: N\to P$ be continuous functions.
+        
+        Let $(x_n)$ be a convergent sequence in $M$ with limit $x$. We have
+        \[
+        \lim_{n\to\infty} x_n = x \xRightarrow{f\text{ conti.}} \lim_{n\to\infty} f(x_n) = f(x) \xRightarrow{g\text{ conti.}} \lim_{n\to\infty} g(f(x_n)) = g(f(x)),
+        \]
+        thus $g\circ f$ is continuous.
+    \end{proof}
+\end{prop}
+
+\begin{ex}
+    The following are some examples of continuous functions:
+    \begin{itemize}
+        \item The identity map $~id : M\to M$ is continuous.
+        \item Every constant function $f: M\to N$ is continuous.
+        \item Every function $f: M\to N$ is continuous if $M$ is equipped with the discrete metric.
+    \end{itemize}
+\end{ex}
+
+\begin{df}
+    If $f: M\to N$ is a bijection such that $f$ and $f^{-1}: N\to M$ are continuous, then we say that $f$ is a homeomorphism. If there exists a homeomorphism between $M$ and $N$, we say that $M, N$ are homeomorphic, denoted by $M\cong N$.
+\end{df}
+
+Intuitively, a homeomorphism is a bijection that can bend, twist, stretch the space $M$ to make it coincide with $N$, but it cannot rip, puncture or shred $M$ etc.
+
+\begin{ex}
+    Let $\mathbb S^1$ be the unit circle in the plane. Consider the interval $[0, 2\pi)$. Define $f: [0, 2\pi) \to \mathbb S^1$ to be the function $f(\theta) = (\cos\theta, \sin\theta)$. $f$ is continuous and bijective, but $f^{-1}$ is not continuous (consider a sequence in $\mathbb S^1$ approaching $(1, 0)$ from the lower plane).
+\end{ex}
+
+\begin{prop}
+    $f: M\to N$ is continuous iff it satisfies the following: $\forall \epsilon$ and $x\in M$, $\exists \delta > 0$ such that if $y\in M$ and $d_M(x, y) < \delta$ then $d_N(f(x), f(y)) < \epsilon$.
+    \begin{proof}
+        "$\implies$": Suppose that $f$ fails to satisfy the $\epsilon$-$\delta$ condition at some $x\in M$. $\exists \epsilon > 0$ such that $\forall \delta > 0$, $\exists y\in M$ such that $d_M(x, y) < \delta$ but $d_N(f(x), f(y)) \geq \epsilon$. Take $\delta = \frac 1n$. By our assumption, we can obtain a sequence $(y_n)$ with $d_M(x, y_n) < \frac 1n$ but $d_N(f(x), f(y_n)) \geq \epsilon$, so $(y_n)$ converges to $x$ but $f(y_n)$ does not approach $f(x)$, contradicting the continuity of $f$.
+
+        "$\impliedby$": Suppose that $f$ satisfies the $\epsilon$-$\delta$ condition at $x$. Let $(x_n)$ be a sequence in $M$ susch that $(x_n)$ converges to $x$. Let $\epsilon > 0$. $\exists \delta > 0$ such that $d_M(x, y) < \delta \implies d_N(f(x), f(y)) < \epsilon$. Since $(x_n)$ approaches $x$, $\exists K \in \N$ such that if $n\geq K$, then $d_M(x_n, x) < \delta$, hence $d_N(f(x_n), f(x)) < \epsilon$ for all $n\geq K$. That is, $(f(x_n))$ converges to $f(x)$.
+    \end{proof}
+\end{prop}
+
+\section{The Topology of a Metric Space}
+
+\begin{df}
+    Let $M$ be a metric space, $S\subseteq M$.
+    \begin{itemize}
+        \item We say $S$ is open if for each $x\in S$, $\exists r > 0$ such that $d(x, y) < r$ implies $y\in S$.
+        \item We say $S$ is closed if its complement is open.
+        \item We say that a point $x\in M$ is a limit of $S$ if there exists a sequence in $S$ that converges to $x$.
+    \end{itemize}
+\end{df}
+
+\begin{prop}
+    A set $S\subseteq M$ is closed iff it contains all its limits.
+    \begin{proof}
+        "$\implies$": Suppose that $S$ is closed. Let $(x_n)$ be a sequence in $S$ such that $(x_n)$ converges to $x$, $x\in M$. Suppose $x\notin S$, then since $S^c$ is open, $\exists r>0$ such that $d(x, y) < r$ implies $y\in S^c$. Since $(x_n)$ converges to $x$, we have $d(x_n, x) < r$ for all $n$ large enough, implying that $x_n \in S^c$, contradiction. Therefore, for any limit point $x$ of $S$, $x\in S$.
+
+        "$\impliedby$": Suppose that $S$ contains all its limits. If $S^c$ is not open, then $\exists x \in S^c$ such that $\forall n\in \N$, $\exists x_n\in (S^c)^c = S$ such that $d(x, x_n) < \frac1n$. We have now constructed q sequence $(x_n)$ in $S$, but converges to a point in $S^c$, contradiction. Thus $S^c$ is open, i.e. $S$ is closed.
+    \end{proof}
+\end{prop}
+
+\begin{rmk}
+    Sets can be neither open nor closed, or they can also be both open and closed.
+\end{rmk}
+
+\begin{df}
+    The topology $\mathcal T$ of $M$ is the collection of all open subsets of $M$.
+\end{df}
+
+\begin{prop}
+    $\mathcal T$ is closed under arbitrary union, finite intersection, and $\mathcal T$ contains $\emptyset$ and $M$.
+
+    \begin{proof}
+        Clearly, $\emptyset$ and $M$ are open.
+
+        Let $(\mathcal U_\alpha)$ be a collection of open subsets of $M$. Define $V = \bigcup_\alpha \mathcal U_\alpha$. For any $x\in V$, $x\in \mathcal U_\alpha$ for some $\alpha$. Since $\mathcal U_\alpha$ is open, $\exists r>0$ such that $d(x, y)<r \implies y\in \mathcal U_\alpha \subseteq V$, so $V$ is open.
+
+        Define $W = \bigcap_{i=1}^n \mathcal U_i$. Given $x\in W$, for each $1\leq i\leq n$, $\exists r_i > 0$ such that $d(x, y) < r_i \implies y\in \mathcal U_i$. Take $r = \min{r_1, \ldots, r_n}$, then for any $y$ satisfying $d(x, y) < r$, we have $y\in \mathcal U_i$ for all $1\leq i\leq n$, thus $y\in W$. Hence $W$ is open.
+    \end{proof}
+\end{prop}
+
+\begin{df}
+    Let $X$ be a set. A topology $\mathcal T$ of $X$ is a collection of subsets of $X$ that satisfies the following:
+    \begin{enumerate}[label={\alph*)}]
+        \item $\mathcal T$ is closed under arbitrary union,
+        \item $\mathcal T$ is closed under finite intersection, and
+        \item $\emptyset, X \in \mathcal T$.
+    \end{enumerate}
+    We say that  $(X, \mathcal T)$ is a topological space if $\mathcal T$ is a topology of $X$. The elements of $\mathcal T$ are called open sets. We define $S\subseteq X$ to be closed if $S^c$ is open.
+\end{df}
+
+\begin{ex}
+    The following are some examples of topological spaces:
+    \begin{itemize}
+        \item A metric space is a topological space.
+        \item Let $X$ be a set, and $\mathcal T = \{\emptyset, X\}$. Then $(X, \mathcal T)$ is a topological space, which is know as the trivial topology.
+        \item Let $X$ be a set, and let $\mathcal T$ be the power set of $X$, then $(X, \mathcal T)$ is a topological space, which is known as the discrete topology.
+    \end{itemize}
+\end{ex}
+
+\begin{rmk}
+    By De Morgan's law, closed sets are closed under arbitrary intersection and finite union, also $\emptyset, X$ are closed.
+
+    In general, infinite union of closed sets may not be closed.
+\end{rmk}
+
+\begin{df}
+    Let $M$ be a metric space and $S\subseteq M$. Define
+    \[
+    \Bar S := \{x\in M \mid x\text{ is a limit of }S\}
+    \]
+    to be the closure of $S$.
+    For $x\in M$, $r > 0$, define
+    \[
+    B(x, r) := \{y\in M\mid d(x, y) < r\},
+    \]
+    which is the ball centered at $x$ with radius $r$, or the $r$-neighborhood of $x$.
+\end{df}
+
+\begin{prop}
+    $\Bar S$ is closed and $B(x, r)$ is open.
+
+    \begin{proof}
+        If $S = \emptyset$, then $\Bar S = \emptyset$, which is closed.
+
+        Suppose that $S\neq \emptyset$, and let $(x_n) \to x$ be a convergence sequence in $\Bar S$. We wish to prove that $x\in \Bar S$, i.e. there exists a sequence in $S$ that approaches $x$. Since $x_n\in \Bar S$, there exists sequence $(x_{n, k})$ in $S$ that approaches $x_n$ as $k\to \infty$. For each $n$, there exists a term $x_{n, k_n}$ satisfying $d(x_{n, k_n}, x_n) < \frac1n$, picking these terms forms a new sequence $(x_{n, k_n})$, moreover, 
+        \[
+        d(x_{n, k_n}, x) \leq d(x_{n, k_n}, x_n) + d(x_n, x) < \frac1n + d(x_n, x),
+        \]
+        which approaches $0$ as $n\to\infty$, thus $(x_{n, k_n})$ approaches $x$.
+
+        Fix $x\in M$ and $r > 0$. Let $y \in B(x, r)$ and pick $s = r - d(x, y)$. If $z$ satisfies $d(y, z) < s$, then
+        \[
+        d(x, z) \leq d(x, y) + d(y, z) < d(x, y) + s = r \implies B(y, s) \subseteq B(x, r),
+        \]
+        so $B(x, r)$ is open.
+    \end{proof}
+\end{prop}
+
+\begin{cl}
+    \label{cl:smallest-closed-set}
+    $\Bar S$ is the smallest closed set that conatins $S$, i.e. if $K\supseteq S$ and $K$ is closed then $K\supseteq \Bar S$.
+
+    \begin{proof}
+        $K$ contains the limit of each sequence in $K$, in particular $S\subseteq K$ so it contains all sequence in $S$ that converges in $M$, but these are precisely $\Bar S$.
+    \end{proof}
+\end{cl}
+
+With the observation from Corollary \ref{cl:smallest-closed-set}, we may define the closure for topological spaces in general.
+
+\begin{df}
+    Lex $X$ be a topological space, and let $S\subseteq X$. We define $\overline S$ to be the smallest closed set that contains $S$. $\Bar S$ always exists; take
+    \[
+    \Bar S = \bigcap\set{E\subseteq X \mid E \text{ is closed in }X\text{ and }E\supseteq S}.
+    \]
+    Likewise, we also define the interior of $S$, $~int (S)$, to be the largest open set contained in $S$
+\end{df}
+
+\begin{df}
+    Let $X$ be a topological space, $x\in X$. A neighborhood of $x$ is an open set containing $x$.
+\end{df}
+
+\begin{df}
+    Lex $X$ be a topological space and let $(x_n)$ be a sequence in $X$. We say that $(x_n)$ converges to $x\in X$ if for all neighborhood $\mathcal U$ of $x$, $\exists N\in \N$ such that $x_n \in \mathcal U$ for all $n\geq N$.
+\end{df}
+
+\begin{ex}
+    Limits in general are not unique in topological spaces. Let $X$ be a set with at least $2$ points endowed with the trivial topology. Then every sequence in $X$ converges to every point in $X$.
+\end{ex}
+
+\begin{df}
+    Let $X, Y$ be topological spaces. We say a function $f: X\to Y$ continuous if for any open set $V\subseteq Y$, the preimage $f^{-1}(Y)$ is open in $X$.
+\end{df}
+
+\begin{prop}
+    A function $f: X\to Y$ is continuous iff $\forall x\in M$ and any neighborhood $\mathcal V$ of $f(x)$, $\exists$ a neighborhood $\mathcal U$ of $x$ such that $f(\mathcal U) \subseteq \mathcal V$.
+    \begin{proof}
+        "$\implies$": Let $\mathcal V\subseteq Y$ is open. We need to show $f^{-1}(Y)$ is open. Let $x\in f^{-1}(\mathcal V)$, then $f(x) \in \mathcal V$. By definition, $\exists$ a neighborhood $\mathcal U_x$ such that $f(\mathcal U_x) \subseteq \mathcal V \leadsto \mathcal U_x \subseteq f^{-1}(\mathcal V)$. Take the union of all such $\mathcal U_x$ over $x\in f^{-1}(\mathcal V)$, then
+        \begin{gather*}
+            \bigcup_{x\in f^{-1}(\mathcal V)} \mathcal U_x \subseteq f^{-1}(\mathcal V) \quad\text{and}\quad \forall x \in f^{-1}(\mathcal V),\, x\in \mathcal U_x \subseteq f^{-1}(\mathcal V) \\
+            \implies f^{-1}(\mathcal V) = \bigcup_{x\in f^{-1}(\mathcal V)} \mathcal U_x
+        \end{gather*}
+        and thus $f^{-1}(\mathcal V)$ is open.
+
+        "$\impliedby$": Let $x\in X$ and let $\mathcal V$ be a neighborhood of $f(x)$. By definition $x\in f^{-1}(\mathcal V)$, which is an open set by assumption. Also, $f(f^{-1}(\mathcal V)) \subseteq \mathcal V$, hence $f^{-1}(\mathcal V)$ is a neighborhood of $x$ such that $f(f^{-1}(\mathcal V)) \subseteq \mathcal V$.
+    \end{proof}
+\end{prop}
+
+\begin{df}
+    A homeomorphism is a continuous bijection between topoloical spaces.
+\end{df}
+
+\begin{cl}
+    A homeomorphism $f: X \to Y$ bijects the corresponding topologies $\mathcal T_X$ and $\mathcal T_Y$.
+\end{cl}
+
+\section{Hausdorff Space}
+
+\begin{df}
+    A topological space $X$ is said to be Hausdorff if given any pair of distinct paints $x_1, x_2 \in X$, $\exists$ neighborhoods $\mathcal U_1$ of $x_1$ and $\mathcal U_2$ of $x_2$ such that $\mathcal U_1 \cap \mathcal U_2 = \emptyset$.
+\end{df}
+
+A metric space is always a Hausdorff space.
+
+\begin{lm}
+    Let $X$ be Hausdorff.
+    \begin{enumerate}[label={\alph*)}]
+        \item Every one-point set is closed.
+        \item If a sequence $(x_n)$ in $X$ converges, then the limit is unique.
+    \end{enumerate}
+    \begin{proof}
+        \begin{enumerate}[label={\alph*)}]
+            \item Pick $x\in X$. For any $y$ distinct from $x$, there exists disjoint neighborhoods $\mathcal U_x$ of $x$ and $\mathcal V_y$ of $y$. We have
+            \[
+            \set{x}^c = \bigcup_{y\in X\setminus \set{x}} \mathcal V_y
+            \]
+            which is an open set.
+
+            \item 
+            Suppose that $x, x'$ are distinct limits of $(x_n)$. $\exists$ disjoint neighborhoods $\mathcal U$ of $x$ and $\mathcal U'$ of $x'$. $\exists N, N'\in \N$ such that "$n\geq N'$ implies $x_n\in \mathcal U$" and "$n\geq N'$ implies $x_n \in \mathcal U'$". If $n\geq \max(N, N')$, then $x_n \in \mathcal U \cap \mathcal U' = \emptyset$, contradiction. Therefore, any converging sequence has a unique limit. 
+        \end{enumerate}
+    \end{proof}
+\end{lm}
+
+\section{Subspaces and Product Spaces}
+
+\begin{df}
+    Let $X$ be a topological space, let $A\subseteq X$. We define the subspace topology $\mathcal T_A$ of $A$ by
+    \[
+    \mathcal T_A = \set{\mathcal U\subseteq A\mid \mathcal U = A\cap \mathcal V \text{ for some open }\mathcal V\subseteq X}.
+    \]
+\end{df}
+
+\begin{rmk}
+    Openness and closedness are not just properties of a set itself, but rather a set in a relation to a particular topological space.
+\end{rmk}
+
+\begin{prop}
+    Let $M$ be a metric space, and let $N\subseteq M$ be a nonempty subset. The subspace topology on $N$ is the same as the metric topology obtained by restricting the metric of $M$ to $N$.
+    \begin{proof}
+        Suppose that $\mathcal V$ is an open set in $M$ and let $\mathcal U = N\cap \mathcal V \in \mathcal T_N$. 
+        
+        We first to prove that $\mathcal U$ belongs to the metric toplogy of $N$. Let $x\in \mathcal U$. Since $x\in N\cap \mathcal V \subseteq \mathcal V$, there exists $r > 0$ such that $B_M(x, r)\subseteq \mathcal V$, and
+        \[
+        B_N(x, r) = N\cap B_M(x, r) \subseteq N\cap \mathcal V = \mathcal U,
+        \]
+        hence $\mathcal U$ is open in $N$ (in the metric topology).
+
+        Conversely, let $\mathcal U$ be an open set in the metric topology of $N$. $\forall x\in \mathcal U$, $\exists r_x > 0$ such that $B_N(x, r_x) \subseteq \mathcal U$. Note that
+        \[
+        \mathcal U = \bigcup_{x\in\mathcal U} B_N(x, r_x) = \bigcup_{x\in\mathcal U} N \cap B_M(x, r_x) = N\cap \bigcup_{x\in\mathcal U} B_M(x, r_x),
+        \]
+        hence $\mathcal U$ belongs to the subspace topology of $N$.
+    \end{proof}
+\end{prop}
+
+\begin{df}
+    Let $X$ be a set. A basis in $X$ is a collection $\mathcal B$ of subsets of $X$ satsifying
+    \begin{enumerate}[label={\alph*)}]
+        \item Every element of $X$ is in some element in $\mathcal B$. That is,
+        \[
+        X = \bigcup_{B\in \mathcal B} B.
+        \]
+        \item If $B_1, B_2 \in \mathcal B$ and $x\in B_1 \cap B_2$, there exists $B_3 \in \mathcal B$ such that $x\in B_3 \subseteq B_1\cap B_2$.
+    \end{enumerate}
+\end{df}
+
+\begin{df}
+    Given $X$ and a collection $\mathcal B$ of subsets of $X$, we say that $\mathcal U\subseteq X$ satisfies the basis criterion with respect to $\mathcal B$ if $\forall x \in \mathcal U$, $\exists B \in \mathcal B$ such that $x\in B\subseteq \mathcal U$
+\end{df}
+
+\begin{lm}
+    Suppose that $\mathcal B$ is a basis in $X$, and let $\mathcal T$ be the collection of all unions of elements of $\mathcal B$. Then $\mathcal T$ is precisely the collection of all subsets of $X$ that satisfy the basis criterion w.r.t. $\mathcal B$.
+    \begin{proof}
+        Let $\mathcal U\subseteq X$. Suppose that $\mathcal U$ satisfies the basis criterion. Let
+        \[
+        \mathcal V = \bigcup\set{B\in\mathcal B\mid B\subseteq\mathcal U},
+        \]
+        then $\mathcal V \in \mathcal T$. We want to show that $\mathcal U = \mathcal V$. Clearly, $\mathcal V\subseteq \mathcal U$. Let $x\in \mathcal U$. Since $\mathcal U$ satisfies the basis criterion, $\exists B\in\mathcal B$ such that $x\in B\subseteq \mathcal U$, so $x\in \mathcal V$, therefore $\mathcal U\subseteq \mathcal V$.
+
+        Conversely, suppose that $\mathcal U\in \mathcal T$, then $\mathcal U$ is a union of elements of $\mathcal B$, say $\mathcal U = \bigcup_{B\in\mathcal A}B$ where $\mathcal A\subseteq \mathcal B$. For any $x\in\mathcal U$, $x\in B$ for some $B\in \mathcal A$, also $B\subseteq \mathcal U$, so $\mathcal U$ satisfies the basis criterion.
+    \end{proof}
+\end{lm}
+
+\begin{prop}
+    Let $\mathcal B$ be a basis in $X$, and let $\mathcal T$ be collection of all unions of elements of $\mathcal B$. Then $\mathcal T$ is a topology on $X$. This is called the topology generated by $\mathcal B$.
+    \begin{proof}
+        % TODO
+    \end{proof}
+\end{prop}

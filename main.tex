@@ -1,0 +1,450 @@
+% Version 7.4 (22-08-18)
+\documentclass[11pt, a4paper]{report}
+% \usepackage[top=1.2in, bottom=1.2in, left=1.23in, right=1.23in, showframe]{geometry}
+\usepackage[top=1.2in, bottom=1.2in, left=1.03in, right=1.03in]{geometry}
+
+%%%%%%%% Additional (Required) Usepackages {
+\usepackage[x11names]{xcolor}
+\usepackage{adjustbox}
+\usepackage{algorithm}
+\usepackage{amsmath,amsthm,amssymb}
+\usepackage[toc,page]{appendix}
+\usepackage{array, makecell}
+\usepackage{authblk}
+% \usepackage[english]{babel} %dangerous
+\usepackage{bbm}
+\usepackage{blindtext}
+\usepackage{bm}
+\usepackage{cancel}
+\usepackage{censor}
+\usepackage{collcell}
+\usepackage{comment}
+\usepackage[shortlabels]{enumitem} 
+\usepackage{epigraph}
+\usepackage{esvect}
+\usepackage{etoolbox}
+\usepackage{fancyhdr}
+\usepackage{fontspec}
+\usepackage[linguistics]{forest}
+\usepackage[bottom]{footmisc}
+\usepackage{graphicx}
+\usepackage[unicode=true, pdfborder={0 0 0},  bookmarksdepth=-1]{hyperref}  
+\usepackage{indentfirst}
+\usepackage{index}
+\usepackage{lipsum}
+\usepackage{listings}
+\usepackage{mathtools}
+\usepackage{multicol}
+\usepackage[square, comma, numbers, super, sort&compress]{natbib}
+\usepackage{nicematrix}
+\usepackage{pdfpages}
+\usepackage{pifont}
+\usepackage{polyglossia}
+\usepackage{ragged2e}
+\usepackage{scalerel}
+\usepackage{setspace}
+\usepackage{seqsplit}
+\usepackage{tabularx}
+\usepackage{tcolorbox}
+\usepackage{thmtools}
+\usepackage{tikz} % graph
+\usetikzlibrary{automata,arrows,positioning}
+\usepackage{titlesec}
+\usepackage{titletoc}
+\usepackage{titling}
+\usepackage{type1cm}	 
+\usepackage[normalem]{ulem}
+\usepackage{wrapfig}
+\usepackage{xeCJK}
+\usepackage{xparse}
+\usepackage{xstring}
+\usepackage{yhmath}
+\usepackage{zhnumber}
+
+
+\usepackage{chessboard}
+\usepackage{xskak}
+\usepackage[noend]{algpseudocode}
+
+% packages that need to be loaded after other packages
+\usepackage[style=iso]{datetime2}
+
+% tikz settings
+
+\tikzset{
+  every state/.style = {thick},
+}
+
+%%%%%%%% Length/Name Settings {
+
+\setlength{\headheight}{15pt}  
+\setlength{\droptitle}{-1cm}
+\setlength{\headsep}{0.3cm}
+\setlength{\bibsep}{0pt minus 0.4ex}
+\setlength{\parskip}{0.8em}
+\renewcommand{\baselinestretch}{1.2}
+
+\setlength{\parindent}{2em}
+
+\renewcommand{\contentsname}{目錄} 
+\renewcommand{\refname}{References}
+\renewcommand{\abstractname}{ABSTRACT}
+
+%}
+%%%%%%%% Theorems {
+
+\tcbuselibrary{theorems}
+\tcbuselibrary{breakable}
+\tcbset{
+    exstyle/.style={
+        standard jigsaw, opacityback=0, colframe=black, boxrule=0.75pt, sharp corners=all, 
+        fonttitle=\rmfamily\mdseries\color{black}, titlerule=0pt, opacitybacktitle=0, toptitle=2mm, 
+        separator sign dash, description delimiters={}{},
+        middle=2mm,
+        breakable
+    },
+    thmstyle/.style={
+        standard jigsaw, opacityback=0, colframe=black, boxrule=0.75pt, sharp corners=all,
+        fonttitle=\rmfamily\mdseries\color{black}, attach title to upper, after title={\enspace}, 
+        separator sign={\thickspace}, description delimiters={(}{)},
+        lower separated=false, halign lower=justify,
+        breakable
+    },
+}
+
+\newtcbtheorem[number within=section]{proa}{Problem}%
+    {
+    standard jigsaw, opacityback=0, colframe=black, fonttitle=\bfseries\color{black}, boxrule=0.75pt, arc=0mm, separator sign dash, description delimiters={}{}, detach title, after upper={\par\hfill\tcbtitle}}{proa}
+
+% \newtcbtheorem[number within=section]{prob}{\bfseries Problem}%
+%   {
+%     standard jigsaw, opacityback=0, colframe=black, boxrule=0.75pt, sharp corners=all, 
+%     fonttitle=\rmfamily\mdseries\color{black}, titlerule=0pt, opacitybacktitle=0, toptitle=2mm, separator sign dash, description delimiters={}{},
+%     middle=2mm, lower separated=true, halign lower=flush right
+% }{prob}
+
+% \newtcbtheorem[number within=section]{proc}{\bfseries Problem}%
+%   {
+%     standard jigsaw, opacityback=0, colframe=black, boxrule=0.75pt, sharp corners=all,
+%     fonttitle=\rmfamily\mdseries\color{black}, attach title to upper, after title={\enspace}, 
+%     separator sign={\thickspace}, description delimiters={(}{)},
+%     middle=5pt, lower separated=false, halign lower=flush right
+% }{proc}
+
+\newtcbtheorem[number within=section]{example}{\bfseries Example}{thmstyle}{exm}
+\newtcbtheorem[use counter from=example]{exercise}{\bfseries Exercise}{thmstyle}{exc}
+
+\newtcbtheorem[number within=section]{prob}{\bfseries Example}{exstyle}{prob}
+
+\newtcbtheorem[number within=section]{proc}{\bfseries Problem}{thmstyle}{proc}
+
+
+\newtcbtheorem[number within=section]{theorem}{\bfseries Theorem}{exstyle}{theorem}
+\newtcbtheorem[use counter from=theorem]{definition}{\bfseries Definition}{exstyle}{definition}
+\newtcbtheorem[use counter from=theorem]{property}{\bfseries Property}{exstyle}{property}
+\newtcbtheorem[use counter from=theorem]{lemma}{\bfseries Lemma}{exstyle}{lemma}
+\newtcbtheorem[use counter from=theorem]{corollary}{\bfseries Corollary}{exstyle}{corollary}
+
+
+\newcommand{\resetcounters}
+    {
+    \setcounter{section}{0}
+    \setcounter{ans}{0}
+    \setcounter{ax}{0}
+    \setcounter{con}{0}
+    \setcounter{clm}{0}
+    \setcounter{ex}{0}
+    \setcounter{pr}{0}
+    \setcounter{pp}{0}
+    \setcounter{prop}{0}
+    \setcounter{cj}{0}
+}
+
+% 如果你/妳自定義新的 theorem, 記得回來更新 \resetcounters 的定義
+
+\newtheoremstyle{one}   % name of the style to be used
+  {8.5pt}                 % measure of space to leave above the theorem. E.g.: 3pt
+  {12.5pt}                % measure of space to leave below the theorem. E.g.: 3pt
+  {}                    % name of font to use in the body of the theorem
+  {}                    % measure of space to indent
+  {\bfseries}           % name of head font
+  {}                    % punctuation between head and body
+  {1em}                 % space after theorem head; " " = normal interword space
+  {}                    % ???
+\theoremstyle{one}
+
+\newtheorem{ans}{Answer}[section]
+\newtheorem{ax}{Axiom}[section]
+\newtheorem{cj}{Conjecture}[section]
+\newtheorem{con}{Conclusion}[section]
+\newtheorem{clm}{Claim}[section]
+\newtheorem{pr}{Problem}[section]
+\newtheorem{prop}{Proposition}[section]
+\newtheorem{rmk}{Remark}[section]
+
+\newtheorem{ex}{Example}[section]
+\newtheorem{exs}[ex]{Exercise}
+
+\newtheorem{pp}{Property}[section]
+\newtheorem{thm}[pp]{Theorem}
+\newtheorem{df}[pp]{Definition}
+\newtheorem{lm}[pp]{Lemma}
+\newtheorem{cl}[pp]{Corollary}
+
+% --- Proof, Solution, Sketch, Hint, Remark (ZH)
+
+\newenvironment{pf}[1][0]
+ {%
+  \begin{proof}[\textit Proof\ifnum#1>0 \, #1\fi.]
+ }{\end{proof}}
+
+\newenvironment{sol}[1][0]
+ {%
+  \renewcommand{\qedsymbol}{}
+  \begin{proof}[\textit Solution\ifnum#1>0 \, #1\fi.]
+ }{\end{proof}}
+
+\newenvironment{sketch}[1][0]
+ {
+  \renewcommand{\qedsymbol}{}
+  \begin{proof}[\textit Sketch\ifnum#1>0 \, #1\fi.]
+ }{\end{proof}}
+
+\newenvironment{hint}{\noindent\mybf{提示.}\hspace{1ex}}{\hfill}
+
+
+
+
+% \newtcolorbox{mybox}[2][]{colbacktitle=red!10!white, colback=blue!10!white, coltitle=red!70!black, title={#2}, fonttitle=\bfseries,#1}
+
+
+% --- Theorems in the enumerate environment
+
+%}
+%%%%%%%% New Commands {
+
+\newcommand{\mybf}[1]{{\bfseries #1}}
+\renewcommand{\textbf}{\mybf}
+
+
+% --- Geometry
+\newcommand{\Arc}[1]{\wideparen{{#1}}}
+\newcommand{\degree}{^\circ}
+\newcommand{\Line}[1]{\overleftrightarrow{{#1}}}
+\newcommand{\np}[1]{\\[{#1}] \indent}
+\newcommand{\Ray}[1]{\overrightarrow{{#1}}}
+\newcommand{\Segment}[1]{\overline{{#1}}}
+
+% --- Operatornames
+\newcommand{\adj}{\operatorname{adj}}
+\newcommand{\csch}{\operatorname{csch}}
+% \newcommand{\d}{\mathrm{d}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\diam}{\operatorname{diam}}
+\newcommand{\diff}{\operatorname{diff}}
+\newcommand{\dis}{\operatorname{dis}}
+% \newcommand{\ddx}[1]{\frac{\mathrm d^{#1}}{\mathrm d x^{#1}}}{}
+\newcommand{\lcm}{\operatorname{lcm}}
+\newcommand{\li}{\operatorname{li}}
+\newcommand{\ord}{\operatorname{ord}}
+\newcommand{\pow}[2]{\mathbf{Pow}_{#1}(#2)}
+\newcommand{\per}{\operatorname{per}}
+\newcommand{\Per}{\operatorname{Per}}
+\newcommand{\rank}{\operatorname{rank}}
+\newcommand{\sech}{\operatorname{sech}}
+\newcommand{\sgn}{\operatorname{sgn}}
+\newcommand{\shl}{\mathsf{sh}_L} % shift left function
+\newcommand{\shr}{\mathsf{sh}_R} % shift right function
+\newcommand{\sh}{\mathsf{sh}}
+\newcommand{\Span}{\operatorname{span}}
+\newcommand{\transpose}[1]{{#1}^\text{T}}
+
+\newcommand{\R}{\mathbb R}
+\newcommand{\p}{\partial}
+\renewcommand{\d}{\mathrm{d}}
+\newcommand*\circled[1]{\tikz[baseline=(char.base)]{
+            \node[shape=circle,draw,inner sep=2pt] (char) {#1};}}
+\NewDocumentCommand{\ddx}{o}{
+    \IfNoValueTF{#1}{\frac{\mathrm d}{\mathrm d x}}{\frac{\mathrm d^{#1}}{\mathrm d x^{#1}}}
+}
+
+
+% % --- emojis
+
+% \newcommand{\mystar}{\,\raisebox{-1.15pt}{\makebox[1.8ex][c]{\includegraphics[width=2.2ex]{Five-pointed_star_copy.svg.png}}}\,}
+% \newcommand{\mystarempty}{\,\raisebox{-1.15pt}{\makebox[1.8ex][c]{\includegraphics[width=2.2ex]{Five-pointed_star.svg.png}}}\,}
+
+% --- Poison Geometry
+\newcommand{\pole}[2]{\mathbb{P}_{\mathcal{#1}} (#2)}
+\newcommand{\tg}[2]{\mathcal{T}_{\mathcal{#1}} (#2)}
+
+\let\oldemptyset\emptyset
+\let\emptyset\varnothing
+
+%For fills the dot inside \odot gradually
+\setlength{\unitlength}{1em}
+\newcommand\like[1]{\begin{picture}(1,1)
+\ifnum0=#1\put(.5,.35){\circle{1}}\else
+\ifnum10=#1\put(.5,.35){\circle*{1}}\else
+\put(.5,.35){\circle{1}}\put(.5,.35){\circle*{.#1}}
+\fi\fi\end{picture}}
+% e.g. \like{1}
+
+%optional argument for matrix environments
+\makeatletter
+\renewcommand*\env@matrix[1][*\c@MaxMatrixCols c]{%
+  \hskip -\arraycolsep
+  \let\@ifnextchar\new@ifnextchar
+  \array{#1}}
+\makeatother
+
+% nice matrix settings \usepackage{nicematrix}
+\NiceMatrixOptions{
+    code-for-first-row = \color{blue} ,
+    code-for-last-row = \color{blue} ,
+    code-for-first-col = \color{blue} ,
+    code-for-last-col = \color{blue},
+    cell-space-limits = 3pt
+}
+
+% epigraphs
+
+% \epigraphsize{\small}% Default
+\setlength\epigraphwidth{12cm}
+\setlength\epigraphrule{0pt}
+
+\makeatletter
+\patchcmd{\epigraph}{\@epitext{#1}}{\fontspec{CMU Sans Serif Demi Condensed}\@epitext{#1}}{}{}
+\makeatother
+
+%}
+%%%%%%%% Big Environments {
+
+%changemargin
+\def\changemargin#1#2{\list{}{\rightmargin#2\leftmargin#1}\item[]}
+\let\endchangemargin=\endlist
+% e.g. \begin{changemargin}{1in}{1in}
+
+% wrapfig
+\newsavebox\curwrapfig
+\makeatletter
+\long\def\wrapfiguresafe#1#2#3{%
+  \sbox\curwrapfig{#3}%
+  \par\penalty-100%
+  \begingroup % preserve \dimen@
+    \dimen@\pagegoal \advance\dimen@-\pagetotal % space left
+    \advance\dimen@-\baselineskip % allow an extra line
+    \ifdim \ht\curwrapfig>\dimen@ % not enough space left
+      \break%
+    \fi%
+  \endgroup%
+  \begin{wrapfigure}{#1}{#2}%
+    \usebox\curwrapfig%
+  \end{wrapfigure}%
+}
+\makeatother
+
+
+
+
+%}
+%%%%%%%% Langs {
+
+\renewcommand\theadfont{\bfseries}
+
+% --- The Latin Family ---
+
+% \setdefaultlanguage{english}
+% \setotherlanguage[numerals=hebrew]{hebrew}
+
+% \setmainfont{CMU Serif}
+% \setsansfont{TeX Gyre Heros}
+\setmonofont{SourceCodePro}[
+    Path=./SourceCodeProFiles/,
+    Scale=1,
+    Extension = .ttf,
+    UprightFont=*-Regular,
+    BoldFont=*-Bold,
+    ItalicFont=*-Italic,
+    BoldItalicFont=*-BoldItalic
+    ]
+
+
+\newfontfamily\robotolight[Path = ./fonts/]{Roboto-Light}
+\newfontfamily\robotobold[Path = ./fonts/]{Roboto-Bold}
+\newfontfamily\garet[Path = ./fonts/]{Garet-Book}
+% \newfontfamily\arial{Arial}
+% \newfontfamily\myfont{Times New Roman}
+
+% Recommand for Greek
+% \newfontfamily\garamound{Garamond Libre}
+% \newfontfamily\lato{Lato}
+% \newfontfamily\notoserif{Noto Serif Display}
+
+% --- Chinese (Traditional/Simplified) ---
+
+% \setCJKmainfont{TW-Kai}
+% \setCJKsansfont{Noto Sans CJK TC}
+% \setCJKmonofont{Noto Serif CJK TC}
+
+\defaultCJKfontfeatures{AutoFakeBold=3,AutoFakeSlant=.4}
+
+% \newCJKfontfamily\twkai{TW-Kai}
+% \newCJKfontfamily\cjkserif{Noto Serif CJK TC}
+% \newCJKfontfamily\cjksans{Noto Sans CJK TC}
+
+% \newCJKfontfamily\song{cwTeXFangSong}
+% \newCJKfontfamily\cwtexming{cwTeXMing}
+
+% --- Japanese ---
+
+% \newCJKfontfamily\japsans{IPAGothic}
+% \newCJKfontfamily\japprint{Oradano-mincho-GSRR}
+
+\XeTeXlinebreaklocale "zh"
+\XeTeXlinebreakskip = 0pt plus 1pt
+
+%}
+
+\titleformat{\chapter}[display]{}{\garet\LARGE\bfseries CHAPTER \thechapter}{0.5em}{\Huge\bfseries}
+
+\titleformat{\section}[hang]{\normalfont\Large\bfseries}{\thesection}{1em}{\Large\bfseries}
+
+\titleformat{\subsection}{\normalfont\large\bfseries}{}{1.20em}{\large }[\vskip-21pt{\makebox[\linewidth][l]{\rule{0.6\textwidth}{0.75pt}}}]
+
+\input{new-commands}
+
+\begin{document}
+\pagestyle{fancy} % e.g. plain, empty, fancy
+\lhead{}
+\chead{} 
+\rhead{} 
+\lfoot{} 
+\cfoot{} 
+\rfoot{\thepage}
+
+\renewcommand{\headrulewidth}{0.4pt}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\setlist[enumerate]{topsep=0pt}
+\setlist[itemize]{topsep=0pt}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
+\input{name}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+% \bibliographystyle{plain}
+% \newdimen\origiwspc%
+%   \newdimen\origiwstr%
+%   \origiwspc=\fontdimen2\font% original inter word space
+%   \origiwstr=\fontdimen3\font% original inter word stretch
+%   \fontdimen2\font=0.25ex% inter word space
+% \myfont
+% \fontsize{9}{11}\selectfont
+% \bibliography{references.bib}
+
+\end{document}

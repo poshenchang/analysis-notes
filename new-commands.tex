@@ -1,0 +1,132 @@
+% single character
+\newcommand{\N}{{\mathbb N}}
+\newcommand{\Z}{{\mathbb Z
+}}
+\renewcommand{\R}{{\mathbb R}}
+\newcommand{\C}{{\mathbb C}}
+\newcommand{\F}{{\mathbb F}}
+\renewcommand{\L}[2]{{\mathcal L}\left(#1, #2\right)}
+\newcommand{\M}[3]{{\mathsf M}_{#1\times #2}\left({#3}\right)}
+
+\renewcommand{\Hat}[1]{\widehat{#1}}
+
+% abbreviation
+\newcommand{\ctr}{\rightarrow\!\leftarrow} % contradiction
+\newcommand{\To}[1][\;]{\xrightarrow{\;\; #1 \;\;}}
+\newcommand{\Mapsto}[1][\;]{\xmapsto{\;\; #1 \;\;}}
+\newcommand{\op}[1]{\operatorname{#1}}
+\newcommand{\ags}[1]{ %span
+    \left\langle #1\right\rangle
+}
+\newcommand{\norm}[1]{\lVert #1 \rVert}
+\newcommand{\rng}[4][1]{{#3}_{#1} #4 \cdots #4{#3}_{#2}}
+\newcommand{\set}[1]{{\left\{{#1}\right\}}}
+
+\NewDocumentCommand{\OP}{u{ }}{\operatorname{#1}}
+\let~\OP
+
+% pictures
+\begin{comment}
+    \newcommand{}{\text{\raisebox{-0.5ex}{
+        \includegraphics[width = 0.5cm]{Icons/}
+        }}
+    }
+\end{comment}
+\newcommand{\flower}[1][0.2]{{\includegraphics[width=#1cm]{Icons/flower.png}}}
+\newcommand{\car}[1][0.2]{{\includegraphics[width=#1cm]{Icons/car.png}}}
+\newcommand{\eye}{\includegraphics[width=0.5cm]{Icons/eye.jpeg}}
+\newcommand{\flag}{\includegraphics[width=0.5cm]{Icons/flag.jpeg}}
+\newcommand{\mystar}{\,\raisebox{-1.15pt}{\makebox[1.8ex][c]{\includegraphics[width=2.2ex]{Five-pointed_star_copy.svg.png}}}\,}
+\newcommand{\mystarempty}{\,\raisebox{-1.15pt}{\makebox[1.8ex][c]{\includegraphics[width=2.2ex]{Five-pointed_star.svg.png}}}\,}
+\newcommand{\coni}{\includegraphics[width=0.5cm]{Icons/Conical_flask.jpeg}}
+
+% format
+\newenvironment{stm}[1]{ % statement
+    \renewcommand{\qedsymbol}{}
+    \begin{proof}[\emph{\underline{#1}}]
+}{\end{proof}}
+
+\newenvironment{emo}[1]{ % emoji
+    \renewcommand{\qedsymbol}{}
+    \begin{proof}[\emph{{#1}:}\nopunct]
+ }{\end{proof}}
+
+\renewcommand{\Tilde}{\widetilde}
+% useful built-in
+\begin{comment} % multiline inside display math mode
+
+\begin{split}
+     & \\
+     &
+\end{split}
+
+\end{comment}
+
+\begin{comment} % multiline inside math mode (including inline)
+
+\begin{aligned}
+    & \\
+    &
+\end{aligned}
+
+\end{comment}
+
+\begin{comment} % placing text between equations
+
+\begin{align}
+    \\
+    \intertext{}
+    \\
+\end{align}
+
+\end{comment}
+
+\begin{comment} % matrix with grid lines
+
+\left(\begin{array}{l|c:r}
+     & & \\
+     \hline
+     & & \\
+     \hdashline
+     & &
+\end{array}\right)
+
+\end{comment}
+
+\begin{comment} % circled number
+
+\begin{enumerate}[label = \protect\circled{\arabic*}]
+    \item 
+\end{enumerate}
+
+\end{comment}
+
+% for analysis
+\newenvironment{circenum}[1][\arabic*]
+ {\begin{enumerate}[label = \protect\circled{#1}]
+ }{\end{enumerate}}
+\NewDocumentEnvironment{circenum*}{O{\qquad}O{\arabic*}}
+ {\begin{center}\begin{enumerate*}[label = \protect\circled{#2}, itemjoin = #1]
+ }{\end{enumerate*}\end{center}}
+\renewcommand{\c}{\complement}
+\renewcommand{\u}{\mathcal{U}}
+\newcommand{\X}{\fancyRoman{10}}
+\newcommand{\Int}{\op{Int}}
+
+\renewcommand{\Bar}[1]{\overline{#1}}
+\newcommand{\oneone}{\hookrightarrow}
+\newcommand{\onto}{\twoheadrightarrow}
+\newcommand{\bij}{\mathrel{\hookrightarrow\hspace{-1.8ex}\to}}
+\newcommand{\isom}{\xrightarrow{\;\;\sim\;\;}}
+\NewDocumentCommand{\maps}{mO{\To}mO{\;}mm}{
+    \begin{aligned}
+        #1 #2[#4] & \; #3\\
+        #5 \Mapsto[\phantom{#4}] & \; #6
+    \end{aligned}
+}
+\usepackage{centernot}
+\newcommand{\notimplies}{\centernot\implies}
+
+\color{white}
+\pagecolor{black}
+\newcommand{\eps}{\varepsilon}
