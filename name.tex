@@ -553,17 +553,147 @@ Completeness is not a topological property, i.e. two homeomorphic metric spaces 
         \]
         then $\Bar x$ is a Cauchy sequence, and $D(\Bar x, \Bar y) = d(x, y)$ for any $x, y\in M$. It is clear that the mapping $x\mapsto \Bar x$ is an isometric embedding of $M$ into $\Hat M$, so we may identify $M$ as a metric subspace of $\Hat M$.
 
-        Finally, we need to show that $\Hat M$ is complete. Let $(X_n)$ be a Cauchy sequence in $\Hat M$, where $X_n = [(x_{n, k})]$. Given $\epsilon > 0$, $\exists N\in \N$ such that $m, n \geq N$ implies $D(X_n, X_m) < \epsilon$. By the definition of $D$, $\exists K\in \N$ such that $k \geq K$ implies $d(x_{n, k}, x_{m, k}) < \epsilon$. We can pick a subsequence $(X_{n_j})$ of $(X_n)$ such that $D(X_{n_j}, X_{n_{j+1}}) < 2^{-j}$ for all $j\in \N$. For each $j$, we can pick a term $x_{n_j, k_j}$ such that $k_j \geq K$ and $d(x_{n_j, k_j}, x_{n_{j+1}, k_{j+1}}) < 2^{-j}$. Consider the sequence $(y_j)$ defined by
-        \[
-        y_j = x_{n_j, k_j}.
-        \] We claim that $(y_j)$ is a Cauchy sequence in $M$. Given $\epsilon > 0$, pick $N\in \N$ such that $2^{-N} < \epsilon$. If $m, n \geq N$ and $m < n$, then
-        \[
-        d(y_n, y_m) \leq \sum_{j=m}^{n-1} d(y_{j+1}, y_j) < \sum_{j=m}^{n-1} 2^{-j} < \sum_{j=N}^\infty 2^{-j} = 2^{1-N} < 2\epsilon,
-        \]
-        hence $(y_j)$ is a Cauchy sequence in $M$. Let $Y = [(y_j)] \in \Hat M$, we claim that $X_n \to Y$ in $\Hat M$. Given $\epsilon > 0$, pick $N\in \N$ such that $2^{-N} < \epsilon$. If $n \geq N$, then
-        \[
-        D(X_n, Y) = \lim_{k\to\infty} d(x_{n, k}, y_k) \leq \lim_{k\to\infty} d(x_{n, k}, x_{n_k, k}) + \lim_{k\to\infty} d(x_{n_k, k}, y_k) < \epsilon + 0 = \epsilon,
-        \]
-        hence $X_n \to Y$. Therefore, $\Hat M$ is complete.
+        Finally, we need to show that $\Hat M$ is complete. Let $(X_n)$ be a Cauchy sequence in $\Hat M$, where $X_n = [(x_{n, k})]$. We need to find $Y\in \Hat M$ such that $X_n \to Y$.
+        
+        Note that if $(x_n)$ is Cauchy in $M$, then any subsequence is equivalent to $(x_n)$, hence WLOG we can assume that $d(x_{n, k}, x_{n, l}) < 1/n$ for all $k, l \geq N$. 
+        
+        Set $y_n = x_{n, n}$. Let $\epsilon > 0$. Pick $N\in \N$ such that $N \geq 3/\epsilon$ and $m, n \geq N$ implies $D(X_n, X_m) < \epsilon/3$, hence
+        \begin{align*}
+            d(y_m, y_n) &= d(x_{m, m}, x_{n, n}) \\
+            &\leq d(x_{m, m}, x_{m, k}) + d(x_{m, k}, x_{n, k}) + d(x_{n, k}, x_{n, n}) \\
+            &< \frac1m + d(x_{m, k}, x_{n, k}) + \frac1n < \frac{2\epsilon}3 + d(x_{m, k}, x_{n, k}).
+        \end{align*}
+        As $n$ approaches infinity, $d(x_{m, k}, x_{n, k})$ approaches $D(X_m, X_n) < \epsilon/3$, hence $d(y_m, y_n) < \epsilon$ for all $m, n \geq N$. Therefore, $(y_n)$ is a Cauchy sequence in $M$. 
+        
+        Let $Y = [(y_n)] \in \Hat M$. It remains to show that $X_n \to Y$. Given $\epsilon > 0$, pick $N\in \N$ such that $N \geq 2/\epsilon$ such that $k, n \geq N$ implies $d(y_k, y_n) < \epsilon/2$, then
+        \begin{align*}
+            d(x_{n, k}, y_k) &= d(x_{n, k}, x_{k, k}) \\
+            &\leq d(x_{n, k}, x_{n, n}) + d(x_{n, n}, x_{k, k}) < \frac1n + d(y_n, y_k) < \frac\epsilon2 + \frac\epsilon2 = \epsilon.
+        \end{align*}
+        Taking $n\to\infty$, we have $D(X_n, Y) \leq \epsilon$. Therefore, $X_n \to Y$ in $\Hat M$, and $\Hat M$ is complete.
     \end{proof}
 \end{thm}
+
+We might wish to construct the real numbers $\R$ by completing the rational numbers $\Q$. However, this approach results in some sort of circular reasoning. 
+
+We can still define concepts such as convergence and cauchy sequence, by restricting the $\epsilon$'s to rational numbers. Then we can still consider the completion $\Hat \Q$ under this definition. We wish to prove that $\Hat \Q$ is a ordered complete field.
+
+For $X = (x_n)$ and $Y = (y_n)$ in $\Hat \Q$, define
+\[
+X + Y = (x_n + y_n), \quad X - Y = (x_n - y_n), \quad XY = (x_n y_n), \quad \frac X Y = \left(\frac{x_n}{y_n}\right).
+\]
+
+If $X\in \Hat \Q$ has a representation $(x_n)$ such that for some $\epsilon > 0$, $x_n \geq \epsilon$ for all $n$, then we say $X$ is positive. If $-X$ is positive, then we say $X$ is negative. Define $X < Y$ if $Y - X$ is positive.
+
+\begin{prop}
+    \label{prop:order-completion}
+    For $X = [(x_n)]$ and $Y = [(y_n)]$ in $\Hat \Q$, $X < Y$ iff $\exists$ (rational) $\epsilon > 0$ and $N\in \N$ such that $y_m - x_n > \epsilon$ for all $m, n\geq N$.
+\end{prop}
+
+It remains to show that every nonempty subset of $\Hat \Q$ that is bounded above has a least upper bound. Define the least upper bound for $\mathcal A$ to be the equivalence class $Y$ of the sequence $(y_n)$, where
+\begin{enumerate}
+    \item $y_0$ is the smallest integer such that $[(y_0, y_0, y_0, \ldots)]$ is an upper bound for $\mathcal A$.
+    \item For $n\geq 1$, $y_n$ is the smallest rational with denominator $2^n$ such that $[(y_n, y_n, y_n, \ldots)]$ is an upper bound for $\mathcal A$.
+\end{enumerate}
+
+We can check that $(y_n)$ is monotone decreasing and $y_n - y_{n+1} \leq 2^{-n}$. For $m, n\in \N$ with $m > n$, we have
+\[
+|y_m - y_n| \leq \sum_{j=n}^{m-1} |y_{j+1} - y_j| \leq \sum_{j=n}^{m-1} 2^{-j} < \sum_{j=n}^\infty 2^{-j} = 2^{1-n},
+\]
+so $(y_n)$ is Cauchy and thus in $\Hat \Q$. Now we check that $Y = \sup \mathcal A$. Suppose that $Y$ is not an upper bound for $\mathcal A$, then $\exists X = [(x_n)] \in \mathcal A$ such that $X > Y$. By Proposition \ref{prop:order-completion}, $\exists\epsilon > 0$ and $N\in \N$ such that $x_n - y_N > \epsilon$ for all $n\geq N$, then
+\[
+[(y_N, y_N, y_N, \ldots)] < X,
+\]
+contradicting the construction of $y_n$. Therefore, $Y$ is an upper bound for $\mathcal A$.
+
+Now suppose that $Z = [(z_n)]$ is another upper bound for $\mathcal A$ such that $Z < Y$. By Proposition \ref{prop:order-completion}, $\exists \epsilon > 0$ and $N\in \N$ such that $y_m - z_n > \epsilon$ for all $m, n\geq N$. 
+
+Pick $k\geq N$ such that $1/2^{k-1} < \epsilon$, then for all $m\geq N$, we have
+\begin{gather*}
+    z_m + \frac\epsilon2 < y_k - \frac\epsilon2 < y_k - \frac1{2^k} \\
+    \implies Z < [(y_k - \frac1{2^k}, y_k - \frac1{2^k}, y_k - \frac1{2^k}, \ldots)],
+\end{gather*}
+but $y_k$ is the smallest fraction with denominator $2^k$ such that $[(y_k, y_k, y_k, \ldots)]$ is an upper bound for $\mathcal A$, contradiction. Therefore, $Y = \sup \mathcal A$.
+
+\section{Compactness}
+
+A set $K \subseteq \R^n$ is compact if it is closed and bounded. We wish to generalize this definition to arbitrary topological spaces.
+
+\begin{df}
+    In a topological space $X$, a subset $K\subseteq X$ is sequentially compact if every sequence in $K$ has a subsequence that converges to a point in $K$.
+\end{df}
+
+\begin{prop}
+    A sequentially compact subset of a metric space is closed and bounded.
+    \begin{proof}
+        Since every convergent sequence has its limit in $K$, $K$ is closed.
+
+        Suppose that $K$ is unbounded. $\forall n\in \N$, $\exists x_n, y_n \in K$ such that $d(x_n, y_n) \geq n$. By sequential compactness, exists convergent subsequences $(x_{n_k})$ and $(y_{n_k})$ that converge to $x, y \in K$ respectively, then
+        \[
+        n_k \leq d(x_{n_k}, y_{n_k}) \leq d(x_{n_k}, x) + d(x, y) + d(y, y_{n_k}).
+        \]
+        As $k\to\infty$, the right hand side approaches $d(x, y)$, which is finite, but the left hand side approaches infinity, contradiction. Therefore, $K$ is bounded.
+    \end{proof}
+\end{prop}
+
+\begin{rmk}
+    The converse holds in $\R^n$, but not in general metric spaces. Consider
+    \begin{gather*}
+        C([0, 1], \R) = \set{f: [0, 1] \to \R \mid \text{$f$ is continuous}}, \\
+        d(f, g) = \max\set{\abs{f(x) - g(x)} \mid x\in [0, 1]}.
+    \end{gather*}
+    A closed unit ball is not sequentially compact. Consider the sequence of functions $f_n(x) = x^n$. It is clear that $(f_n)$ is in the closed unit ball, but it does not have a convergent subsequence in $C([0, 1], \R)$.
+\end{rmk}
+
+In a general topological space, it is sometimes inconvenient to use sequences to describe compactness. 
+
+\begin{df}
+    An open cover of a topological space $X$ is a collection $\mathcal U$ of open sets in $X$ whose union contains $X$. A subcover of an open cover $\mathcal U$ is a subcollection of $\mathcal U$ that still covers $X$. A topological space $X$ is compact if every open cover of $X$ has a finite subcover.
+\end{df}
+
+\begin{ex}
+    $(0, 1]$ is not compact in $\R$. Consider the open cover $\mathcal U = \set{(\frac1n, 2) \mid n\in \N}$, which does not have a finite subcover.
+\end{ex}
+
+In general, compactness and sequential compactness are not equivalent. However, they are equivalent in metric spaces.
+
+We first introduce some auxiliary definitions.
+
+\begin{df}
+    A Lebesgue number for an open cover $\mathcal U$ of a subset $A$ of a metric space $M$ is a positive real number $\lambda$ such that for every $a\in A$, $\exists U \in \mathcal U$ such that $B(a, \lambda) \subseteq U$.
+\end{df}
+
+\begin{lm}[Lebesgue number lemma]
+    Every open cover of a sequentially compact set (in a metric space) has a positive Lebesgue number.
+    \begin{proof}
+        Suppose otherwise, so that there exists some open cover $\mathcal U$ of a sequentially compact set $K$ such that $\forall \lambda > 0$, $\exists k \in K$ such that no $U\in \mathcal U$ contains $B(k, \lambda)$. 
+
+        Take $\lambda = 1/n$ and let $k_n \in K$ be the corresponding point such that no $U\in \mathcal U$ contains $B(k_n, 1/n)$. By sequential compactness, $(k_n)$ has a convergent subsequence $(k_{n_j})$ that converges to some $x\in K$. Since $\mathcal U$ is an open cover of $K$, $\exists U \in \mathcal U$ such that $x\in U$. Since $U$ is open, $\exists r > 0$ such that $B(x, r) \subseteq U$. Pick $j$ large enough such that $1/n_j < r/2$ so that
+        \[
+        d(k_{n_j}, x) < r/2 \leadsto B(k_{n_j}, 1/n_j) \subseteq B(x, r) \subseteq U,
+        \]
+        contradicting the assumption that no $U\in \mathcal U$ contains $B(k_{n_j}, 1/n_j)$. Therefore, $\mathcal U$ has a positive Lebesgue number.
+    \end{proof}
+\end{lm}
+
+If $A$ is noncompact then it may have open covers with no positive Lebesgue number. For example, consider the set $A = (0, 1) \subseteq \R$ and the open cover $\mathcal U = \set{A}$. It is clear that we cannot find $\lambda > 0$ such that $(a-\lambda, a+\lambda) \subseteq A$ for all $a\in A$.
+
+\begin{thm}
+    Let $M$ be a metric space. A subset $K\subseteq M$ is compact iff it is sequentially compact.
+    \begin{proof}
+        "$\implies$": If $K$ is finite then it is trivially sequentially compact (since any sequence in $K$ must contain some element infinitely many times). 
+        
+        Suppose that $K$ is infinite. Assume that $K$ is compact but not sequentially compact, then $\exists$ a sequence $(x_n)$ in $K$ that does not have a convergent subsequence. For each $k\in K$, $\exists$ $r_k > 0$ such that $B(k, r_k)$ contains only finitely many terms of $(x_n)$. Otherwise, if every neighborhood of $k$ contains infinitely many terms of $(x_n)$, then we can construct a subsequence of $(x_n)$ that converges to $k$. The collection $\set{B(k, r_k) \mid k\in K}$ is an open cover of $K$, hence it has a finite subcover
+        \[
+        \set{B(k_1, r_{k_1}), \ldots, B(k_m, r_{k_m})}.
+        \]
+        Each $x_n$ appears in each $B(k_i, r_{k_i})$ only finitely many times, so $(x_n)$ can only have finitely many values, but any such sequence must have a constant subsequence, which is convergent, contradiction. Therefore, $K$ is sequentially compact.
+
+        "$\impliedby$": 
+    \end{proof}
+\end{thm}
+
+\begin{cl}[Heine-Borel Theorem]
+    A subset of $\R^n$ is compact iff it is closed and bounded.
+    
+\end{cl}
