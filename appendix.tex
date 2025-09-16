@@ -62,3 +62,95 @@
         \end{proof}
     \end{prop}
 \end{ex}
+
+\section{}
+
+\begin{thm}[Euclid's Theorem]
+    There are infinitely many prime numbers.
+    \begin{proof}
+        Consider a topology on $\Z$. For each $a\in \Z$ and $b\in \N$, let
+        \[
+        N_{a, b} = \set{a + nb \mid n\in \Z}.
+        \]
+        We say a set $\mathcal U\subseteq \Z$ is open if for every $a\in \mathcal U$, $\exists b\in \N$ such that $N_{a, b}\subseteq \mathcal U$. 
+
+        It is easy to verify that the union of any collection of open sets is open. The intersection of two open sets is also open, since if $a\in \mathcal U_1\cap \mathcal U_2$, then $\exists b_1, b_2\in \N$ such that $N_{a, b_1}\subseteq \mathcal U_1$ and $N_{a, b_2}\subseteq \mathcal U_2$, hence $N_{a, \mathrm{lcm}(b_1, b_2)}\subseteq \mathcal U_1\cap \mathcal U_2$. Thus this is indeed a topology.
+
+        Note that $N_{a, b}$ is also closed, since
+        \[
+        N_{a, b} = \Z \setminus \bigcup_{i=1}^{b-1} N_{a+i, b}.
+        \]
+        Since any number $n\neq \pm 1$ has a prime divisor, we have
+        \[
+        \Z\setminus \set{-1, 1} = \bigcup_{p\text{ is prime}} N_{0, p}.
+        \]
+        If there are only finitely many primes $p_1, p_2, \ldots, p_k$, then $\Z\setminus \set{-1, 1}$ is a finite union of closed sets, hence closed. This implies that $\set{-1, 1}$ is open, which is a contradiction since any nonempty open set in this topology is infinite.
+    \end{proof}
+\end{thm}
+
+\section{Quotient Topology}
+
+\begin{df}
+    Let $X, Y$ be topological spaces. A surjective map $p: X\to Y$ is called a quotient map if a set $U\subseteq Y$ is open iff $p^{-1}(U)$ is open in $X$.
+\end{df}
+
+\begin{df}
+    A subset $C\subseteq X$ is called saturated w.r.t. a map $p: X\to Y$ if $C = p^{-1}(S)$ for some $S\subseteq Y$.
+\end{df}
+
+\begin{df}
+    A mapping $p: X\to Y$ is called open (resp. closed) if for every open (resp. closed) set $U\subseteq X$, $p(U)$ is open (resp. closed) in $Y$.
+\end{df}
+
+\begin{prop}
+    The following are equivalent:
+    \begin{enumerate}[label={(\alph*)}]
+        \item $p$ is a quotient map.
+        \item $p$ is surjective, continuous, and maps saturated open sets to open sets.
+        \item $p$ is surjective, continuous, and is either open or closed.
+    \end{enumerate}
+\end{prop}
+
+\begin{df}
+    Let $X$ be a topological space, $A$ be a set, and $p: X\to A$ be a surjective map. Then there is a unique topology $\mathcal T$ on $A$ such that $p: (X, \mathcal T_X)\to (A, \mathcal T)$ is a quotient map, namely
+    \[
+    \mathcal T = \set{U\subseteq A \mid p^{-1}(U) \text{ is open in } X}.
+    \]
+    This topology is called the quotient topology induced by $p$. 
+\end{df}
+
+\begin{ex}
+    Let $p: \R \to \set{a, b, c}$ be defined by
+    \[
+    p(x) = \begin{cases}
+        a, & x > 0; \\
+        b, & x < 0; \\
+        c, & x = 0.
+    \end{cases}
+    \]
+    Then the quotient topology on $\set{a, b, c}$ is $\set{\emptyset, \set{a}, \set{b}, \set{a, b}, \set{a, b, c}}$.
+\end{ex}
+
+\begin{df}
+    Let $X$ be a topological space, and let $X^*$ be a partition of $X$. Let $\pi: X\to X^*$ be the natural projection that maps each point to its partition. Then under the quotient topology on $X^*$ induced by $\pi$, $X^*$ is called the quotient space or the identification space.
+\end{df}
+
+\begin{ex}
+    Let $X$ be the closed unit disk $\set{(x, y)\in \R^2 \mid x^2 + y^2 \leq 1}$. Let
+    \[
+    X^* = \set{\set{(x, y) \mid x^2 + y^2 < 1}} \cup \set{\set{(x, y) \mid x^2 + y^2 = 1}}.
+    \]
+    Then $X^*$ with the quotient topology is homeomorphic to the sphere $S^2$.
+\end{ex}
+
+\begin{thm}
+    Let $p: X\to Y$ be a quotient map. Let $Z$ be a topological space, and $g: X\to Z$ be a map that is constant on each $p^{-1}(\set{y})$, $y\in Y$. Then, $g$ induces a map $f: Y\to Z$ such that $f\circ p = g$. Furthermore, $f$ is continuous iff $g$ is continuous, and $f$ is a quotient map iff $g$ is a quotient map.
+\end{thm}
+
+\begin{cl}
+    Let $g: X\to Z$ be a surjective continuous map. Let $X^* = \set{g^{-1}(\set{z}) \mid z\in Z}$. Equip $X^*$ with the quotient topology. 
+    \begin{enumerate}[label={(\alph*)}]
+        \item The map $g$ induces a bijection $f: X^*\to Z$, which is a homeomorphism iff $g$ is a quotient map.
+        \item If $Z$ is Hausdorff, then so is $X^*$.
+    \end{enumerate}
+\end{cl}
