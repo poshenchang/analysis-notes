@@ -615,7 +615,7 @@ Pick $k\geq N$ such that $1/2^{k-1} < \epsilon$, then for all $m\geq N$, we have
 \end{gather*}
 but $y_k$ is the smallest fraction with denominator $2^k$ such that $[(y_k, y_k, y_k, \ldots)]$ is an upper bound for $\mathcal A$, contradiction. Therefore, $Y = \sup \mathcal A$.
 
-\section{Compactness}
+\chapter{Compactness}
 
 A set $K \subseteq \R^n$ is compact if it is closed and bounded. We wish to generalize this definition to arbitrary topological spaces.
 
@@ -689,11 +689,151 @@ If $A$ is noncompact then it may have open covers with no positive Lebesgue numb
         \]
         Each $x_n$ appears in each $B(k_i, r_{k_i})$ only finitely many times, so $(x_n)$ can only have finitely many values, but any such sequence must have a constant subsequence, which is convergent, contradiction. Therefore, $K$ is sequentially compact.
 
-        "$\impliedby$": 
+        "$\impliedby$": Let $\mathcal U$ be an open cover of $K$. By the Lebesgue number lemma, $\mathcal U$ has a positive Lebesgue number $\lambda$. Choose $x_1 \in K$, then $\exists \mathcal U_1 \in \mathcal U$ such that $B(x_1, \lambda) \subseteq \mathcal U_1$. If $K \subseteq \mathcal U_1$, then we are done. Otherwise, for any point in $K$ not covered, we can again find $x_2 \in K$ such that $x_2 \notin \mathcal U_1$, then $\exists \mathcal U_2 \in \mathcal U$ such that $B(x_2, \lambda) \subseteq \mathcal U_2$. If $K \subseteq \mathcal U_1 \cup \mathcal U_2$, then we are done. Otherwise, we can continue this process to find $x_3, x_4, \ldots$. If the process continues indefinitely, then we have constructed a sequence $(x_n)$ in $K$ such that $x_m \notin \mathcal U_n$ for all $m > n$. By sequential compactness, $(x_n)$ has a convergent subsequence $(x_{n_k})$ that converges to some $x\in K$. Then there exists a large $k$ such that $d(x_{n_k}, x) < \lambda$, which implies that $x\in B(x_{n_k}, \lambda)\subseteq \mathcal U_{n_k}$. But by construction, $x_{n_m} \notin \mathcal U_{n_k}$ for all $m > k$, contradicting the fact that $x_{n_m} \to x$. Therefore, the process must terminate within finitely many steps, and we have found a finite subcover of $\mathcal U$. Hence, $K$ is compact.
     \end{proof}
 \end{thm}
 
 \begin{cl}[Heine-Borel Theorem]
-    A subset of $\R^n$ is compact iff it is closed and bounded.
-    
+    A subset of $\R^n$ is compact iff it is closed and bounded.    
 \end{cl}
+
+\begin{df}
+    A metric space is totally bounded if for every $\epsilon > 0$, the space can be covered by finitely many balls of radius $\epsilon$.
+\end{df}
+
+\begin{thm}
+    A subset of a complete metric space is compact iff it is closed and totally bounded.
+\end{thm}
+
+\section{Continuity and Compactness}
+
+\begin{prop}
+    Let $X, Y$ be topological spaces and let $f: X \to Y$ be continuous. If $X$ is compact, then $f(X)$ is compact.
+    \begin{proof}
+        Let $\mathcal U$ be an open cover of $f(X)$, then $\mathcal V = \set{f^{-1}(U) \mid U\in \mathcal U}$ is an open cover of $X$. Since $X$ is compact, $\exists U_1, \ldots, U_n \in \mathcal U$ such that
+        \[
+        X \subseteq f^{-1}(U_1) \cup \cdots \cup f^{-1}(U_n) \implies f(X) \subseteq U_1 \cup \cdots \cup U_n,
+        \]
+        hence $f(X)$ is compact.
+    \end{proof}
+\end{prop}
+
+\begin{cl}[Extreme Value Theorem]
+    Let $X$ be a metric space. If $X$ is compact and if $f: X \to \R$ is continuous, then $f$ is bounded and attains its maximum and minimum.
+    \begin{proof}
+        Since $f(X)$ is compact in $\R$, it is closed and bounded, hence $f$ is bounded, and since $f(X)$ is closed, $\sup f(X), \inf f(X) \in f(X)$, so $f$ attains its maximum and minimum.
+    \end{proof}
+\end{cl}
+
+\begin{cl}
+    If $X$ is compact and if $X$ is homeomorphic to $Y$, then $Y$ is compact.
+\end{cl}
+
+\begin{cl}
+    $[0, 1]$ and $\R$ are not homeomorphic.
+\end{cl}
+
+\begin{prop}
+    Every continuous function defined on a compact metric space is uniformly continuous.
+    \begin{proof}
+        Suppose not. Let $f: M\to N$ be continuous, where $M$ is compact, but $f$ is not uniformly continuous. Then $\exists \epsilon > 0$ such that $\forall \delta > 0$, $\exists x, y \in M$ such that $d(x, y) < \delta$ but $d(f(x), f(y)) \geq \epsilon$. Take $\delta = 1/n$ and let $x_n, y_n \in M$ be the corresponding points such that $d(x_n, y_n) < 1/n$ but $d(f(x_n), f(y_n)) \geq \epsilon$. By compactness, $(x_n)$ has a convergent subsequence $(x_{n_k})$ that converges to some $x\in M$. Since $d(x_{n_k}, y_{n_k}) < 1/n_k$, we have $y_{n_k} \to x$ as well. Since $f$ is continuous, $f(x_{n_k}) \to f(x)$ and $f(y_{n_k}) \to f(x)$, contradicting the fact that $d(f(x_{n_k}), f(y_{n_k})) \geq \epsilon$. Therefore, $f$ is uniformly continuous.
+    \end{proof}
+\end{prop}
+
+\section{Subspaces, Products, and Hausdorff Spaces}
+
+\begin{prop}
+    If $A$ is compact in $X$ and if $B$ is compact in $Y$, then $A \times B$ is compact in $X \times Y$.
+    \begin{proof}
+        Let $\mathcal U$ be an open cover of $A \times B$. For each $a\in A$, $\set{a} \times B$ is homeomorphic to $B$, hence it is compact. Therefore, $\exists U_1, U_2, \ldots, U_n \in \mathcal U$ such that
+        \[
+        \set{a} \times B \subseteq U_1 \cup U_2 \cup \cdots \cup U_n.
+        \]
+        For each $b\in B$, we can find a product open set $V\times W \subseteq X\times Y$ containing $(a, b)$. These $V\times W$ form an open cover for $\set{a} \times B$. We can extract $V_1\times W_1, \ldots, V_m\times W_m$ such that they cover $\set{a} \times B$. 
+
+        Define $Z_a = V_1 \cap \cdots \cap V_m$, then $Z_a \times B \subseteq U_1 \cup \cdots \cup U_n$. We have shown that for any $a\in A$, $\exists$ open cover $Z_a$ such that $Z_a \times B$ is covered by finitely many open sets in $\mathcal U$. 
+
+        Since $\{Z_a\}_{a\in A}$ is an open cover of $A$ in $X$ (each $Z_a$ is open and contains $a$), and $A$ is compact, there exist finitely many points $a_1, \ldots, a_k \in A$ such that $A \subseteq Z_{a_1} \cup \cdots \cup Z_{a_k}$. Then
+        \[
+        A \times B \subseteq (Z_{a_1} \times B) \cup \cdots \cup (Z_{a_k} \times B)
+        \]
+        and each $Z_{a_i} \times B$ is covered by finitely many sets from $\mathcal U$. Therefore, $A \times B$ is covered by finitely many sets from $\mathcal U$, so $A \times B$ is compact.
+    \end{proof}
+\end{prop}
+
+\begin{prop}
+    Every closed subset of a compact space is compact.
+    \begin{proof}
+        Let $\mathcal U$ be an open cover for $E$, then $\mathcal U \cup \set{X \setminus E}$ is an open cover for $X$. Since $X$ is compact, we can extract a finite subcover. If $X \setminus E$ is in the subcover, we can discard it since it does not cover any point in $E$. Therefore, $E$ is compact.
+    \end{proof}
+\end{prop}
+
+\begin{prop}
+    Every compact subset of a Hausdorff space is closed. 
+    \begin{proof}
+        Let $X$ be a Hausdorff space.
+        \begin{clm}
+            If $A, B\subseteq X$ are disjoint compact subsets, then $\exists$ disjoint open sets $U, V \subseteq X$ such that $A \subseteq U$ and $B \subseteq V$.
+
+            \noindent\textit{Proof. }
+            Suppose that $B = \set{b}$ is a singleton. $\forall a\in A$, $\exists$ disjoint open sets $\mathcal U_a$ and $\mathcal V_a$ such that $a\in \mathcal U_a$ and $b \in \mathcal V_a$. $\set{\mathcal U_a \mid a\in A}$ is an open cover for $A$, hence we can extract a finite subcover $\mathcal U_{a_1}, \ldots, \mathcal U_{a_n}$. Define
+            \[
+            \Tilde U = \bigcup_{i=1}^n \mathcal U_{a_i}, \quad \Tilde V = \bigcap_{i=1}^n \mathcal V_{a_i},
+            \]
+            then $\Tilde U$ and $\Tilde V$ are disjoint open sets such that $A \subseteq \Tilde U$ and $b \in \Tilde V$.
+
+            For general $B$, we have shown that $\forall b\in B$, $\exists$ disjoint open sets $\Tilde U_b, \Tilde V_b$ such that $A \subseteq \Tilde U_b$ and $b \in \Tilde V_b$. $\set{\Tilde V_b \mid b\in B}$ is an open cover for $B$, hence we can extract a finite subcover $\Tilde V_{b_1}, \ldots, \Tilde V_{b_m}$. Define
+            \[
+            \Tilde U = \bigcap_{j=1}^m \Tilde U_{b_j}, \quad \Tilde V = \bigcup_{j=1}^m \Tilde V_{b_j},
+            \]
+            then $\Tilde U$ and $\Tilde V$ are disjoint open sets such that $A \subseteq \Tilde U$ and $B \subseteq \Tilde V$. $\qed$
+        \end{clm}
+
+        Now, let $K\subseteq X$ be compact. We need to show that $X \setminus K$ is open. For any $x\in X \setminus K$, $\set{x}$ and $K$ are disjoint compact subsets, hence by the claim, $\exists$ disjoint open sets $U, V \subseteq X$ such that $\set{x} \subseteq U$ and $K \subseteq V$. In other words, for all points $x \in X \setminus K$, we can find an open neighborhood $U$ of $x$ that is contained in $X \setminus K$. Therefore, $X \setminus K$ is open, and $K$ is closed.
+    \end{proof}
+\end{prop}
+
+\section{Finite Intersection Property}
+
+\begin{df}
+    A collection $\mathcal C$ of subsets of $X$ is said to have the finite intersection property if the intersection of every finite subcollection of $\mathcal C$ is nonempty.
+\end{df}
+
+\begin{thm}
+    Let $X$ be a topological space. Then $X$ is compact iff every collection $\mathcal C$ of nonempty closed sets in $X$ with the finite intersection property has a nonempty intersection.
+    \begin{proof}
+        Given a collection $\mathcal U$ of subsets of $X$, define
+        \[
+        \mathcal C = \set{X \setminus U \mid U\in \mathcal U}.
+        \]
+        The following statements hold:
+        \begin{enumerate}
+            \item $\mathcal U$ is a collection of open sets $\iff$ $\mathcal C$ is a collection of closed sets.
+            \item The collection $\mathcal U$ covers $X$ $\iff$ $\bigcap_{C\in \mathcal C} C = \emptyset$.
+            \item The finite subcollection $\set{U_1, \ldots, U_n}$ of $\mathcal U$ covers $X$ $\iff$ $\bigcap_{i=1}^n (X\setminus U_i) = \emptyset$.
+        \end{enumerate}
+        Now, if $X$ is compact, we have the contrapositive statment that given any collection $\mathcal U$ of open sets, if no finite subcollection of $\mathcal U$ covers $X$, then $\mathcal U$ does not cover $X$. This is directly equivalent to the statement we wish to prove by the above observations.
+    \end{proof}
+\end{thm}
+
+\begin{cl}
+    Let $X$ be a compact topological space. Suppose that $(F_n)$ is a sequence of nonempty closed subsets of $X$ that are nested decreasing, i.e. $F_{n+1} \subseteq F_n$ for all $n$. Then $\bigcap_{n=1}^\infty F_n$ is nonempty.
+\end{cl}
+
+\begin{df}
+    Let $M$ be a metric space. For a subset $A \subseteq M$, the diameter of $A$ is defined to be
+    \[
+    \sup \set{d(x, y) \mid x, y \in A}.
+    \]
+\end{df}
+
+\begin{prop}
+    If in addition to the conditions in the previous corollary, 
+    \[
+    \lim_{n\to\infty} ~diam (F_n) = 0,
+    \]
+    then $\bigcap_{n=1}^\infty F_n$ is a singleton.
+    \begin{proof}
+        Write $F = \bigcap_{n=1}^\infty F_n$. We have shown that $F$ is nonempty. Since $F \subseteq F_n$ for all $n$, we have $~diam (F) = 0$. If $F$ contains two distinct points $x, y$, then $d(x, y) > 0$. Therefore, $F$ must contain exactly one point. 
+    \end{proof}
+\end{prop}
