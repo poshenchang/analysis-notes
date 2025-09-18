@@ -800,6 +800,7 @@ If $A$ is noncompact then it may have open covers with no positive Lebesgue numb
 \end{df}
 
 \begin{thm}
+    \label{thm:compact-fip}
     Let $X$ be a topological space. Then $X$ is compact iff every collection $\mathcal C$ of nonempty closed sets in $X$ with the finite intersection property has a nonempty intersection.
     \begin{proof}
         Given a collection $\mathcal U$ of subsets of $X$, define
@@ -835,5 +836,134 @@ If $A$ is noncompact then it may have open covers with no positive Lebesgue numb
     then $\bigcap_{n=1}^\infty F_n$ is a singleton.
     \begin{proof}
         Write $F = \bigcap_{n=1}^\infty F_n$. We have shown that $F$ is nonempty. Since $F \subseteq F_n$ for all $n$, we have $~diam (F) = 0$. If $F$ contains two distinct points $x, y$, then $d(x, y) > 0$. Therefore, $F$ must contain exactly one point. 
+    \end{proof}
+\end{prop}
+
+\section{Tychonoff Theorem}
+
+\begin{lm}
+    \label{lm:tychonoff-lm1}
+    Let $X$ be a set, and let $\mathcal A$ be a collection of subsets of $X$ that has the FIP. Then $\exists$ a collection $\mathcal D$ of subsets of $X$ such that $\mathcal D$ contains $\mathcal A$, $\mathcal D$ has the FIP, and $\mathcal D$ is maximal with respect to inclusion.
+    \begin{proof}
+        We will construct $\mathcal D$ using Zorn's lemma. Let
+        \[
+        \mathbb A = \set{\mathcal B \mid \mathcal B \text{ is a collection of subsets of $X$ that has the FIP and } \mathcal A \subseteq \mathcal B}.
+        \]
+        We need to show that every chain in $\mathbb A$ has an upper bound in $\mathbb A$. Let $\mathbb B$ be a chain in $\mathbb A$. Define
+        \[
+        \mathcal C = \bigcup_{\mathcal B \in \mathbb B} \mathcal B.
+        \]
+        Clearly $\mathcal C$ is an upper bound for $\mathbb B$ in $\mathbb A$. We need to show that $\mathcal C \in \mathbb A$. It is clear that $\mathcal A \subseteq \mathcal C$, hence it is left to show that $\mathcal C$ has the FIP. Given any finite subcollection $\mathcal C_1, \ldots, \mathcal C_n$ of $\mathcal C$, $\exists \mathcal B_1, \ldots, \mathcal B_n \in \mathbb B$ such that $\mathcal C_i \in \mathcal B_i$. Since $\mathbb B$ is a chain, there exists an element $\mathcal B_k$ that contains all $\mathcal B_i$'s, hence $\mathcal C_1, \ldots, \mathcal C_n \in \mathcal B_k$. Since $\mathcal B_k$ has the FIP, $\bigcap_{i=1}^n \mathcal C_i \neq \emptyset$. Therefore, $\mathcal C$ has the FIP, and $\mathcal C \in \mathbb A$. By Zorn's lemma, $\mathbb A$ has a maximal element $\mathcal D$, which is what we want.
+    \end{proof}
+\end{lm}
+
+\begin{lm}
+    \label{lm:tychonoff-lm2}
+    Let $X$ be a set, and let $\mathcal D$ be a collection of subsets of $X$ that has the FIP and is maximal with respect to inclusion. Then any finite intersection of elements of $\mathcal D$ is in $\mathcal D$. Moreover, if $A \subseteq X$ intersects every element of $\mathcal D$, then $A \in \mathcal D$.
+    \begin{proof}
+        Let $B$ be an intersection of finitely many elements of $\mathcal D$. Since $\mathcal D$ has the FIP, $B \neq \emptyset$. Define $\mathcal E = \mathcal D \cup \set{B}$. Pick finitely elements of $\mathcal E$. If none of them is $B$, then their intersection is nonempty since $\mathcal D$ has the FIP. If one of them is $B$, then the intersection is also nonempty since $B$ is an intersection of finitely many elements of $\mathcal D$ and $\mathcal D$ has the FIP. If $B \notin \mathcal D$, then $\mathcal E$ has the FIP and strictly contains $\mathcal D$, contradicting the maximality of $\mathcal D$. Therefore, $B \in \mathcal D$.
+
+        Now, let $A \subseteq X$ be such that $A$ intersects every element of $\mathcal D$. Define $\mathcal F = \mathcal D \cup \set{A}$. Pick finitely elements of $\mathcal F$. If none of them is $A$, then their intersection is nonempty since $\mathcal D$ has the FIP. If one of them is $A$, then the intersection is also nonempty since $A$ intersects every element of $\mathcal D$ and $\mathcal D$ has the FIP. If $A \notin \mathcal D$, then $\mathcal F$ has the FIP and strictly contains $\mathcal D$, contradicting the maximality of $\mathcal D$. Therefore, $A \in \mathcal D$.
+    \end{proof}
+\end{lm}
+
+\begin{thm}[Tychonoff]
+    An arbitrary product of compact topological spaces is compact in the product topology.
+    \begin{proof}
+        Let $X = \prod_{\alpha \in I} X_\alpha$, where each $X_\alpha$ is compact. 
+
+        Let $\mathcal A$ be a collection of subsets of $X$ that has the FIP. We will prove that
+        \[
+        \bigcap_{A\in \mathcal A} \Bar A \neq \emptyset.
+        \]
+        The result then follows from Theorem \ref{thm:compact-fip}. 
+
+        By \ref{lm:tychonoff-lm1}, $\exists$ a collection $\mathcal D \supset \mathcal A$ maximal with respect to the FIP. It suffices to show that $\bigcap_{D\in \mathcal D} \Bar D \neq \emptyset$. Given $\alpha \in I$, let $\pi_\alpha: X \to X_\alpha$ be the projection map. Consider
+        \[
+        \set{\pi_\alpha(D) \mid D \in \mathcal D},
+        \]
+        which has the FIP since $\mathcal D$ has the FIP. Since $X_\alpha$ is compact, by Theorem \ref{thm:compact-fip}, we have
+        \[
+        \bigcap_{D\in \mathcal D} \Bar{\pi_\alpha(D)} \neq \emptyset.
+        \]
+        Pick an element $x_\alpha$ in the intersection. Define $x = (x_\alpha)_{\alpha \in I} \in X$. We will show that $x \in \Bar D$ for all $D \in \mathcal D$, hence $x \in \bigcap_{D\in \mathcal D} \Bar D$, implying that $\bigcap_{D\in \mathcal D} \Bar D$ is nonempty. 
+        
+        Let $\beta \in I$ and let $U_\beta$ be an open neighborhood of $x_\beta$ in $X_\beta$. Then $\pi_\beta^{-1}(U_\beta)$ is an open neighborhood of $x$ in $X$. We claim that $\pi_\beta^{-1}(U_\beta)$ intersects every element of $\mathcal D$. Given any $D \in \mathcal D$, by definition of $x$, 
+        \begin{align*}
+            x_\beta \in \Bar{\pi_\beta(D)} &\implies U_\beta \text{ intersects } \pi_\beta(D) \text{ in some point } \pi_\beta(y) \\
+            &\implies y \in D \cap \pi_\beta^{-1}(U_\beta) \\
+            &\implies D \cap \pi_\beta^{-1}(U_\beta) \neq \emptyset.
+        \end{align*}
+        By Lemma \ref{lm:tychonoff-lm2}, every set of the form $\pi_\beta^{-1}(U_\beta)$ that contains $x$ is in $\mathcal D$. 
+
+        Recall that every basis element of the product topology is a finite intersection of sets of the form $\pi_\beta^{-1}(U_\beta)$. By Lemma \ref{lm:tychonoff-lm2}, every basis element that contains $x$ is in $\mathcal D$. Therefore, every open neighborhood of $x$ intersects every element of $\mathcal D$, hence $x \in \Bar D$ for all $D \in \mathcal D$. This completes the proof.
+    \end{proof}
+\end{thm}
+
+\chapter{Connectedness}
+
+\begin{df}
+    If $X$ is a topological space, a separation of $X$ is a pair of disjoint nonempty open sets $U, V \subseteq X$ such that $X = U \cup V$. A topological space $X$ is connected if there does not exist a separation of $X$.
+\end{df}
+
+\begin{prop}
+    A topological space $X$ is connected iff the only clopen subsets of $X$ are $\emptyset$ and $X$.
+\end{prop}
+
+\begin{prop}
+    Let $X, Y$ be topological spaces and let $f: X \to Y$ be continuous. If $X$ is connected, then $f(X)$ is connected.
+    \begin{proof}
+        Suppose that $f(X)$ is not connected, then $\exists$ a separation $U, V$ of $f(X)$, i.e. exists nonempty open sets $U, V$ in $Y$ such that $U\cap V\cap f(X) = \emptyset$ and $U\cup V \supset X$. Then $f^{-1}(U)$ and $f^{-1}(V)$ are disjoint nonempty open sets in $X$ such that $X = f^{-1}(U) \cup f^{-1}(V)$, contradicting the connectedness of $X$. Therefore, $f(X)$ is connected.
+    \end{proof}
+\end{prop}
+
+\begin{cl}
+    If $X$ is connected and if $X$ is homeomorphic to $Y$, then $Y$ is connected.
+\end{cl}
+
+\begin{cl}[Intermediate Value Theorem]
+    Let $X$ be a connected topological space. If $f: X \to \R$ is continuous, then if $a, b \in f(X)$ and if $c$ is between $a$ and $b$, then $c \in f(X)$.
+    \begin{proof}
+        Suppose $f$ attains $a, b$ but does not attain $c$ such that $a < c < b$. Then
+        \[
+        X = \set{x\in X \mid f(x) < c} \cup \set{x\in X \mid f(x) > c}
+        \]
+        is a separation of $X$, contradicting the connectedness of $X$. Therefore, $c \in f(X)$.
+    \end{proof}
+\end{cl}
+
+\begin{prop}
+    $\R$ is connected.
+    \begin{proof}
+        Let $\mathcal U\subseteq \R$ be nonempty and clopen. Let $x\in \mathcal U$ and consider
+        \[
+        A = \set{u\in \mathcal U \mid \text{the open interval } (x, u) \subseteq \mathcal U}.
+        \]
+        $A$ is nonempty since $\mathcal U$ is open. Let $s = \sup A$. If $s < \infty$, then $s$ is a limit of $A$. Since $\mathcal U$ is closed and $A\subseteq \mathcal U$, $s\in \mathcal U$. Since $\mathcal U$ is open, $\exists \epsilon > 0$ such that $(s - \epsilon, s + \epsilon) \subseteq \mathcal U$, but then $(x, s + \epsilon) \subseteq \mathcal U$, contradicting the fact that $s$ is an upper bound of $A$. Therefore, $s = \infty$, and $(x, \infty) \subseteq \mathcal U$. Similarly, we can show that $(-\infty, x) \subseteq \mathcal U$. Therefore, $\mathcal U$ must equal $\R$, and $\R$ is connected.
+    \end{proof}
+\end{prop}
+
+\begin{cl}
+    $(a, b)$, $[a, b]$, and $\mathbb S^1$ are connected.
+    \begin{proof}
+        $(a, b)$ is homeomorphic to $\R$ via $f(x) = \tan(\pi(x - \frac{a+b}{2})/(b-a))$. $[a, b]$ is connected since it is the continuous image of $\R$ via
+        \[
+        g(x) = \begin{cases}
+            a & x < 0, \\
+            x & 0 \leq x \leq 1, \\
+            b & x > 1.
+        \end{cases}
+        \]. $\mathbb S^1$ is connected since it is the continuous image of $[0, 1]$ via $h(x) = (\cos x, \sin x)$.
+    \end{proof}
+\end{cl}
+
+\begin{rmk}
+    $[a, b]$ is not homeomorphic to $\mathbb S^1$. Removing a point $x \in (a, b)$ disconnects $[a, b]$, but removing any point from $\mathbb S^1$ leaves it connected.
+\end{rmk}
+
+\begin{prop}
+    If $X$ is a topological space and $A \subseteq X$ is connected, then the closure $\Bar A$ is connected.
+    \begin{proof}
+        Suppose that $\mathcal U, \mathcal V$ is a separation of $\Bar A$. If $A$ has nonempty intersection with both $\mathcal U$ and $\mathcal V$, then $A = (A \cap \mathcal U) \cup (A \cap \mathcal V)$ is a separation of $A$, contradicting the connectedness of $A$. Therefore, WLOG, $A \subseteq \mathcal U$. Each point in $V$ has a neighborhood that is disjoint from $A$ (just pick $V$), hence $V \cap \Bar A = \emptyset$, contradicting the fact that $\mathcal U, \mathcal V$ is a separation of $\Bar A$. Therefore, $\Bar A$ is connected.
     \end{proof}
 \end{prop}
