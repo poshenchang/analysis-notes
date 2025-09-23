@@ -63,7 +63,7 @@
     \end{prop}
 \end{ex}
 
-\section{}
+\section{Euclid's Theorem}
 
 \begin{thm}[Euclid's Theorem]
     There are infinitely many prime numbers.
@@ -154,3 +154,98 @@
         \item If $Z$ is Hausdorff, then so is $X^*$.
     \end{enumerate}
 \end{cl}
+
+\section{Paracompactness}
+
+\begin{df}
+    Consider a collection of subset of space $X$, say $\set{U_\alpha}_{\alpha\in A}$. 
+    \begin{enumerate}
+        \item The collection $\set{U_\alpha}_{\alpha\in A}$ is said to be locally finite if for every $x\in X$, $\exists$ a neighborhood $V$ of $x$ such that $V$ intersects only finitely many $U_\alpha$'s.
+        \item The collection $\set{U_\alpha}_{\alpha\in A}$ is said to be point finite if for every $x\in X$, $x$ belongs to only finitely many $U_\alpha$'s.
+        \item Suppose $\set{U_\alpha}_{\alpha\in A}$ is an open cover of $X$. A refinement of $\set{U_\alpha}_{\alpha\in A}$ is another open cover $\set{V_\beta}_{\beta\in B}$ such that for every $\beta\in B$, $\exists \alpha\in A$ such that $V_\beta \subseteq U_\alpha$, denoted by $\set{V_\beta}_{\beta\in B} \prec \set{U_\alpha}_{\alpha\in A}$.
+    \end{enumerate}
+\end{df}
+
+\begin{prop}
+    Let $\set{U_\alpha}_{\alpha\in A}$ be a collection of subsets of $X$. If $\set{U_\alpha}_{\alpha\in A}$ is locally finite, then
+    \begin{enumerate}[label={(\roman*)}]
+        \item The collection $\set{\Bar{U_\alpha}}_{\alpha\in A}$ is also locally finite.
+        \item For any $B \subseteq A$, $\bigcup_{\beta \in B} \Bar{U_\beta} = \Bar{\bigcup_{\beta\in B} U_\beta}$ is closed.
+    \end{enumerate}
+    \begin{pf}
+        Given $x\in X$, let $V$ be a neighborhood of $x$ that intersects only finitely many $U_\alpha$'s, say $U_{\alpha_1}, U_{\alpha_2}, \ldots, U_{\alpha_n}$. Then $V$ also intersects only finitely many $\Bar{U_\alpha}$'s, namely $\Bar{U_{\alpha_1}}, \Bar{U_{\alpha_2}}, \ldots, \Bar{U_{\alpha_n}}$. Thus (i) holds.
+
+        Let $B \subseteq A$ be given. Since $\set{U_\beta}_{\beta\in B} \subseteq \set{U_\alpha}_{\alpha\in A}$, $\set{U_\beta}_{\beta\in B}$ is also locally finite. By (i), $\set{\Bar{U_\beta}}_{\beta\in B}$ is locally finite. For any $x\in X\setminus \bigcup_{\beta\in B} \Bar{U_\beta}$, there is a neighborhood $V$ of $x$ that intersects only finitely many $\Bar{U_\beta}$'s, say $\Bar{U_{\beta_1}}, \Bar{U_{\beta_2}}, \ldots, \Bar{U_{\beta_m}}$. Note that
+        \[
+        U' = V \setminus \bigcup_{i=1}^m \Bar{U_{\beta_i}}
+        \]
+        is an open set, hence a neighborhood of $x$ that does not intersect any $\Bar{U_\beta}$. Thus $X\setminus \bigcup_{\beta\in B} \Bar{U_\beta}$ is open, i.e. $\bigcup_{\beta\in B} \Bar{U_\beta}$ is closed.
+    \end{pf}
+\end{prop}
+
+\begin{lm}[Pasting Lemma]
+    Let $\set{U_\alpha}_{\alpha\in A}$ be a cover of $X$ and $f: X\to Y$ be a map. If either
+    \begin{enumerate}[label={(\roman*)}]
+        \item each $U_\alpha$ is open, or
+        \item each $U_\alpha$ is closed and $\set{U_\alpha}_{\alpha\in A}$ is locally finite,
+    \end{enumerate}
+    then $f$ is continuous iff $f|_{U_\alpha}$ is continuous for each $\alpha\in A$.
+    \begin{pf}
+        If $f$ is continuous, then obviously $f|_{U_\alpha}$ is continuous for each $\alpha\in A$.
+
+        Conversely, suppose $f|_{U_\alpha}$ is continuous for each $\alpha\in A$. If (i) holds, then for any open set $V\subseteq Y$,
+        \[
+        f^{-1}(V) = \bigcup_{\alpha\in A} (f|_{U_\alpha})^{-1}(V) \cap U_\alpha
+        \]
+        is open, hence $f$ is continuous.
+
+        If (ii) holds, then for any closed set $V\subseteq Y$, 
+        % TODO
+    \end{pf}
+\end{lm}
+
+\begin{df}
+    Let $\set{U_\alpha}_{\alpha\in A}$ and $\set{V_\beta}_{\beta\in B}$ be two covers of $X$ such that $\set{V_\beta}_{\beta\in B} \prec \set{U_\alpha}_{\alpha\in A}$. We say that $\set{V_\beta}_{\beta\in B}$ is precise if $B = A$ and $V_\alpha \subseteq U_\alpha$ for each $\alpha\in A$.
+\end{df}
+
+\begin{prop}
+    Suppose $\set{A_\alpha}_{\alpha\in A}$ has a locally point finite refinement $\set{B_\beta}_{\beta\in B}$. Then $\set{A_\alpha}_{\alpha\in A}$ has a precise locally finite refinement $\set{C_\alpha}_{\alpha\in A}$.
+    \begin{pf}
+        As a refinement, for each $\beta \in B$, the set $I_\beta = \set{\alpha\in A \mid B_\beta \subseteq A_\alpha}$ is nonempty. By the axiom of choice, there exists a choice function $\phi: B\to A$ such that $\phi(\beta) \in I_\beta$ for each $\beta\in B$. Then for each $\alpha\in A$, let $C_\alpha = \bigcup_{\beta\in \phi^{-1}(\set{\alpha})} B_\beta$. It is easy to verify that $\set{C_\alpha}_{\alpha\in A}$ is a precise refinement of $\set{A_\alpha}_{\alpha\in A}$.
+    \end{pf}
+\end{prop}
+
+\begin{df}
+    A topological space $X$ is said to be paracompact if every open cover of $X$ has a locally finite open refinement.
+\end{df}
+
+\begin{rmk}
+    Every compact space is paracompact. The converse is not true, e.g. $\R$ is paracompact but not compact.
+\end{rmk}
+
+\begin{thm}
+    A paracompact $T_2$(Hausdorff) space is $T_4$ (normal).
+    \begin{pf}
+        Let $X$ be a paracompact $T_2$ space. We first show that $X$ is regular. Given a closed set $F\subseteq X$ and a point $x\in X\setminus F$, for each $y\in F$, by Hausdorffness, $\exists$ a neighborhood $U_y$ of $y$ such that $x \notin \Bar{U_y}$. Then $\set{U_y}_{y\in F} \cup \set{X\setminus F}$ is an open cover of $X$. Since $X$ is paracompact, $\exists$ a locally finite open refinement $\set{V_\alpha}_{\alpha\in A}$. Let $W$ be the union of all $V_\alpha$'s that intersect $F$. Then $W$ is open, contains $F$, and does not contain $x$. Let $U = X\setminus \Bar{W}$. Then $U$ is open, contains $x$, and is disjoint from $W$. Thus $X$ is regular.
+    \end{pf}
+\end{thm}
+
+\begin{df}
+    Let $X, Y$ be spaces, and $f: X\to Y$ be a map. The support of $f$ is the set $~supp (f) = \Bar{\set{x\in X \mid f(x) \neq 0}}$.
+\end{df}
+
+\begin{df}
+    Let $X$ be a space. A family of continuous mappings $\set{k_\alpha}_{\alpha\in A}$ from $X$ to $[0, 1]$ is called a partition of unity if
+    \begin{enumerate}[label={(\roman*)}]
+        \item $\set{supp(k_\alpha)}_{\alpha\in A}$ is locally finite.
+        \item for each $x\in X$, $\sum_{\alpha\in A} k_\alpha(x) = 1$.
+    \end{enumerate}
+\end{df}
+
+\begin{thm}
+    If $X$ is paracompact and $T_2$, then every open cover $\mathcal U_{\alpha\in A}$ has a partition of unity $\set{k_\alpha}_{\alpha\in A}$ subordinate to it, i.e. $supp(k_\alpha) \subseteq U_\alpha$ for each $\alpha\in A$.
+\end{thm}
+
+\begin{prop}
+    Let $X$ be a paracompact $T_2$ space, and $G, g: X \to \R$ are upper semicontinuous and lower semicontinuous functions respectively such that $G(x) < g(x)$ for each $x\in X$. Then $\exists$ a continuous function $f: X\to \R$ such that $G(x) < f(x) < g(x)$ for each $x\in X$.
+\end{prop}
