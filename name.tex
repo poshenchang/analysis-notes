@@ -763,6 +763,7 @@ In the following, let $S'$ be the set of accumulation points of $S$.
 \end{ex}
 
 \begin{thm}
+    \label{thm:perfect-complete-uncountable}
     Every perfect, complete metric space is uncountable.
     \begin{proof}
         Suppose not. Let $M$ be a perfect, complete metric space that is countable. Since $M$ is a metric space and $M$ consists of accumulation points, it has to be infinite, hence countably infinite, so we can write $M = \set{x_1, x_2, \ldots}$.
@@ -1000,6 +1001,7 @@ If $A$ is noncompact then it may have open covers with no positive Lebesgue numb
 \end{df}
 
 \begin{prop}
+    \label{prop:nested-closed-sets}
     If in addition to the conditions in the previous corollary, 
     \[
     \lim_{n\to\infty} ~diam (F_n) = 0,
@@ -1084,10 +1086,153 @@ Note that $C$ is nonempty since it contains the endpoints of the intervals in ea
     A metric space $M$ is totally disconnected if for all $x \in M$ and $\forall \epsilon > 0$, $\exists$ a clopen set $U$ such that $x \in U \subseteq B(x, \epsilon)$.
 \end{df}
 
+\begin{ex}
+    Any discrete metric space is totally disconnected. $\Q$ is totally disconnected. 
+\end{ex}
+
 \begin{rmk}
     The usual definition of totally disconnected is that the only connected subsets are singletons. The two definitions are equivalent for compact metric spaces.
 \end{rmk}
 
 \begin{thm}
     The Cantor set $C$ is a compact, nonempty, perfect, totally disconnected metric space.
+    \begin{proof}
+        The metric on $C$ is inherited from $\R$. Since $C$ is a closed subset of the compact set $[0, 1]$, $C$ is compact. We have already shown that $C$ is nonempty.
+
+        Pick $x \in C$ and $\epsilon > 0$. Choose $n$ such that $1/3^n < \epsilon$. Then $x$ is contained in one of the $2^n$ closed intervals $I$ of length $1/3^n$ that make up $C_n$. Let
+        \[
+        E = \set{0, 1, \frac13, \frac23, \frac19, \frac29, \frac79, \frac89, \ldots}
+        \]
+        be the set of all endpoints of $C$. Since $E\cap I$ is an infinite set, and $(x - \epsilon, x + \epsilon)$ contains a point distinct from $x$ in $E\cap I$, $x$ is an accumulation point of $C$. Since $x$ is arbitrary, $C$ is perfect.
+
+        Let $x \in C$ and $\epsilon > 0$. Choose $n$ such that $1/3^n < \epsilon$. Then $x$ is contained in one of the $2^n$ closed intervals $I$ of length $1/3^n$ that make up $C_n$. Note that both $I$ and its complement $J = C_n \setminus I$ are closed in $C_n$, hence they are clopen in $C_n$. Since $C \subseteq C_n$, $I \cap C$ and $J \cap C$ are clopen in $C$. Therefore, we have $x \in I \subseteq B(x, \epsilon)$, where $I$ is clopen in $C$. Since $x$ and $\epsilon$ are arbitrary, $C$ is totally disconnected.
+    \end{proof}
 \end{thm}
+
+\begin{cl}
+    Cantor set $C$ is uncountable.
+    \begin{proof}
+        Since compact spaces are complete, by \ref{thm:perfect-complete-uncountable}, $C$ is uncountable.
+    \end{proof}
+\end{cl}
+
+\begin{rmk}
+    In fact, one can show that every compact, nonempty, perfect, totally disconnected metric space is homeomorphic to the Cantor set. If $M$ is a compact metric space then $\exists$ a continuous surjection $f: C \to M$. This implies that every compact metric space has cardinality at most that of $\R$.
+\end{rmk}
+
+We can also show that the Cantor set is uncountable by constructing a bijection between $C$ and the set of all sequences of 0's and 2's. Consider the map $f: C \to \{0, 2\}^\N$ defined as follows. For each $x \in C$, we can write $x$ in base 3:
+\[
+x = \sum_{n=1}^\infty \frac{a_n}{3^n}, \quad a_n \in \{0, 1, 2\}.
+\]
+If $x \in C$, then $a_n \neq 1$ for all $n$. Clearly $f$ is injective. To see that $f$ is surjective, given any sequence $(b_n) \in \{0, 2\}^\N$, we can construct $x \in C$ by going through the construction of $C$. At the $n$-th step, if $b_n = 0$, we choose the left interval; if $b_n = 2$, we choose the right interval. The intersection of all these intervals is a singleton $\{x\}$ by \ref{prop:nested-closed-sets}, thus $f(x) = (b_n)$. Since $\{0, 2\}^\N$ is uncountable, $C$ is uncountable as well.
+
+The Cantor set is large in terms of cardinality, but it is small in terms of topology and geometry.
+
+\begin{df}
+    Let $X$ be a topological space. A set $S \subseteq X$ is dense in $X$ if $\Bar S = X$. $S$ is somewhere dense in $X$ if there exists a nonempty open set $U \subseteq X$ such that $\Bar{S \cap U} = U$. $S$ is nowhere dense in $X$ if it is not somewhere dense.
+\end{df}
+
+A nowhere dense set is "small" in terms of topology.
+
+\begin{prop}
+    The Cantor set $C$ contains no interval and is nowhere dense in $\R$.
+    \begin{proof}
+        Suppose that $C$ contains an interval $(a, b)$. Then $\exists n$ such that $1/3^n < b - a$. But $C_n$ is the disjoint union of closed intervals of length $1/3^n$, so $(a, b)$ cannot be contained in $C_n$, contradicting the fact that $C \subseteq C_n$. Therefore, $C$ contains no interval.
+
+        Suppose that $C$ is dense in some open set $U$, then
+        \[
+        C = \Bar{C} \supset \Bar{C \cap U} \supset U
+        \]
+        which contains an open interval, contradicting the fact that $C$ contains no interval. Therefore, $C$ is nowhere dense in $\R$.
+    \end{proof}
+\end{prop}
+
+We will show that $C$ has measure $0$. A set with measure $0$ is "small" in terms of geometry.
+
+\begin{df}
+    A set $Z \subseteq \R$ has measure zero if for every $\epsilon > 0$, $\exists$ a countable cover of $Z$ by open intervals $\set{(a_k, b_k)}_{k \in \N}$ such that the total length of the cover
+    \[
+    \sum_{k=1}^\infty (b_k - a_k) \leq \epsilon.
+    \]
+\end{df}
+
+\begin{prop}
+    The following sets have measure zero:
+    \begin{itemize}
+        \item Any finite set.
+        \item Any subset of a measure zero set.
+        \item Any countable union of measure zero sets.
+        \begin{proof}
+            Let $Z_1, Z_2, \ldots$ be a sequence of measure zero sets and $Z = \bigcup_{n=1}^\infty Z_n$. Given $\epsilon > 0$, for each $n$, $\exists$ a countable cover of $Z_n$ by open intervals $\set{(a_k^{(n)}, b_k^{(n)})}_{k \in \N}$ such that
+            \[
+            \sum_{k=1}^\infty (b_k^{(n)} - a_k^{(n)}) \leq \frac{\epsilon}{2^n}.
+            \]
+            Then $\set{(a_k^{(n)}, b_k^{(n)}) \mid n, k \in \N}$ is a countable cover of $Z$ by open intervals such that
+            \[
+            \sum_{n=1}^\infty \sum_{k=1}^\infty (b_k^{(n)} - a_k^{(n)}) \leq \sum_{n=1}^\infty \frac{\epsilon}{2^n} = \epsilon.
+            \]
+            Therefore, $Z$ has measure zero.
+        \end{proof}
+        \item Any countable set.
+        \item The middle-third Cantor set.
+        \begin{proof}
+            Let $\epsilon > 0$. Choose $n$ such that $2^n/3^n < \epsilon$. Then $C \subseteq C_n$, and $C_n$ is the disjoint union of $2^n$ closed intervals of length $1/3^n$. Cover each closed interval by an open interval of length $1/3^n + \delta$, where $\delta > 0$ is chosen such that
+            \[
+            2^n \delta < \epsilon - \frac{2^n}{3^n}.
+            \]
+            Then we have found a cover of $C$ by $2^n$ open intervals such that the total length of the cover is
+            \[
+            2^n \left(\frac{1}{3^n} + \delta\right) = \frac{2^n}{3^n} + 2^n \delta < \epsilon.
+            \]
+            Therefore, $C$ has measure zero.
+        \end{proof}
+    \end{itemize}
+\end{prop}
+
+\begin{rmk}
+    It is nontrivial to prove that a nonempty open interval is not of measure zero. 
+\end{rmk}
+
+It is also possible to define a Cantor set that is not of measure zero, which is the \textit{Fat Cantor set}: in each step, we discard the middle $1/n!$ portion of each remaining interval at the $n$-th step. The resulting Cantor set is still compact, nonempty, perfect, and totally disconnected, but it has positive measure. This also implies that measure is not a topological property, since the Fat Cantor set is homeomorphic to the standard Cantor set, but they have different measures.
+
+\chapter{Functions of a Real Variable}
+
+\section{Riemann Integrals on $\R$}
+
+Let $f: [a, b] \to \R$ be a function. Intuitively, the integral of $f$ is the area under the curve $y = f(x)$. 
+
+A partition pair consists of two finite sets of points in $P, T \subseteq [a, b]$ where $P = \{x_0, x_1, \ldots, x_n\}$ and $T = \{t_1, t_2, \ldots, t_n\}$ are interlaced as
+\[
+a = x_0 \leq t_1 \leq x_1 \leq t_2 \leq x_2 \leq \cdots \leq t_n \leq x_n = b.
+\]
+Assume that the points $x_0, x_1, \ldots, x_n$ are distinct. The Riemann sum of $f$ with respect to the partition pair $(P, T)$ is defined to be
+\[
+R(f, P, T) = \sum_{i=1}^n f(t_i)(x_i - x_{i-1}).
+\]
+The mesh of the partition $P$ is defined to be
+\[
+~mesh (P) = \max_{1 \leq i \leq n} (x_i - x_{i-1}).
+\]
+A real number $I$ is the Riemann integral of $f$ over $[a, b]$ if for every $\epsilon > 0$, $\exists \delta > 0$ such that for every partition pair $(P, T)$ with $~mesh(P) < \delta$, we have
+\[
+|R(f, P, T) - I| < \epsilon.
+\]
+
+If such an $I$ exists, it must be unique, and we write
+\[
+\int_a^b f(x) \, dx = I = \lim_{~mesh(P) \to 0} R(f, P, T).
+\]
+In this case, we say that $f$ is Riemann integrable on $[a, b]$ with Riemann integral $I$.
+
+\begin{itemize}
+    \item If $f$ is Riemann integrable on $[a, b]$, then $f$ is bounded on $[a, b]$.
+    \item $f \mapsto \int_a^b f(x) \, dx$ is linear.
+    \item If $f, g$ are Riemann integrable on $[a, b]$ and if $f(x) \leq g(x)$ for all $x \in [a, b]$, then
+    \[
+    \int_a^b f(x) \, dx \leq \int_a^b g(x) \, dx.
+    \]
+    \item If $f$ is Riemann integrable on $[a, b]$ and if $|f(x)| \leq M$ for all $x \in [a, b]$, then
+    \[
+    \abs{\int_a^b f(x) \, dx} \leq M(b - a).
+    \]
+\end{itemize}
