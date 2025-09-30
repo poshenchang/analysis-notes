@@ -1236,3 +1236,186 @@ In this case, we say that $f$ is Riemann integrable on $[a, b]$ with Riemann int
     \abs{\int_a^b f(x) \, dx} \leq M(b - a).
     \]
 \end{itemize}
+
+Let $f: [a, b] \to [-M, M]$ be a bounded function. For a partition $P = \{x_0, x_1, \ldots, x_n\}$ of $[a, b]$, define
+\[
+L(f, P) = \sum_{i=1}^n m_i (x_i - x_{i-1}), \quad U(f, P) = \sum_{i=1}^n M_i (x_i - x_{i-1}),
+\]
+where
+\[
+m_i = \inf \{f(x) \mid x \in [x_{i-1}, x_i]\}, \quad M_i = \sup \{f(x) \mid x \in [x_{i-1}, x_i]\}.
+\]
+For any partition pair $(P, T)$, we have
+\[
+L(f, P) \leq R(f, P, T) \leq U(f, P).
+\]
+Define the lower integral and upper integral of $f$ over $[a, b]$ to be
+\[
+\underline{I} = \sup_P L(f, P), \quad \overline{I} = \inf_P U(f, P).
+\]
+If $\underline{I} = \overline{I}$, then we say that $f$ is Darboux integrable on $[a, b]$ with Darboux integral $I = \underline{I} = \overline{I}$.
+
+We wish to show that Riemann integrability is equivalent to Darboux integrability, and in this case, the two integrals are equal.
+
+\begin{df}
+    A partition $P'$ refines another partition $P$ if $P \subseteq P'$.
+\end{df}
+
+\begin{lm}
+    If $P'$ refines $P$, then $L(f, P) \leq L(f, P')$ and $U(f, P') \leq U(f, P)$.
+    \begin{proof}
+        By induction, it suffices to consider $P' = P \cup \set{w}$, where $w \in (x_{i-1}, x_i)$ for some $i$. Lower sums for $P$ and $P'$ are the same except that the term $m_i (x_i - x_{i-1})$ in $L(f, P)$ is replaced by
+        \[
+        m_i (w - x_{i-1}) + m_{i+1} (x_i - w) \geq m_i (x_i - x_{i-1})
+        \]
+        in $L(f, P')$. Therefore, $L(f, P) \leq L(f, P')$. The proof for upper sums is similar.
+    \end{proof}
+\end{lm}
+
+If $P, P'$ are partitions of $[a, b]$, then for the common refinement $P^* = P \cup P'$, we have
+\[
+L(f, P) \leq L(f, P^*) \leq U(f, P^*) \leq U(f, P'),
+\]
+hence each lower sum is a lower bound for each upper sum. Therefore, a bounded function $f$ is Darboux integrable on $[a, b]$ iff for every $\epsilon > 0$, $\exists$ a partition $P$ of $[a, b]$ such that
+\[
+U(f, P) - L(f, P) < \epsilon.
+\]
+
+\begin{thm}
+    Riemann integrability is equivalent to Darboux integrability, and when $f$ is integrable in either sense, its lower integral, upper integral, and Riemann integral are equal.
+    \begin{proof}
+        Let $f: [a, b] \to \R$ be Riemann integrable with Riemann integral $I$. $\forall \epsilon > 0$, $\exists \delta > 0$ such that for every partition pair $(P, T)$ with $~mesh(P) < \delta$, we have
+        \[
+        |R(f, P, T) - I| < \epsilon/4.
+        \]
+        Fix such a partition $P = \{x_0, x_1, \ldots, x_n\}$, and choose $T = \{t_1, t_2, \ldots, t_n\}$ such that
+        \[
+        t_i \in [x_{i-1}, x_i] \quad \text{and} \quad f(t_i) - m_i < \frac{\epsilon}{4(b - a)} \quad \text{for all } 1 \leq i \leq n.
+        \]
+        Then
+        \begin{align*}
+            R(f, P, T) - L(f, P) &= \sum_{i=1}^n (f(t_i) - m_i)(x_i - x_{i-1}) \\
+            &< \sum_{i=1}^n \frac{\epsilon}{4(b - a)} (x_i - x_{i-1}) = \frac{\epsilon}{4(b - a)} (b - a) = \frac{\epsilon}{4}.
+        \end{align*}
+        Similarly, choose $T' = \{t_1', t_2', \ldots, t_n'\}$ such that
+        \[
+        U(f, P) - R(f, P, T') < \frac{\epsilon}{4}.
+        \]
+        Therefore,
+        \[
+        U(f, P) - L(f, P) < \frac{\epsilon}{2} + |R(f, P, T') - I| + |R(f, P, T) - I| < \epsilon,
+        \]
+        thus $f$ is Darboux integrable.
+
+        Conversely, let $f: [a, b] \to [-M, M]$ be Darboux integrable. $\forall \epsilon > 0$, $\exists$ a partition $P_1$ of $[a, b]$ such that
+        \[
+        U(f, P_1) - L(f, P_1) < \epsilon/3.
+        \]
+        Fix $\epsilon > 0$ and choose
+        \[
+        \delta = \frac{\epsilon}{12 n_1 M},
+        \]
+        where $n_1$ is the number of points in $P_1$. Choose any partition $P, T$ with $~mesh (P) < \delta$. We want to show that
+        \[
+        \abs{R(f, P, T) - I} < \epsilon.
+        \]
+
+        Define $P^* = P \cup P_1$, which refines both $P$ and $P_1$, then
+        \[
+        U(f, P^*) - L(f, P^*) \leq U(f, P_1) - L(f, P_1) < \epsilon/3.
+        \]
+        Now, we compare the upper integrals $U(f, P^*)$ and $U(f, P)$. Except for at most $2n_1$ many exceptional $P^*$-intervals that have endpoints in $P_1$, we have $I_j^* = I_j$ and $M_j^* = M_j$ for all other $P^*$-intervals. Set
+        \begin{gather*}
+            \mathcal I = \set{i \mid I_i \text{ contains exceptional subintervals}}, \\
+            \mathcal J(i) = \set{j \mid I_j^* \text{ is an exceptional subinterval of } I_i},
+        \end{gather*}
+        then
+        \begin{align*}
+            U(f, P) - U(f, P^*) &= \sum_{i \in \mathcal I} M_i(x_i - x_{i-1}) - \sum_{i \in \mathcal I} \sum_{j \in \mathcal J(i)} M_j^*(x_j^* - x_{j-1}^*) \\
+            &= \sum_{i \in \mathcal I} \sum_{j \in \mathcal J(i)} (M_i - M_j^*)(x_j^* - x_{j-1}^*)
+        \end{align*}
+        Note that $M_i - M_j^* \leq 2M$ and
+        \[
+        \sum_{i \in \mathcal I} \sum_{j \in \mathcal J(i)} (x_j^* - x_{j-1}^*) \leq 2n_1 ~mesh(P) < 2n_1 \delta = \frac{\epsilon}{6M},
+        \]
+        hence
+        \[
+        U(f, P) - U(f, P^*) < 2M \cdot \frac{\epsilon}{6M} = \frac{\epsilon}{3}.
+        \]
+        Similarly, we can show that
+        \[
+        L(f, P^*) - L(f, P) < \frac{\epsilon}{3}.
+        \]
+        Therefore,
+        \begin{align*}
+            U(f, P) - L(f, P) &< \frac{\epsilon}{3} + (U(f, P^*) - L(f, P^*)) + \frac{\epsilon}{3} \\
+            &< \epsilon/3 + \epsilon/3 + \epsilon/3 = \epsilon.
+        \end{align*}
+        Note that both $R(f, P, T)$ and $I$ lie between $L(f, P)$ and $U(f, P)$, hence
+        \[
+        |R(f, P, T) - I| < \epsilon.
+        \]
+        This completes the proof.
+    \end{proof}
+\end{thm}
+
+\begin{ex}
+    Any continuous function on $[a, b]$ is Riemann integrable.
+    \begin{proof}
+        Let $\epsilon > 0$ be given. Then $\exists \delta > 0$ such that for all $x, y \in [a, b]$, if $|x - y| < \delta$, then $|f(x) - f(y)| < \epsilon/(b - a)$. For any partition $P$ with $~mesh(P) < \delta$, we have
+        \[
+        M_i - m_i < \frac{\epsilon}{b - a} \quad \text{for all } 1 \leq i \leq n,
+        \]
+        hence
+        \[
+        U(f, P) - L(f, P) = \sum_{i=1}^n (M_i - m_i)(x_i - x_{i-1}) < \sum_{i=1}^n \frac{\epsilon}{b - a} (x_i - x_{i-1}) = \epsilon.
+        \]
+        Thus $f$ is Riemann integrable.
+    \end{proof}
+\end{ex}
+
+\begin{prop}
+    A function $f: [a, b] \to \R$ is Riemann integrable if for all $\epsilon > 0$, $\exists$ functions $g, h: [a, b] \to \R$ such that $g(x) \leq f(x) \leq h(x)$ for all $x \in [a, b]$, $g$ and $h$ are Riemann integrable, and
+    \[
+    \int_a^b (h(x) - g(x)) \, dx < \epsilon.
+    \]
+    \begin{proof}
+        Let $\epsilon > 0$. Choose Riemann integrable $g, h$ such that $g(x) \leq f(x) \leq h(x)$ for all $x \in [a, b]$ and
+        \[
+        \int_a^b (h(x) - g(x)) \, dx < \epsilon/3.
+        \]
+        For all partition $P$, we have
+        \[
+        L(g, P) \leq L(f, P) \leq U(f, P) \leq U(h, P).
+        \]
+        Since $g$ and $h$ are Riemann integrable, $\exists$ a partition $P$ such that
+        \[
+        \int_a^b g(x) \, dx - L(g, P) < \epsilon/3, \quad U(h, P) - \int_a^b h(x) \, dx < \epsilon/3.
+        \]
+        Combining these inequalities, we have
+        \begin{align*}
+            U(f, P) - L(f, P) &< U(h, P) - L(g, P) \\
+            &< \int_a^b h(x) \, dx - \int_a^b g(x) \, dx + 2\epsilon/3 \\
+            &= \int_a^b (h(x) - g(x)) \,dx + 2\epsilon/3 < \epsilon.
+        \end{align*}
+        Therefore, $f$ is Riemann integrable.
+    \end{proof}
+\end{prop}
+
+\begin{ex}[Thomae's Function]
+    Define $[0, 1] \to \Q$ by
+    \[
+    f(x) = \begin{cases}
+        \frac1q, & x = \frac{p}{q} \text{ in lowest terms} \\
+        0, & x \text{ is irrational}
+    \end{cases}
+    \]
+    $f$ is discontinuous at every rational point but continuous at every irrational point. For $\epsilon > 0$, define
+    \[
+    S_\epsilon(x) = \begin{cases}
+        \frac1q, & x = \frac{p}{q} \text{ in lowest terms and } q < \frac1\epsilon \\
+        0, & \text{otherwise}
+    \end{cases}
+    \]
+    $S_\epsilon$ is Riemann integrable with integral $0$ since $S_\epsilon$ is nonzero at only finitely many points. Take $g(x) = 0$ and $h(x) = \epsilon + S_\epsilon(x)$, then $g(x) \leq f(x) \leq h(x)$ for all $x \in [0, 1]$, thus $f$ is Riemann integrable with integral $0$ by the previous proposition.
+\end{ex}
