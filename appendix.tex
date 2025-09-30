@@ -249,3 +249,43 @@
 \begin{prop}
     Let $X$ be a paracompact $T_2$ space, and $G, g: X \to \R$ are upper semicontinuous and lower semicontinuous functions respectively such that $G(x) < g(x)$ for each $x\in X$. Then $\exists$ a continuous function $f: X\to \R$ such that $G(x) < f(x) < g(x)$ for each $x\in X$.
 \end{prop}
+
+\section{More on Cantor Set}
+
+\begin{lm}
+    \label{lm:more-on-cantor-1}
+    If $M$ is a nonempty compact metric space, then for every $\epsilon > 0$, $M$ can be expressed as a finite union of nonempty compact sets of diameter less than $\epsilon$.
+    \begin{pf}
+        For each $x\in M$, let $U_x = B(x, \epsilon/2)$. Then $\set{U_x}_{x\in M}$ is an open cover of $M$. Take its finite subcovering, then take the closure of each set.
+    \end{pf}
+\end{lm}
+
+\begin{thm}[Cantor Surjection Theorem]
+    Given any compact metric space $M$, there is a continuous surjection $f: C \to M$, where $C$ is the Cantor set.
+    \begin{pf}
+        Let $W(n)$ be the set of binary strings with $0$ and $2$ of length $n$. By Lemma \ref{lm:more-on-cantor-1}, we can divide $M$ into a finite number of nonempty compact sets of diameter at most $1$. Say there are $m \leq 2^{n_1}$ such sets, indexed by $W(n_1)$. Denote these sets by $S_\alpha$, $\alpha \in W(n_1)$. Then, divide $S_\alpha$ into finitely many pieces of diameter at most $1/2$, say there are at most $2^{n_2}$ pieces, for each $\alpha \in W(n_1)$. Label the pieces of $S_{\alpha_1}$ by $S_{\alpha_1\alpha_2}$, $\alpha_2 \in W(n_2)$. Continuing this process, we obtain a sequence of integers $n_1, n_2, \ldots$, and a family of nonempty compact sets $S_{\alpha_1\alpha_2\ldots\alpha_k}$ of diameter at most $2^{-k+1}$. For each infinite binary string $w = \alpha_1\alpha_2\ldots$ where $\alpha_i \in W(n_i)$, define
+        \[
+        S_w = \bigcap_{k=1}^\infty S_{\alpha_1\alpha_2\ldots\alpha_k}.
+        \]
+        Since $S_{\alpha_1\alpha_2\ldots\alpha_k}$ is a decreasing sequence of nonempty compact sets and the diameter approaches $0$, by \ref{prop:nested-closed-sets}, $S_w$ is a singleton. Define $f: C \to M$ by $f(c_w) = $ the unique element in $S_w$, and $c_w$ is the element in $C$ denoted by the string $w$, i.e.
+        \[
+        c_w = \sum_{i=1}^\infty \frac{w_i}{3^i}.
+        \]
+        It is easy to verify that $f$ is sequentially continuous, hence proved.
+    \end{pf}
+\end{thm}
+
+\begin{df}
+    We say $M$ is a Cantor space if $M$ is nonempty, compact, perfect, and totally disconnected.
+\end{df}
+
+\begin{thm}[Moore-Kline Theorem]
+    Every Cantor space is homeomorphic to the Cantor set.
+    \begin{pf}
+        Let $M$ be a Cantor space. By the Cantor Surjection Theorem, $\exists$ a continuous surjection $f: C \to M$. We can divide a closed set $S \subseteq M$ into finitely many disjoint clopen sets: for $x \in S$, by totally disconnectedness, $\exists$ a clopen set $U$ such that $x \in U_x \subseteq B_{\epsilon/2}(x)$. Then $\set{U_x}_{x \in S}$ is an open cover of $S$. Take a finite subcovering $U_{x_1}, U_{x_2}, \ldots, U_{x_n}$, then
+        \[
+        \set{U_{x_1}, U_{x_2} \setminus U_{x_1}, U_{x_3} \setminus (U_{x_1} \cup U_{x_2}), \ldots, U_{x_n} \setminus \bigcup_{i=1}^{n-1} U_{x_i}}
+        \]
+        forms a disjoint clopen cover of $S$. Also, we can increase the number of nonempty compact sets by just one: let $U$ be a clopen subset of $M$. Since $M$ is perfect, so is $U$, thus containing at least two points. Pick two distinct points $x, y \in U$, then $\exists$ a clopen set $V$ such that $x \in V \subseteq U$ and $y \notin V$. Then $\set{V, U \setminus V}$ is a disjoint clopen cover of $U$. By repeating this process, we can divide $M$ into $2^k$ disjoint clopen sets for any $k \in \N$. Hence, we may remove the non-injective part of $f$ step by step, and finally obtain a continuous bijection from a closed subset of $C$ to $M$. Since $C$ is compact and $M$ is Hausdorff, this bijection is a homeomorphism.
+    \end{pf}
+\end{thm}
