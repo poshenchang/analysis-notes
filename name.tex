@@ -1402,6 +1402,16 @@ U(f, P) - L(f, P) < \epsilon.
     \end{proof}
 \end{prop}
 
+\begin{df}
+    Given a set $E \subset \R$, the characteristic function of $E$ is defined to be
+    \[
+    \chi_E(x) = \begin{cases}
+        1, & x \in E \\
+        0, & x \notin E
+    \end{cases}
+    \]
+\end{df}
+
 \begin{ex}[Thomae's Function]
     Define $[0, 1] \to \Q$ by
     \[
@@ -1419,3 +1429,174 @@ U(f, P) - L(f, P) < \epsilon.
     \]
     $S_\epsilon$ is Riemann integrable with integral $0$ since $S_\epsilon$ is nonzero at only finitely many points. Take $g(x) = 0$ and $h(x) = \epsilon + S_\epsilon(x)$, then $g(x) \leq f(x) \leq h(x)$ for all $x \in [0, 1]$, thus $f$ is Riemann integrable with integral $0$ by the previous proposition.
 \end{ex}
+
+If a property holds for all points except for a set of measure zero, then we say that the property holds almost everywhere.
+
+\begin{thm}[Riemann's Integrability Criterion]
+    $f: [a, b] \to \R$ is Riemann integrable iff $f$ is bounded and continuous almost everywhere.
+    \begin{proof}
+        Define the oscillation of $f$ at $x \in [a, b]$ to be
+        \[
+        ~osc _x(f) = \limsup_{t \to x} f(t) - \liminf_{t \to x} f(t).
+        \]
+        Note that $f$ is continuous at $x$ iff $~osc_x(f) = 0$. If $I$ is any interval containing $x$, then
+        \[
+        \sup_{t \in I} f(t) - \inf_{t \in I} f(t) \geq ~osc _x(f).
+        \]
+
+        "$\implies$": Suppose that $f$ is Riemann integrable, then $f$ is bounded, say $\abs{f(x)} \leq M$ for all $x \in [a, b]$. Let $\mathcal D$ denote the set of discontinuities of $f$. Write
+        \[
+        \mathcal D = \bigcup_{k=1}^\infty \mathcal D_k, \quad \mathcal D_k = \set{x \in [a, b] \mid ~osc _x(f) \geq \frac1k}.
+        \]
+        It suffices to show that each $\mathcal D_k$ has measure zero. Given $\epsilon > 0$ and $k \in \N$, there exists a partition $P = \{x_0, x_1, \ldots, x_n\}$ of $[a, b]$ such that
+        \[
+        U(f, P) - L(f, P) = \sum_{i=1}^n (M_i - m_i)(x_i - x_{i-1}) < \frac{\epsilon}{k}.
+        \]
+        We say that a $\mathcal P$-interval $I_i = (x_{i-1}, x_i)$ is bad if it contains a point $x \in \mathcal D_k$ in its interior. On a bad interval $I_i$, we have $M_i - m_i \geq ~osc_x(f) \geq 1/k$. Therefore,
+        \[
+        \sum_{I_i \text{ is bad}} (x_i - x_{i-1}) \leq k \sum_{i=1}^n (M_i - m_i)(x_i - x_{i-1}) < k \cdot \frac{\epsilon}{k} = \epsilon.
+        \]
+        The collection of all bad $\mathcal P$-intervals covers $\mathcal D_k$ except possibly the endpoints of these intervals, which is a finite set. Therefore, $\mathcal D_k$ has measure zero.
+
+        "$\impliedby$": Suppose that $f$ is bounded and continuous almost everywhere, say $\abs{f(x)} \leq M$ for all $x \in [a, b]$. Let $\mathcal D$ denote the set of discontinuities of $f$, and define $\mathcal D_k$ as above. Given $\epsilon > 0$, pick $k \in \N$ such that
+        \[
+        \frac1k < \frac{\epsilon}{2(b - a)}
+        \]
+        Since $\mathcal D_k$ has measure zero, $\exists$ a countable cover $\mathcal J$ of $\mathcal D_k$ by open intervals $J_j = (a_j, b_j)$ such that
+        \[
+        \sum_{j=1}^\infty (b_j - a_j) < \frac{\epsilon}{4M}.
+        \]
+        On the other hand, for each $x \in [a, b] \setminus \mathcal D_k$, $\exists$ an open interval $I_x$ containing $x$ such that
+        \[
+        \sup_{t \in I_x} f(t) - \inf_{t \in I_x} f(t) < 1/k.
+        \]
+        These intervals $I_x$ form an open cover $\mathcal I$ of $[a, b] \setminus \mathcal D_k$, hence $\mathcal U := \mathcal I \cup \mathcal J$ is an open cover of $[a, b]$. By compactness, $\mathcal U$ has a positive Lebesgue number $\lambda > 0$. 
+        
+        Let $\mathcal P = \set{x_0, x_1, \ldots, x_n}$ be any partition of $[a, b]$ with $~mesh(\mathcal P) < \lambda$. We claim that $U(f, P) - L(f, P) < \epsilon$. By definition of Lebesgue number, each $\mathcal P$-interval is contained entirely in some $I_x$ or in some $J_j$. Define
+        \[
+        \mathbb I = \set{i \mid I_i \subseteq J_j \text{ for some } j}.
+        \]
+        Since $\mathbb I$ contains at most finitely many indices, there exists a finite $m$ such that
+        \[
+        \bigcup_{i \in \mathbb I} I_i \subseteq J_1 \cup J_2 \cup \cdots \cup J_m.
+        \]
+        Therefore,
+        \begin{align*}
+            U(f, P) - L(f, P) &= \sum_{i \in \mathbb I} (M_i - m_i)(x_i - x_{i-1}) + \sum_{i \notin \mathbb I} (M_i - m_i)(x_i - x_{i-1}) \\
+            &\leq 2M \sum_{i \in \mathbb I} (x_i - x_{i-1}) + \frac1k \sum_{i \notin \mathbb I} (x_i - x_{i-1}) \\
+            &\leq 2M \sum_{j=1}^m (b_j - a_j) + \frac1k (b - a) < 2M \cdot \frac{\epsilon}{4M} + \frac{\epsilon}{2} = \epsilon.
+        \end{align*}
+        This completes the proof.
+    \end{proof}
+\end{thm}
+
+\begin{rmk}
+    Being equal to a continuous function almost everywhere does not imply it is continuous almost everywhere, in particular does not imply Riemann integrability. For example, the characteristic function of $\Q$ is equal to the zero function almost everywhere, but it is not Riemann integrable.
+\end{rmk}
+
+\begin{cl}
+    Every bounded piecewise continuous function is Riemann integrable.
+    \begin{proof}
+        The set of discontinuities of a piecewise continuous function is finite, hence has measure zero. 
+    \end{proof}
+\end{cl}
+
+\begin{cl}
+    The characteristic function of a set $S \subseteq [a, b]$ is Riemann integrable iff the boundary $\partial S$ has measure zero.
+    \begin{proof}
+        Note that $\chi_S$ is continuous at $x$ iff $x \notin \partial S$. Therefore, the set of discontinuities of $\chi_S$ is exactly $\partial S$. 
+    \end{proof}
+\end{cl}
+
+\begin{cl}
+    Every monotone function on $[a, b]$ is Riemann integrable.
+    \begin{proof}
+        A monotone function can have only jump discontinuities, hence the set of discontinuities is at most countable, thus has measure zero. 
+    \end{proof}
+\end{cl}
+
+\begin{cl}
+    The product of Riemann integrable functions is Riemann integrable.
+    \begin{proof}
+        The set of discontinuities of the product is contained in the union of the sets of discontinuities of the factors, hence has measure zero. 
+    \end{proof}
+\end{cl}
+
+\begin{cl}
+    If $f: [a, b] \to [c, d]$ is Riemann integrable and $\phi: [c, d] \to \R$ is continuous, then $\phi \circ f$ is Riemann integrable.
+    \begin{proof}
+        The set of discontinuities of $\phi \circ f$ is contained in the set of discontinuities of $f$, hence has measure zero. Since $[c, d]$ is compact, $\phi$ is bounded, thus $\phi \circ f$ is bounded as well.
+    \end{proof}
+\end{cl}
+
+\begin{cl}
+    If $f$ is Riemann integrable then so is $|f|$.
+    \begin{proof}
+        Take $\phi(x) = |x|$ in the previous corollary.
+    \end{proof}
+\end{cl}
+
+\begin{cl}
+    If $a < c < b$ and $f: [a, b] \to \R$ is Riemann integrable, then $f$ is Riemann integrable on $[a, c]$ and $[c, b]$, and
+    \[
+    \int_a^b f(x) \, dx = \int_a^c f(x) \, dx + \int_c^b f(x) \, dx.
+    \]
+    Conversely, if $f$ is Riemann integrable on $[a, c]$ and $[c, b]$, then $f$ is Riemann integrable on $[a, b]$ and the same equality holds.
+    \begin{proof}
+        The set of discontinuities of $f$ on $[a, b]$ is the union of the sets of discontinuities of $f$ on $[a, c]$ and $[c, b]$ (and possibly the point $c$), hence $f$ is Riemann integrable iff $f|_{[a, c]}$ and $f|_{[c, b]}$ are Riemann integrable. Note that
+        \[
+        f = f \chi_{[a, c]} + f \chi_{[c, b]}.
+        \]
+        Then the formula follows from linearity of the integral.
+    \end{proof}
+\end{cl}
+
+\begin{cl}
+    A Riemann integrable function $f: [a, b] \to [0, M]$ has integral $0$ iff $f(x) = 0$ almost everywhere.
+    \begin{proof}
+        "$\implies$": Suppose that $f$ is Riemann integrable with integral $0$. If $f$ is nonzero at some continuity point $x_0$, then $\exists$ an open interval $(x_0 - \delta, x_0 + \delta) \subseteq [a, b]$ such that $f(x) > M/2$ for all $x$ in this interval. Therefore,
+        \[
+        \int_a^b f(x) \, dx \geq \int_{x_0 - \delta}^{x_0 + \delta} f(x) \, dx \geq \int_{x_0 - \delta}^{x_0 + \delta} \frac{f(x_0)}{2} \, dx = f(x_0)\delta > 0,
+        \]
+        contradicting the assumption that the integral is $0$. Therefore, $f(x) = 0$ at every continuity point of $f$, hence $f(x) = 0$ almost everywhere.
+
+        "$\impliedby$": Suppose that $f(x) = 0$ almost everywhere, then every interval contains a point $x$ such that $f(x) = 0$. Therefore, for every partition $P$, we have $m_i = 0$ for all $1 \leq i \leq n$, hence
+        \[
+        0 \leq \int_a^b f(x) \, dx = \underline{I} = \sup_P L(f, P) = 0.
+        \]
+        Thus the integral is $0$.
+    \end{proof}
+\end{cl}
+
+\begin{cl}
+    If $f: [a, b] \to \R$ is Riemann integrable and if $\psi: [c, d] \to [a, b]$ is a homeomorphism such that $\psi^{-1}$ is Lipschitz, then $f \circ \psi$ is Riemann integrable.
+    \begin{proof}
+        Clearly $f \circ \psi$ is bounded. Let $\mathcal D$ denote the set of discontinuities of $f$, then the set of discontinuities of $f \circ \psi$ is $\psi^{-1}(\mathcal D)$. Since $\mathcal D$ has measure zero, for every $\epsilon > 0$, $\exists$ a countable cover of $\mathcal D$ by open intervals $\set{(a_k, b_k)}_{k \in \N}$ such that
+        \[
+        \sum_{k=1}^\infty (b_k - a_k) < \epsilon.
+        \]
+        Since $\psi^{-1}$ is Lipschitz, $\exists C > 0$ such that for all $x, y \in [a, b]$,
+        \[
+        |\psi^{-1}(x) - \psi^{-1}(y)| \leq C |x - y|.
+        \]
+        Therefore, $\set{(\psi^{-1}(a_k), \psi^{-1}(b_k))}_{k \in \N}$ is a countable cover of $\psi^{-1}(\mathcal D)$ by open intervals of total length at most $C \epsilon$. Since $\epsilon$ is arbitrary, $\psi^{-1}(\mathcal D)$ has measure zero. Hence $f \circ \psi$ is Riemann integrable.
+    \end{proof}
+\end{cl}
+
+\begin{rmk}
+    If $f$ is Riemann integrable and $\psi$ is continuous but not Lipschitz, then $f \circ \psi$ may not be Riemann integrable. In particular, composition of two Riemann integrable functions may not be Riemann integrable. 
+\end{rmk}
+
+\section{Fundamental Theorem of Calculus}
+
+Let $f: [a, b] \to \R$ be Riemann integrable. Define the indefinite integral (or integral function) of $f$ to be
+\[
+F(x) = \int_a^x f(t) \, dt \quad \text{for all } x \in [a, b].
+\]
+$F$ is continuous on $[a, b]$ since for all $x, y \in [a, b]$. Moreover, the derivative of $F$ exists and $F'(x) = f(x)$ at every point where $f$ is continuous.
+
+\begin{cl}
+    Every continuous function on $[a, b]$ has an antiderivative.
+\end{cl}
+
+The second part of the Fundamental Theorem of Calculus states that an antiderivative of a Riemann integrable function, if it exists, differs from the indefinite integral by a constant.
