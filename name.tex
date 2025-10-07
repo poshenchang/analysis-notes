@@ -1195,7 +1195,7 @@ We will show that $C$ has measure $0$. A set with measure $0$ is "small" in term
 
 It is also possible to define a Cantor set that is not of measure zero, which is the \textit{Fat Cantor set}: in each step, we discard the middle $1/n!$ portion of each remaining interval at the $n$-th step. The resulting Cantor set is still compact, nonempty, perfect, and totally disconnected, but it has positive measure. This also implies that measure is not a topological property, since the Fat Cantor set is homeomorphic to the standard Cantor set, but they have different measures.
 
-\chapter{Functions of a Real Variable}
+\chapter{Integration Theory}
 
 \section{Riemann Integrals on $\R$}
 
@@ -1595,8 +1595,167 @@ F(x) = \int_a^x f(t) \, dt \quad \text{for all } x \in [a, b].
 \]
 $F$ is continuous on $[a, b]$ since for all $x, y \in [a, b]$. Moreover, the derivative of $F$ exists and $F'(x) = f(x)$ at every point where $f$ is continuous.
 
+An antiderivative of $f$ is a function $F: [a, b] \to \R$ such that $F'(x) = f(x)$ for all $x \in [a, b]$.
+
 \begin{cl}
     Every continuous function on $[a, b]$ has an antiderivative.
 \end{cl}
 
 The second part of the Fundamental Theorem of Calculus states that an antiderivative of a Riemann integrable function, if it exists, differs from the indefinite integral by a constant.
+
+\begin{thm}
+    There exists a continuous $H: [0, 1] \to \R$ whose derivative exists and equals $0$ almost everywhere, but such that $H$ is not constant.
+    \begin{proof}
+        Each $x \in [0, 1]$ has a unique ternary expansion
+        \[
+        x = \sum_{n=1}^\infty \frac{a_n}{3^n}, \quad a_n \in \set{0, 1, 2}.
+        \]
+        Define
+        \[
+        H(x) = \sum_{n=1}^\infty \frac{b_n / 2}{2^n}, 
+        \]
+        for $x \in C$, where $C$ is the Cantor set. Note that $H$ has equal values at the endpoints of each removed interval, hence $H$ can be extended to be constant on each removed interval. 
+
+        Let $\epsilon > 0$, and choose $n$ such that $1/2^n < \epsilon$. Take $x, x' \in C$ such that $|x - x'| < 3^{-n}$. Since each discarded open interval has length $3^{-n}$ in $C_n$, $x$ and $x'$ must lie in the same closed interval of $C_n$, hence the ternary expansions of $x$ and $x'$ agree up to the $n$-th digit. Therefore,
+        \[
+        |H(x) - H(x')| \leq \sum_{k=n+1}^\infty \frac{1/2}{2^k} = \frac{1}{2^n} < \epsilon.
+        \]
+        This shows that $H$ is uniformly continuous on $C$. Since $H$ is constant on $[0, 1] \setminus C$, $H$ is uniformly continuous on $[0, 1]$, thus $H([0, 1]) = [0, 1]$, also $H$ is differentiable with derivative $0$ at every point in $[0, 1] \setminus C$. Therefore, $H$ is not constant but $H' = 0$ almost everywhere.
+    \end{proof}
+\end{thm}
+
+\begin{rmk}
+    It is even possible to construct a strictly increasing continuous function whose derivative is $0$ almost everywhere. 
+\end{rmk}
+
+\section{Multiple Integrals}
+
+For notational simplicity, we will only consider functions of two variables, but the definitions and results can be easily generalized to functions of more than two variables.
+
+Consider a rectangle $R = [a, b] \times [c, d] \subseteq \R^2$. Consider a pair of partitions $P = \{x_0, x_1, \ldots, x_m\}$ of $[a, b]$ and $Q = \{y_0, y_1, \ldots, y_n\}$ of $[c, d]$. Let $G$ be the grid partition $G$ consisting of the rectangles
+\[
+R_{ij} = [x_{i-1}, x_i] \times [y_{j-1}, y_j], \quad 1 \leq i \leq m, \; 1 \leq j \leq n.
+\]
+Let $S$ be a set of sample points $s_{ij} \in R_{ij}$ for all $1 \leq i \leq m$ and $1 \leq j \leq n$. The Riemann sum of a bounded function $f: R \to \R$ with respect to the grid partition $G$ and the sample points $S$ is defined to be
+\[
+R(f, G, S) = \sum_{i=1}^m \sum_{j=1}^n f(s_{ij}) \Delta x_i \Delta y_j,
+\]
+where $\Delta x_i = x_i - x_{i-1}$ and $\Delta y_j = y_j - y_{j-1}$. The mesh of the grid partition $G$ is defined to be
+\[
+~mesh(G) = \max_{1 \leq i \leq m, 1 \leq j \leq n} ~diam(R_{ij}).
+\]
+The function $f$ is Riemann integrable on $R$ if the limit of the Riemann sums exists as the mesh of the partition goes to zero:
+\[
+\int_R f(x, y) \, dA = \lim_{~mesh(G) \to 0} R(f, G, S).
+\]
+
+The lower sum and upper sum of $f$ with respect to the grid partition $G$ are defined to be
+\[
+L(f, G) = \sum_{i=1}^m \sum_{j=1}^n m_{ij} \Delta x_i \Delta y_j, \quad U(f, G) = \sum_{i=1}^m \sum_{j=1}^n M_{ij} \Delta x_i \Delta y_j,
+\]
+where
+\[
+m_{ij} = \inf_{(x, y) \in R_{ij}} f(x, y), \quad M_{ij} = \sup_{(x, y) \in R_{ij}} f(x, y).
+\]
+The lower integral and upper integral of $f$ on $R$ are defined to be
+\[
+\underline{\int}_R f = \sup_G L(f, G), \quad \overline{\int}_R f = \inf_G U(f, G),
+\]
+where the supremum and infimum are taken over all grid partitions $G$ of $R$. The function $f$ is Darboux integrable on $R$ if $\underline{\int}_R f = \overline{\int}_R f$.
+
+\begin{prop}
+    \begin{itemize}
+        \item If $f$ is Riemann integrable on $R$, then $f$ is bounded.
+        \item The set of Riemann integrable functions on $R$ is a vector space, and the integral is a linear functional on this space.
+        \item Constant functions $f \equiv c$ are integrable and its integral is $c \cdot |R|$.
+        \item If $f, g$ are Riemann integrable on $R$ and if $f(x, y) \leq g(x, y)$ for all $(x, y) \in R$, then
+        \[
+        \int_R f(x, y) \, dA \leq \int_R g(x, y) \, dA.
+        \]
+        \item If $f$ is Riemann integrable on $R$, then
+        \[
+        \underline{\int}_R f = \overline{\int}_R f = \int_R f.
+        \]
+    \end{itemize}
+\end{prop}
+
+\begin{df}
+    A set $Z \subseteq \R^2$ is of measure zero if for every $\epsilon > 0$, $\exists$ a countable cover of $Z$ by open rectangles $S_l$ whose total area is less than $\epsilon$:
+    \[
+    \sum_{l=1}^\infty |S_l| < \epsilon.
+    \]
+\end{df}
+
+Using the same argument as in the one-dimensional case, we can show that a countable union of measure zero sets has measure zero. For $z \in R$, define the oscillation of $f$ at $z$ to be
+\[
+~osc_z(f) = \lim_{r \to 0^+} ~diam(f(B(z, r) \cap R)).
+\]
+Denote the set of discontinuities of $f$ by
+\[
+\mathcal D = \bigcup_{k=1}^\infty \mathcal D_k, \quad \mathcal D_k = \set{z \in R \mid ~osc_z(f) \geq \frac1k}.
+\]
+Since $\mathcal D_k$ is closed, it is compact.
+
+\begin{thm}[Riemann Integrability Criterion in Higher Dimensions]
+    A bounded function $f: R \to \R$ is Riemann integrable iff the set of discontinuities of $f$ has measure zero.
+\end{thm}
+
+Suppose that $f: R \to \R$ is Riemann integrable. For each fixed $y \in [c, d]$, define the lower slice integral and upper slice integral of $f$ at $y$ to be
+\[
+\underline{F}(y) = \underline{\int}_a^b f(x, y) \, dx, \quad \overline{F}(y) = \overline{\int}_a^b f(x, y) \, dx.
+\]
+Note that these are just the lower and upper integrals of the one-variable function $f_y(x) = f(x, y)$ on $[a, b]$.
+
+\begin{thm}[Fubini's Theorem]
+    If $f: R \to \R$ is Riemann integrable, then so are $\underline{F}$ and $\overline{F}$. Moreover,
+    \[
+    \int_R f(x, y) \, dA = \int_c^d \underline{F}(y) \, dy = \int_c^d \overline{F}(y) \, dy.
+    \]
+    \begin{proof}
+        Let $G = P \times Q$ be a grid partition of $R$, where $P = \{x_0, x_1, \ldots, x_m\}$ is a partition of $[a, b]$ and $Q = \{y_0, y_1, \ldots, y_n\}$ is a partition of $[c, d]$. 
+
+        We first show that $L(f, G) \leq L(\underline{F}, Q)$. Fix a partition $J_j \subseteq [c, d]$ of $Q$. If $y \in J_j$, 
+        \[
+        m_{ij} = \inf \set{f(s, t) \mid (s, t) \in R_{ij}} \leq \inf \set{f(s, y) \mid s \in I_i} = m_i(f_y),
+        \]
+        hence for all $y \in J_j$,
+        \[
+        \sum_{i=1}^m m_{ij} \Delta x_i \leq \sum_{i=1}^m m_i(f_y) \Delta x_i = L(f_y, P) \leq \underline{\int}_a^b f_y(x) \, dx = \underline{F}(y).
+        \]
+        Therefore,
+        \[
+        \sum_{i=1}^m m_{ij} \Delta x_i \leq \inf_{y \in J_j} \underline{F}(y) = m_j(\underline{F}),
+        \]
+        and
+        \[
+        L(f, G) = \sum_{j=1}^n \sum_{i=1}^m m_{ij} \Delta x_i \Delta y_j \leq \sum_{j=1}^n m_j(\underline{F}) \Delta y_j = L(\underline{F}, Q).
+        \]
+        Similarly, we can show that $U(f, G) \geq U(\overline{F}, Q)$, thus
+        \[
+        L(f, G) \leq L(\underline{F}, Q) \leq U(\overline{F}, Q) \leq U(f, G).
+        \]
+        Since $f$ is Riemann integrable, we know that
+        \[
+        \sup_Q L(\underline{F}, Q) = \inf_Q U(\overline{F}, Q) = \int_R f(x, y) \, dA,
+        \]
+        hence $\underline{F}$ and $\overline{F}$ are Riemann integrable with
+        \[
+        \int_c^d \underline{F}(y) \, dy = \int_c^d \overline{F}(y) \, dy = \int_R f(x, y) \, dA.
+        \]
+    \end{proof}
+\end{thm}
+
+\begin{cl}
+    If $f: R \to \R$ is Riemann integrable, then the order of integration does not affect the value of the integral.
+\end{cl}
+
+\begin{cl}[Cavalier's Principle]
+    The area of a region $S \subseteq R$ is the integral with respect to $x$ of the lengths of the vertical slices:
+    \[
+    ~area (S) = \int_a^b ~length (S_x) \, dx,
+    \]
+    provided that $\partial S$ has measure zero, where $S_x = \set{y \in [c, d] \mid (x, y) \in S}$.
+    \begin{proof}
+        Take $f = \chi_S$ in Fubini's Theorem.
+    \end{proof}
+\end{cl}
