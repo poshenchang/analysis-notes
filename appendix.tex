@@ -289,3 +289,82 @@
         forms a disjoint clopen cover of $S$. Also, we can increase the number of nonempty compact sets by just one: let $U$ be a clopen subset of $M$. Since $M$ is perfect, so is $U$, thus containing at least two points. Pick two distinct points $x, y \in U$, then $\exists$ a clopen set $V$ such that $x \in V \subseteq U$ and $y \notin V$. Then $\set{V, U \setminus V}$ is a disjoint clopen cover of $U$. By repeating this process, we can divide $M$ into $2^k$ disjoint clopen sets for any $k \in \N$. Hence, we may remove the non-injective part of $f$ step by step, and finally obtain a continuous bijection from a closed subset of $C$ to $M$. Since $C$ is compact and $M$ is Hausdorff, this bijection is a homeomorphism.
     \end{pf}
 \end{thm}
+
+\section{Local Compactness and Topological Groups}
+
+Let $f: \R \to \R$ be a smooth function such that for all $x \in \R$, there exists $n \in \N$ such that $f^{(n)}(x) = 0$. We want to show that $f$ is a polynomial.
+
+\begin{df}
+    Let $X$ be a topological space. $X$ is locally compact if for every $x \in X$, $\exists$ a neighborhood $U$ of $x$ such that $\Bar{U}$ is compact.
+\end{df}
+
+\begin{thm}
+    Let $X$ be Hausdorff. The followings are equivalent:
+    \begin{enumerate}
+        \item $X$ is locally compact.
+        \item For every $x \in X$, $\exists$ a neighborhood basis $\mathcal B$ at $x$ such that for every $U \in \mathcal B$, $\Bar{U}$ is compact.
+        \item For all compact subsets $K \subseteq X$ and open set $U$ containing $K$, $\exists$ an open set $V$ such that $K \subseteq V \subseteq \Bar{V} \subseteq U$ and $\Bar{V}$ is compact.
+        \item For every $x \in X$ and every neighborhood $U$ of $x$, $\exists$ a neighborhood $V$ of $x$ such that $\Bar{V}$ is compact and $\Bar{V} \subseteq U$.
+    \end{enumerate}
+\end{thm}
+
+\begin{thm}[Baire Category Theorem]
+    Let $(M, d)$ be a complete metric space. Then the countable intersection of dense open sets is still dense.
+    \begin{proof}
+        Let $(D_n)_{n\in \N}$ be a sequence of dense open sets in $M$. Let $B_1$ be a open nonempty set in $M$. Since $D_1$ is dense, $B_1 \cap D_1$ is nonempty. Let $x_1 \in B_1 \cap D_1$. Then $\exists r_1 \in (0, 1)$ such that $\Bar{B(x_1, r_1)} \subseteq B_1 \cap D_1$. Since $D_2$ is dense, $B(x_1, r_1) \cap D_2$ is nonempty. Let $x_2 \in B(x_1, r_1) \cap D_2$. Then $\exists r_2 \in (0, 1/2)$ such that $\Bar{B(x_2, r_2)} \subseteq B(x_1, r_1) \cap D_2$. Continuing this process, we obtain a sequence of points $(x_n)_{n\in \N}$ and a sequence of positive numbers $(r_n)_{n\in \N}$ such that for each $n\in \N$,
+        \[
+        x_n \in D_n, \quad r_n < \frac{1}{n}, \quad \Bar{B(x_n, r_n)} \subseteq B(x_{n-1}, r_{n-1}) \cap D_n.
+        \]
+        Note that $(x_n)_{n\in \N}$ is a Cauchy sequence, hence converges to some $x \in M$. Since $\Bar{B(x_n, r_n)}$ is closed and contains $x_m$ for all $m \geq n$, it also contains $x$. Thus $x \in D_n$ for all $n\in \N$. Also, $x \in B_1$ since $\Bar{B(x_1, r_1)} \subseteq B_1$. Therefore, $x \in B_1 \cap \bigcap_{n=1}^\infty D_n$, which shows that $\bigcap_{n=1}^\infty D_n$ is dense.
+    \end{proof}
+\end{thm}
+
+\begin{df}
+    A topological space $X$ is called a Baire space if the countable intersection of dense open sets is still dense.
+\end{df}
+
+\begin{thm}
+    Every locally compact Hausdorff space is a Baire space.
+    \begin{proof}
+        Let $(D_n)_{n\in \N}$ be a sequence of dense open sets in $X$. Let $B_1$ be a nonempty open set in $X$. Since $D_1$ is dense, $B_1 \cap D_1$ is nonempty. Pick $x_1 \in B_1 \cap D_1$. Since $X$ is locally compact, $\exists$ a neighborhood $U_1$ of $x_1$ such that $\Bar{U_1}$ is compact and $\Bar{U_1} \subseteq B_1 \cap D_1$. Since $D_2$ is dense, $U_1 \cap D_2$ is nonempty. Pick $x_2 \in U_1 \cap D_2$. Again, $\exists$ a neighborhood $U_2$ of $x_2$ such that $\Bar{U_2}$ is compact and $\Bar{U_2} \subseteq U_1 \cap D_2$. Continuing this process, we obtain a sequence of points $(x_n)_{n\in \N}$ and a sequence of neighborhoods $(U_n)_{n\in \N}$ such that for each $n\in \N$,
+        \[
+        x_n \in D_n, \quad \Bar{U_n} \text{ is compact}, \quad \Bar{U_n} \subseteq U_{n-1} \cap D_n.
+        \]
+        Note that $\set{\Bar{U_n}}_{n\in \N}$ is a decreasing sequence of nonempty compact sets, hence by \ref{prop:nested-closed-sets}, $\bigcap_{n=1}^\infty \Bar{U_n} \neq \emptyset$. Let $x$ be an element in this intersection. Then $x \in D_n$ for all $n\in \N$. Also, $x \in B_1$ since $\Bar{U_1} \subseteq B_1$. Therefore, $x \in B_1 \cap \bigcap_{n=1}^\infty D_n$, which shows that $\bigcap_{n=1}^\infty D_n$ is dense.
+    \end{proof}
+\end{thm}
+
+\begin{df}
+    A space $X$ is called $\sigma$-compact if $X$ is a countable union of compact subsets.
+\end{df}
+
+\begin{df}
+    A group $(G, \cdot)$ is called a topological group if $G$ is a topological space and the group operations (multiplication and inversion) are continuous.
+\end{df}
+
+\begin{prop}
+    Let $G$ be a topological group and $a \in G$, then the maps $x \mapsto a \cdot x$, $x \mapsto x \cdot a$, and $x \mapsto x^{-1}$ are homeomorphisms.
+\end{prop}
+
+\begin{df}
+    Let $X$ be a topological space and $x \in X$. A neighborhood basis at $x$ is a collection $\mathcal B$ of neighborhoods of $x$ such that for every neighborhood $U$ of $x$, $\exists V \in \mathcal B$ such that $V \subseteq U$.
+\end{df}
+
+\begin{prop}
+    Let $G$ be a topological group and $N$ be a neighborhood basis at the identity $e$. Then the collections
+    \[
+    \set{Ux \mid x \in G, U \in N} \quad \text{and} \quad \set{xU \mid x \in G, U \in N}
+    \]
+    are bases for the topology of $G$.
+    \begin{prop}
+        Let $W$ be an open set in $G$ and $x \in W$. Then since $e \in x^{-1}W$, there exists $U \in N$ such that $U \subseteq x^{-1}W$. Thus $xU \subseteq W$, which shows that $\set{xU \mid x \in G, U \in N}$ is a basis. Similarly, $\set{Ux \mid x \in G, U \in N}$ is also a basis.
+    \end{prop}
+\end{prop}
+
+\begin{prop}
+    Let $G$ be a topological group, then the collection of open sets forms an ideal, i.e. for any open set $U$ and any subset $A \subseteq G$, $AU$ and $UA$ are open.
+\end{prop}
+
+\begin{thm}
+    Let $G, H$ be locally compact Hausdorff topological groups, and let $f: G \to H$ be a continuous epimorphism, then $f$ is an open map whenever $G$ is $\sigma$-compact.
+\end{thm}
