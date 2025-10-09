@@ -1759,3 +1759,140 @@ Note that these are just the lower and upper integrals of the one-variable funct
         Take $f = \chi_S$ in Fubini's Theorem.
     \end{proof}
 \end{cl}
+
+\begin{df}
+    If $S \subseteq \R^2$ is bounded, we define its area (or Jordan content) to be $\int \chi_S \, dA$ if exists. If the integral exists, we say that $S$ is Riemann measurable. Denote the area by
+    \[
+    |S| = ~area (S) = \int \chi_S \, dA.
+    \]
+\end{df}
+
+\begin{prop}
+    If $T: \R^2 \to \R^2$ is a linear transformation, then for every Riemann measurable set $S \subseteq \R^2$, $T(S)$ is Riemann measurable and
+    \[
+    |T(S)| = |~det(T)| \cdot |S|.
+    \]
+    \begin{proof}
+        If $A$ is a matrix representation of $T$, then we can decompose $A$ into a product of elementary matrices. It suffices to prove the proposition for each type of elementary matrices.
+
+        Consider first that $S = [a, b] \times [c, d]$ is a rectangle. If $T$ is a scaling matrix, then the result is clear. If $T$ is a permutation matrix, then $|T(S)| = |S|$. If $T$ is a shear matrix, then it converts $S$ into a parallelogram
+        \[
+        \mathcal P = \set{(x, y) \mid a + \sigma y \leq x + b + \sigma y,\, c \leq y \leq d}.
+        \]
+        We can show that $\mathcal P$ is Riemann measurable, whose area can be computed using Cavalier's Principle:
+        \[
+        |\mathcal P| = \int_c^d \int_{a + \sigma y}^{b + \sigma y} 1 \, dx \, dy = \int_c^d (b - a) \, dy = (b - a)(d - c) = |S|.
+        \]
+        
+        Now let $S$ be a general Riemann measurable set. Given $\epsilon > 0$, let $H \subseteq S$ be a rectangle. Take a grid $G$ on $H$ such that
+        \[
+        |S| - \epsilon \leq \sum_{R \subseteq S} |R| \leq \sum_{R: R\cap S \neq \emptyset} |R| \leq |S| + \epsilon.
+        \]
+        This is always possible since $\chi_S$ is Riemann integrable and
+        \[
+        \sum_{R \subseteq S} |R| = L(\chi_S, G), \quad \sum_{R: R\cap S \neq \emptyset} |R| = U(\chi_S, G).
+        \]
+        Since the interior of the inner rectangles are disjoint, we have
+        \[
+        \sum_{R \subseteq S} \chi_{~int (R)}(z) \leq \chi_S(z) \leadsto \sum_{R \subseteq S} \chi_{~int (T(R))}(w) \leq \chi_{T(S)}(w).
+        \]
+        Therefore,
+        \begin{align*}
+            |\det (E)|(|S| - \epsilon) &\leq |\det (E)| \sum_{R \subseteq S} |R| \\
+            &= \sum_{R \subseteq S} |T(R)| = \sum_{R \subseteq S} \int \chi_{~int (T(R))} \, dA \leq \underline{\int} \chi_{T(S)}.
+        \end{align*}
+        Similarly,
+        \begin{align*}
+            |\det (E)|(|S| + \epsilon) &\geq |\det (E)| \sum_{R: R\cap S \neq \emptyset} |R| \\
+            &= \sum_{R: R\cap S \neq \emptyset} |T(R)| = \sum_{R: R\cap S \neq \emptyset} \int \chi_{T(R)} \, dA \geq \overline{\int} \chi_{T(S)}.
+        \end{align*}
+        Since $\epsilon$ is arbitrary, we have
+        \[
+        \underline{\int} \chi_{T(S)} = |\det (E)| |S| = \overline{\int} \chi_{T(S)},
+        \]
+        hence proved.
+    \end{proof}
+\end{prop}
+
+\begin{rmk}
+    The proposition can be generalized to higher dimensions $\R^n$, and is called the volume multiplier formula.
+\end{rmk}
+
+\begin{df}
+    A norm on a vector space $V$ (over $\R$) is a function $\|\cdot\|: V \to [0, \infty)$ such that
+    \begin{enumerate}
+        \item $\|v\| \geq 0$ for all $v \in V$, and $\|v\| = 0$ iff $v = 0$.
+        \item $\|\lambda v\| = |\lambda| \|v\|$ for all $\lambda \in \R$ and $v \in V$.
+        \item $\|v + w\| \leq \|v\| + \|w\|$ for all $v, w \in V$ (triangle inequality).
+    \end{enumerate}
+\end{df}
+
+A vector space with a norm is called a normed space. A norm gives rise to a metric by defining $d(v, w) = \|v - w\|.$ If $V, W$ are normed spaces and if $T: V \to W$ is a linear transformation, then we can define the operator norm of $T$ to be
+\[
+\|T\| = \sup_{\|v\| = 1} \|T(v)\|.
+\]
+Consider $V = W = \R^2$ with the $\sup$-norm
+\[
+\|(x, y)\| = \max\{|x|, |y|\}.
+\]
+The closed $r$-neighborhood of $z \in \R^2$ is a square $S(x, r)$ under this norm. Write $S(r) := S(0, r)$.
+
+\begin{lm}
+    Let $\mathcal U$ be open with $0 \in \mathcal U$, and let $\sigma \in (0, 1)$. Suppose that $\psi: \mathcal U \to \R^2$ is $C^1$ such that $\psi(0) = 0$, and for all $u \in \mathcal U$, we have $\|(D\psi)_u - I\| \leq \sigma$. If $S(r) \subseteq \mathcal U$, then
+    \[
+    S(r(1 - \sigma)) \subseteq \psi(S(r)) \subseteq S(r(1 + \sigma)).
+    \]
+    \begin{proof}
+        Define $\rho(u) = \psi(u) - u$, then $\rho$ is $C^1$, $\rho(0) = 0$, and $\|(D\rho)_u\| \leq \sigma$ for all $u \in \mathcal U$. For any $\|u\| \leq r$, by the Mean Value Theorem, 
+        \[
+        \|\psi(u)\| \leq \|u\| + \|\rho(u)\| \leq r + \sigma r = r(1 + \sigma) \leadsto \psi(S(r)) \subseteq S(r(1 + \sigma)).
+        \]
+
+        For the other side, we wish to show that for every $\|v\| \leq r(1 - \sigma)$, there exists $u \in S(r)$ such that $\psi(u) = v$. Define $K_v: S(r) \to \R^2$ by $K_v(u) = v - \rho(u)$. Note that $K_v$ is continuous and $K_v(S(r)) \subseteq S(r)$ since for all $\|u\| \leq r$,
+        \[
+        \|K_v(u)\| \leq \|v\| + \|\rho(u)\| \leq r(1 - \sigma) + \sigma r = r.
+        \]
+        By Banach Fixed Point Theorem, $K_v$ has a unique fixed point $u \in S(r)$ such that $K_v(u) = u$, hence $\psi(u) = v$. Therefore, $S(r(1 - \sigma)) \subseteq \psi(S(r))$.
+    \end{proof}
+\end{lm}
+
+\begin{lm}
+    \label{lm:lipschitz_measure_zero}
+    The Lipschitz image of a set of measure zero has measure zero.
+    \begin{proof}
+        Let $Z \subseteq \R^2$ be a set of measure zero, and let $h: \R^2 \to \R^2$ be Lipschitz with Lipschitz constant $L > 0$. Given $\epsilon > 0$, $\exists$ a countable cover of $Z$ by open squares $S_k$ such that
+        \[
+        \sum_{k=1}^\infty |S_k| < \frac{\epsilon}{L^2}.
+        \]
+        Note that
+        \[
+        ~diam (h(S_k \cap Z)) \leq L ~diam (S_k \cap Z) \leq L ~diam (S_k)
+        \]
+        w.r.t. the $\sup$-norm. Therefore, $h(S_k \cap Z)$ is contained in an open square $S_k'$ of side length $L ~diam (S_k)$, hence $\set{S_k'}$ is a countable cover of $h(Z)$ by open squares such that
+        \[
+        \sum_{k=1}^\infty |S_k'| = \sum_{k=1}^\infty L^2 |S_k| < \epsilon.
+        \]
+        Since $\epsilon$ is arbitrary, $h(Z)$ has measure zero.
+    \end{proof}
+\end{lm}
+
+\begin{thm}
+    Let $f$ be Riemann integrable, and let $\varphi: R \to \R^2$ be a $C^1$-diffeomorphism, then
+    \[
+    \int_R f \circ \varphi \cdot \abs{\det (D\varphi)} \, dA = \int_{\varphi(R)} f \, dA.
+    \]
+    \begin{proof}
+        We first verify that the integrands on both sides are Riemann integrable. 
+        
+        Let $\mathcal D'$ be the set of discontinuities of $f$. Define $\mathcal D = \varphi^{-1}(\mathcal D')$ to be the set of discontinuities of $f \circ \varphi$. Since $\varphi$ is a $C^1$-diffeomorphism, $\varphi^{-1}$ is Lipschitz, thus by Lemma \ref{lm:lipschitz_measure_zero}, $\mathcal D$ has measure zero, thus $f \circ \varphi$ is Riemann integrable. The function $\abs{\det (D\varphi)}$ is continuous, hence Riemann integrable, and the product of two Riemann integrable functions is Riemann integrable, thus the integrand on the left-hand side is Riemann integrable.
+
+        Since $\varphi$ is a $C^1$-diffeomorphism, in particular it is a homeomorphism, hence $\varphi(\partial R) = \partial (\varphi(R))$. Since $\partial R$ has measure zero, so does $\varphi(\partial R)$ by Lemma \ref{lm:lipschitz_measure_zero} again, hence $\varphi(R)$ is Riemann measurable and $\chi_{\varphi(R)}$ is Riemann integrable. 
+
+        We may assume that $f \geq 0$ since we can decompose $f$ into
+        \[
+        f = f^+ - f^-, \quad f^+ = \max\{f, 0\}, \quad f^- = \max\{-f, 0\}.
+        \]
+
+        % TODO: Complete the proof
+    \end{proof}
+\end{thm}
