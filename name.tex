@@ -1073,7 +1073,6 @@ If $A$ is noncompact then it may have open covers with no positive Lebesgue numb
     \end{proof}
 \end{thm}
 
-
 \chapter{Cantor Sets}
 
 The standard middle-third Cantor set is constructed as follows. Start with the closed interval $C_0 = [0, 1]$. Remove the open middle third $(1/3, 2/3)$ to obtain $C_1 = [0, 1/3] \cup [2/3, 1]$. Remove the open middle third of each remaining interval to obtain $C_2 = [0, 1/9] \cup [2/9, 1/3] \cup [2/3, 7/9] \cup [8/9, 1]$. Continuing this process indefinitely, we obtain a nested sequence of closed sets $C_0 \supseteq C_1 \supseteq C_2 \supseteq \cdots$. The Cantor set $C$ is defined to be the intersection of all $C_n$:
@@ -1767,6 +1766,8 @@ Note that these are just the lower and upper integrals of the one-variable funct
     \]
 \end{df}
 
+\section{Change of Variables}
+
 \begin{prop}
     If $T: \R^2 \to \R^2$ is a linear transformation, then for every Riemann measurable set $S \subseteq \R^2$, $T(S)$ is Riemann measurable and
     \[
@@ -1838,6 +1839,7 @@ Consider $V = W = \R^2$ with the $\sup$-norm
 The closed $r$-neighborhood of $z \in \R^2$ is a square $S(x, r)$ under this norm. Write $S(r) := S(0, r)$.
 
 \begin{lm}
+    \label{lm:perturbation_of_identity}
     Let $\mathcal U$ be open with $0 \in \mathcal U$, and let $\sigma \in (0, 1)$. Suppose that $\psi: \mathcal U \to \R^2$ is $C^1$ such that $\psi(0) = 0$, and for all $u \in \mathcal U$, we have $\|(D\psi)_u - I\| \leq \sigma$. If $S(r) \subseteq \mathcal U$, then
     \[
     S(r(1 - \sigma)) \subseteq \psi(S(r)) \subseteq S(r(1 + \sigma)).
@@ -1893,6 +1895,216 @@ The closed $r$-neighborhood of $z \in \R^2$ is a square $S(x, r)$ under this nor
         f = f^+ - f^-, \quad f^+ = \max\{f, 0\}, \quad f^- = \max\{-f, 0\}.
         \]
 
-        % TODO: Complete the proof
+        Take any grid partition of $R$ into $R_{ij}$ of radius at most $r$. Let $z_{ij}$ be the center of $R_{ij}$ and define
+        \[
+        A_{ij} = (D\varphi)_{z_{ij}}, \quad \varphi(z_{ij}) = w_{ij}, \quad \varphi(R_{ij}) = W_{ij}.
+        \]
+        The affine approximation of $\varphi$ at $z_{ij}$ is
+        \[
+        \phi_{ij}(z) = A_{ij}(z - z_{ij}) + w_{ij}.
+        \]
+        Define $\psi = \phi_{ij}^{-1} \circ \varphi$, then $\psi_{z_{ij}} = z_{ij}$ and $(D\psi)_{z_{ij}} = I$. Since $(D\psi)_z$ is uniformly continuous on the compact set $R$, $\forall R_{ij}$ and for all $z \in R_{ij}$, if $r$ is sufficiently small, then
+        \[
+        \|(D\psi)_z - I\| < \sigma,
+        \]
+        for arbitrarily small $\sigma > 0$. By \ref{lm:perturbation_of_identity}, $\psi(R_{ij})$ is sandwiched between the squares $S(z_{ij}, r(1 - \sigma))$ and $S(z_{ij}, r(1 + \sigma))$. Applying $\phi_{ij}$, we see that
+        \begin{gather*}
+            \phi_{ij}(S(z_{ij}, r(1 - \sigma))) \subseteq W_{ij} \subseteq \phi_{ij}(S(z_{ij}, r(1 + \sigma))) \\
+            \implies (1 - \sigma)^2 |\det (A_{ij})| |R_{ij}| \leq |W_{ij}| \leq (1 + \sigma)^2 |\det (A_{ij})| |R_{ij}|.
+        \end{gather*}
+        Let $m_{ij} = \inf_{R_{ij}} f \circ \varphi$ and $M_{ij} = \sup_{R_{ij}} f \circ \varphi$, then for all $w \in \varphi(R)$,
+        \[
+        \sum_{i, j} m_{ij} \chi_{~int (W_{ij})}(w) \leq f(w) \leq \sum_{i, j} M_{ij} \chi_{W_{ij}}(w).
+        \]
+        By integrating over $\varphi(R)$, we have
+        \begin{gather*}
+            \sum_{i, j} m_{ij} |W_{ij}| \leq \int_{\varphi(R)} f(w) \, dA \leq \sum_{i, j} M_{ij} |W_{ij}| \\
+            \implies (1 - \sigma)^2 \sum_{i, j} m_{ij} |\det (A_{ij})| |R_{ij}| \leq \int_{\varphi(R)} f(w) \, dA \leq (1 + \sigma)^2 \sum_{i, j} M_{ij} |\det (A_{ij})| |R_{ij}|.
+        \end{gather*}
+        By uniform continuity of $\det (D\varphi)$, if $r$ is sufficiently small, then for all $z \in R_{ij}$,
+        \[
+        1 - \tau \leq \frac{|\det (D\varphi)_z|}{|\det (A_{ij})|} \leq 1 + \tau,
+        \]
+        for arbitrarily small $\tau > 0$. Let $L$ be the lower sum of $f \circ \varphi \cdot |\det (D\varphi)|$ with respect to the partition $R_{ij}$, and let $U$ be the corresponding upper sum, then
+        \begin{gather*}
+            (1 - \tau) L \leq \sum_{i, j} m_{ij} |\det A_{ij}| |R_{ij}|, \quad \sum_{i, j} M_{ij} |\det A_{ij}| |R_{ij}| \leq (1 + \tau) U \\
+            \implies (1 - \sigma)^2 (1 - \tau) L \leq \int_{\varphi(R)} f(w) \, dA \leq (1 + \sigma)^2 (1 + \tau) U.
+        \end{gather*}
+        Since $\sigma, \tau$ can be arbitrarily small when $r$ approaches $0$, we have
+        \[
+        \underline{\int}_R f \circ \varphi(z) |\det (D\varphi)_z| \, dA \leq \int_{\varphi(R)} f(w) \, dA \leq \overline{\int}_R f \circ \varphi(z) |\det (D\varphi)_z| \, dA,
+        \]
+        hence proved.
     \end{proof}
 \end{thm}
+
+\chapter{Function Spaces}
+
+A sequence of functions $f_n: [a, b] \to \R$ converges uniformly to a function $f: [a, b] \to \R$ if for every $\epsilon > 0$, $\exists N \in \N$ such that for all $n \geq N$ and for all $x \in [a, b]$,
+\[
+|f_n(x) - f(x)| < \epsilon.
+\]
+We say that $f$ is the uniform limit of $f_n$, and write $f_n \rightrightarrows f$. Uniform convergence implies pointwise convergence, but not vice versa.
+
+\begin{prop}
+    \label{prop:uniform_limit_continuous}
+    If $f_n \rightrightarrows f$ and each $f_n$ is continuous at $x$, then $f$ is continuous at $x$.
+    \begin{proof}
+        Given $\epsilon > 0$, choose $N$ such that for all $n \geq N$ and for all $y \in [a, b]$,
+        \[
+        |f_n(y) - f(y)| < \frac{\epsilon}{3}.
+        \]
+        Since $f_N$ is continuous at $x$, $\exists \delta > 0$ such that for all $y \in [a, b]$ with $|y - x| < \delta$,
+        \[
+        |f_N(y) - f_N(x)| < \frac{\epsilon}{3}.
+        \]
+        Therefore, if $|y - x| < \delta$, then
+        \begin{align*}
+            |f(y) - f(x)| &\leq |f(y) - f_N(y)| + |f_N(y) - f_N(x)| + |f_N(x) - f(x)| \\
+            &< \frac{\epsilon}{3} + \frac{\epsilon}{3} + \frac{\epsilon}{3} = \epsilon.
+        \end{align*}
+        Hence proved.
+    \end{proof}
+\end{prop}
+
+\begin{rmk}
+    Even if $f_n \to f$ pointwise and the limit $f$ is continuous, $f_n$ may not converge uniformly to $f$. For example, let
+    \[
+    f_n(x) = \begin{cases}
+        nx, & 0 \leq x \leq \frac1n, \\
+        2 - nx, & \frac1n < x \leq \frac2n, \\
+        0, & \text{otherwise},
+    \end{cases}
+    \]
+    then $f_n \to 0$ pointwise, but not uniformly.
+\end{rmk}
+
+Let
+\[
+C_b = C_b([a, b], \R) = \set{f: [a, b] \to \R \mid \text{$f$ is bounded}}.
+\]
+Define the supremum norm on $C_b$ by
+\[
+\|f\| = \sup_{x \in [a, b]} |f(x)|.
+\]
+In order to distinguish from other norms, sometimes we write $\|f\|_\infty$ for the supremum norm. Define a metric on $C_b$ by $d(f, g) = \|f - g\|$.
+
+\begin{prop}
+    Convergence with respect to the supremum norm is equivalent to uniform convergence.
+    \begin{proof}
+        $f_n \rightrightarrows f$ iff for every $\epsilon > 0$, $\exists N \in \N$ such that for all $n \geq N$ and for all $x \in [a, b]$,
+        \[
+        |f_n(x) - f(x)| < \epsilon \iff \sup_{x \in [a, b]} |f_n(x) - f(x)| < \epsilon \iff \|f_n - f\| < \epsilon.
+        \]
+        Hence proved.
+    \end{proof}
+\end{prop}
+
+\begin{thm}
+    $C_b$ is a complete metric space with respect to the supremum norm.
+    \begin{proof}
+        Let $(f_n)$ be a Cauchy sequence in $C_b$. For each fixed $x \in [a, b]$, $(f_n(x))$ is a Cauchy sequence in $\R$ since
+        \[
+        |f_n(x) - f_m(x)| \leq \|f_n - f_m\|.
+        \]
+        So for each $x \in [a, b]$, we can define
+        \[
+        f(x) := \lim_{n \to \infty} f_n(x).
+        \]
+        Clearly $f_n \to f$ pointwise. Given $\epsilon > 0$, choose $N$ such that for all $m, n \geq N$,
+        \[
+        \|f_n - f_m\| < \frac{\epsilon}{2}.
+        \]
+        For each fixed $x \in [a, b]$, exists $m(x) \geq N$ depending on $x$ such that
+        \[
+        |f_m(x) - f(x)| < \frac{\epsilon}{2}.
+        \]
+        If $n \geq N$ and $x \in [a, b]$, then
+        \[
+        |f_n(x) - f(x)| \leq |f_n(x) - f_{m(x)}(x)| + |f_{m(x)}(x) - f(x)| < \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon.
+        \]
+        Therefore, for all $n \geq N$,
+        \[
+        \|f_n - f\| = \sup_{x \in [a, b]} |f_n(x) - f(x)| \leq \epsilon,
+        \]
+        hence $f_n \to f$ uniformly. Since each $f_n$ is bounded, so is $f$, thus $f \in C_b$. Hence proved.
+    \end{proof}
+\end{thm}
+
+Let $C^0 = C^0([a, b], \R)$ be the space of continuous functions on $[a, b]$. Usually, people write $C([a, b])$ or $C([a, b], \R)$ for $C^0([a, b], \R)$. Since every continuous function on a compact set has a compact image, $C^0 \subseteq C_b$. 
+
+\begin{cl}
+    $C^0$ is a closed subset of $C_b$, hence a complete metric space with respect to the supremum norm.
+    \begin{proof}
+        Converging sequences in $C^0$ have continuous limits by Proposition \ref{prop:uniform_limit_continuous}.
+    \end{proof}
+\end{cl}
+
+\begin{prop}[Weierstrass M-test]
+    If $\sum_{n=1}^\infty M_n$ converges and if $|f_n(x)| \leq M_n$ for all $x \in [a, b]$ and for all $n \in \N$, then $\sum_{n=1}^\infty f_n$ converges uniformly and absolutely on $[a, b]$.
+    \begin{proof}
+        Write $F_n = \sum_{k=1}^n f_k$. If $n > m$, then
+        \begin{align*}
+            d(F_n, F_m) &\leq d(F_n, F_{n-1}) + d(F_{n-1}, F_{n-2}) + \cdots + d(F_{m+1}, F_m) \\
+            &= \sum_{k=m+1}^n \|f_k\| \leq \sum_{k=m+1}^n M_k.
+        \end{align*}
+        Since $\sum_{n=1}^\infty M_n$ converges, $(F_n)$ is a Cauchy sequence in $C_b$, hence converges uniformly to some $F \in C_b$. Therefore, $\sum_{n=1}^\infty f_n$ converges uniformly to $F$.
+    \end{proof}
+\end{prop}
+
+\begin{prop}
+    The uniform limit of Riemann integrable functions is Riemann integrable, and the limit of the integrals is the integral of the limit, i.e.
+    \[
+    \lim_{n \to \infty} \int_a^b f_n(x) \, dx = \int_a^b \lim_{n \to \infty} f_n(x) \, dx.
+    \]
+    \begin{proof}
+        Let $f_n \in \mathcal R$ and assume that $f_n \rightrightarrows f$. Each $f_n$ is bounded and exists $Z_n$ of measure zero such that $f_n$ is continuous on $[a, b] \setminus Z_n$. Let $Z = \bigcup_{n=1}^\infty Z_n$, then $Z$ has measure zero and $f$ is continuous on $[a, b] \setminus Z$ by Proposition \ref{prop:uniform_limit_continuous}, hence $f$ is Riemann integrable. To prove the equality, note that
+        \[
+        \abs{\int_a^b f_n(x) \, dx - \int_a^b f(x) \, dx} \leq \int_a^b |f_n(x) - f(x)| \, dx \leq (b - a) \|f_n - f\| \to 0.
+        \]
+    \end{proof}
+\end{prop}
+
+The above proposition tells us that the space of Riemann integrable functions $\mathcal R$ is closed in $C_b$. Moreover, the functional
+\[
+f \mapsto \int_a^b f(x) \, dx
+\]
+is a continuous mapping from $(\mathcal R, d)$ to $\R$.
+
+\begin{prop}
+    The uniform limit of a sequence of differentiable functions is differentiable provided that the sequence of derivatives converges uniformly.
+    \begin{proof}
+        Suppose that $f_n: [a, b] \to \R$ is a sequence of differentiable functions such that $f_n \rightrightarrows f$ and $f_n' \rightrightarrows g$. 
+
+        If each $f_n'$ is continuous, then $f_n', g \in \mathcal R$ and we can apply the Fundamental Theorem of Calculus to get
+        \[
+        f_n(x) = f_n(a) + \int_a^x f_n'(t) \, dt \rightrightarrows f(a) + \int_a^x g(t) \, dt.
+        \]
+        Since $f_n \rightrightarrows f$, we have $f(x) = f(a) + \int_a^x g(t) \, dt$, hence $f$ is differentiable with $f' = g$.
+
+        In general, fix some $x \in [a, b]$ and define
+        \begin{gather*}
+            \phi_n(t) = \begin{cases}
+                \dfrac{f_n(t) - f_n(x)}{t - x}, & t \neq x, \\
+                f_n'(x), & t = x,
+            \end{cases} \\
+            \phi(t) = \begin{cases}
+                \dfrac{f(t) - f(x)}{t - x}, & t \neq x, \\
+                g(x), & t = x.
+            \end{cases}
+        \end{gather*}
+        Note that each $\phi_n$ is continuous and $\phi_n \to \phi$ pointwise. We claim that $\phi_n \rightrightarrows \phi$. For all $m, n \in \N$ and $t \neq x$, we have
+        \[
+        \phi_m(t) - \phi_n(t) = \frac{(f_m(t) - f_n(t)) - (f_m(x) - f_n(x))}{t - x}.
+        \]
+        Apply the Mean Value Theorem to the function $f_m - f_n$, we see that there exists $\xi$ between $x$ and $t$ such that
+        \[
+        \phi_m(t) - \phi_n(t) = (f_m - f_n)'(\xi).
+        \]
+        Since $f_n' \rightrightarrows g$, $(f_n')$ is a Cauchy sequence in $C_b$, hence $\phi_n$ is a Cauchy sequence in $C_b$ as well. By completeness of $C_b$, $\phi_n \rightrightarrows \psi$ for some continuous function $\psi$. Since $\phi_n \to \phi$ pointwise, we have $\phi = \psi$, in particular, $\phi$ is continuous. Therefore, $f$ is differentiable at $x$ with $f'(x) = g(x)$. 
+    \end{proof}
+\end{prop}
+
+\begin{rmk}
+    If we do not assume the uniform convergence of the derivatives, then the limit function may not be differentiable. For example, let $f_n(x) = \sqrt{x^2 + \frac1n}$, then $f_n \to |x|$ uniformly, but $|x|$ is not differentiable at $0$. The derivatives converge pointwise but not uniformly.
+\end{rmk}
