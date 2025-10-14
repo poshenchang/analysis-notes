@@ -368,3 +368,103 @@ Let $f: \R \to \R$ be a smooth function such that for all $x \in \R$, there exis
 \begin{thm}
     Let $G, H$ be locally compact Hausdorff topological groups, and let $f: G \to H$ be a continuous epimorphism, then $f$ is an open map whenever $G$ is $\sigma$-compact.
 \end{thm}
+
+\section{Oct 14, 2025}
+
+\begin{thm}[Arzela's Theorem]
+    Let $(f_n)$ be a sequence of Riemann integrable functions on $[a, b]$ that converges to a Riemann integrable function $f$. If exists $M > 0$ such that for all $n \in \N$ and $x \in [a, b]$, $|f_n(x)| \leq M$, then
+    \[
+    \lim_{n \to \infty} \int_a^b \abs{f_n(x) - f(x)} \, dx = 0.
+    \]
+    In particular, 
+    \[
+    \lim_{n \to \infty} \int_a^b f_n(x) \, dx = \int_a^b f(x) \, dx.
+    \]
+\end{thm}
+
+\begin{lm}[Dini's Theorem]
+    Let $(f_n)$ be a monotone sequence of continuous functions on $[a, b]$. If $(f_n)$ converges pointwise to a continuous function $f$, then $(f_n)$ converges to $f$ uniformly.
+\end{lm}
+
+\begin{lm}
+    \label{lm:bounded-integral-approx}
+    For any bounded nonnegative $f: [a, b] \to \R$ and any $\epsilon > 0$, there exists a continuous function $g: [a, b] \to \R$ such that $0 \leq g(x) \leq f(x)$ for all $x \in [a, b]$ and
+    \[
+    \int_a^b f(x) \, dx \leq \int_a^b g(x) \, dx + \epsilon.
+    \]
+\end{lm}
+
+\begin{lm}
+    Let $(f_n)$ be a decreasing sequence of bounded functions on $[a, b]$. If $(f_n)$ converges pointwise to the zero function, then
+    \[
+    \lim_{n \to \infty} \int_a^b f_n(x) \, dx = 0.
+    \]
+    \begin{proof}
+        By Lemma \ref{lm:bounded-integral-approx}, $\forall \epsilon > 0$, $\exists$ a continuous function $g_n: [a, b] \to \R$ such that $0 \leq g_n(x) \leq f_n(x)$ for all $x \in [a, b]$ and
+        \[
+        \int_a^b f_n(x) \, dx \leq \int_a^b g_n(x) \, dx + \frac{\epsilon}{2^n}.
+        \]
+        Define $h_n = \min\set{g_1, g_2, \ldots, g_n}$. Then $0 \leq h_n \leq g_n \leq f_n$ and $(h_n)$ is a decreasing sequence of continuous functions that converges pointwise to the zero function. By Dini's Theorem, $(h_n)$ converges to the zero function uniformly, hence
+        \[
+        \lim_{n \to \infty} \int_a^b h_n(x) \, dx = 0.
+        \]
+        We claim that $\int_a^b f_n(x) \, dx \leq \int_a^b h_n(x) \, dx + \epsilon(1 - 2^{-n})$, which concludes the proof. We prove this by induction on $n$. The case $n = 1$ is trivial. Suppose the claim holds for some $n \in \N$. Then
+        \begin{align*}
+            \int_a^b f_{n+1}(x) \, dx &\leq \int_a^b g_{n+1}(x) \, dx + \frac{\epsilon}{2^{n+1}} \\
+            &\leq \int_a^b \max\set{h_n(x), g_{n+1}(x)} \, dx + \frac{\epsilon}{2^{n+1}} \\
+            &= \int_a^b h_n(x) \, dx + \int_a^b \max\set{0, g_{n+1}(x) - h_n(x)} \, dx + \frac{\epsilon}{2^{n+1}} \\
+            &\leq \int_a^b h_n(x) \, dx + \int_a^b g_{n+1}(x) \, dx + \frac{\epsilon}{2^{n+1}} \\
+            &\leq \int_a^b h_n(x) \, dx + \int_a^b g_n(x) \, dx + \frac{\epsilon}{2^n} + \frac{\epsilon}{2^{n+1}} \\
+            &\leq \int_a^b h_n(x) \, dx + \epsilon(1 - 2^{-n}) + \frac{\epsilon}{2^{n+1}} \\
+            &= \int_a^b h_n(x) \, dx + \epsilon(1 - 2^{-(n+1)}).
+        \end{align*}
+    \end{proof}
+\end{lm}
+
+\begin{thm}
+    Let $(f_n)$ be a sequence of Riemann integrable functions defined on $[a, b]$ which converges to a Riemann integrable function $f$. If there exists a Riemann integrable function $g$ such that for all $n \in \N$ and $x \in [a, b]$, $|f_n(x)| \leq g(x)$, then
+    \[
+    \lim_{n \to \infty} \int_a^b \abs{f_n(x) - f(x)} \, dx = 0.
+    \]
+    \begin{proof}
+        WLOG assume $f_n \geq 0$ and $f \equiv 0$ by considering the positive parts and negative parts separately. Set $g_{n, m} \equiv \max\set{f_n, \ldots, f_m}$ for $m \geq n$. Then $0 \leq g_{n, m} \leq g$. Note that the sequence $\int_a^b g_{n, m}(x) \, dx$ is increasing and bounded above by $\int_a^b g(x) \, dx$. Therefore, for $\epsilon > 0$, $\exists m_n > n$ such that $m_{n+1} > m_n$ and
+        \[
+        0 \leq \int_a^b \left(g_{n, k}(x) - g_{n, m_n}(x)\right) \, dx \leq \frac{\epsilon}{2^n}, \quad \forall k > m_n.
+        \]
+        Define $u_n = g_{n, m_n}$. Then $(u_n)$ is a decreasing sequence of bounded functions that converges pointwise to the zero function. We get
+        \[
+        0 \leq f_n \leq u_n \leq \min\set{u_1, \ldots, u_n} + \sum_{i=1}^{n-1} \left(\max\set{u_i, \ldots, u_n} - u_i\right).
+        \]
+        Since
+        \[
+        \max\set{u_i, \ldots, u_n} - u_i = \max\set{f_i, \ldots, f_{m_n}} - \max\set{f_i, \ldots, f_{m_i}} \leq g_{i, m_n} - g_{i, m_i},
+        \]
+        we have
+        \begin{gather*}
+            \int_a^b \left(\max\set{u_i, \ldots, u_n} - u_i\right) \, dx \leq \frac{\epsilon}{2^i}, \quad \forall i < n \\
+            \implies 0 \leq \int_a^b f_n(x) \, dx \leq \int_a^b \min\set{u_1(x), \ldots, u_n(x)} \, dx + \epsilon(1 - 2^{-(n-1)}).
+        \end{gather*}
+    \end{proof}
+\end{thm}
+
+\begin{thm}[Fatou's Lemma]
+    Let $(f_n)$ be a sequence of nonnegative Riemann integrable functions on $[a, b]$ that converges pointwise to a Riemann integrable function $f$. Then
+    \[
+    \int_a^b f(x) \, dx \leq \liminf_{n \to \infty} \int_a^b f_n(x) \, dx.
+    \]
+    \begin{proof}
+        Since $f - f_n \leq f$, the positive part is also bounded by $f$. By the previous theorem, we have
+        \[
+        \int_a^b (f(x) - f_n(x))_+ \, dx \to 0.
+        \]
+        Note that
+        \[
+        f_n = (f_n - f)_+ + f - (f - f_n)_+.
+        \]
+        Thus
+        \[
+        \int_a^b f_n(x) \, dx = \int_a^b (f_n(x) - f(x))_+ \, dx + \int_a^b f(x) \, dx - \int_a^b (f(x) - f_n(x))_+ \, dx.
+        \]
+        Taking $\liminf$ on both sides, we get the desired result.
+    \end{proof}
+\end{thm}
