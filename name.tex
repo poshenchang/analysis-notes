@@ -1940,6 +1940,8 @@ The closed $r$-neighborhood of $z \in \R^2$ is a square $S(x, r)$ under this nor
 
 \chapter{Function Spaces}
 
+\section{Uniform Convergence and Completeness}
+
 A sequence of functions $f_n: [a, b] \to \R$ converges uniformly to a function $f: [a, b] \to \R$ if for every $\epsilon > 0$, $\exists N \in \N$ such that for all $n \geq N$ and for all $x \in [a, b]$,
 \[
 |f_n(x) - f(x)| < \epsilon.
@@ -2108,3 +2110,186 @@ is a continuous mapping from $(\mathcal R, d)$ to $\R$.
 \begin{rmk}
     If we do not assume the uniform convergence of the derivatives, then the limit function may not be differentiable. For example, let $f_n(x) = \sqrt{x^2 + \frac1n}$, then $f_n \to |x|$ uniformly, but $|x|$ is not differentiable at $0$. The derivatives converge pointwise but not uniformly.
 \end{rmk}
+
+\section{Compactness and Equicontinuity in $C^0$}
+
+Recall the Heine-Borel Theorem: a subset of $\R^n$ is compact iff it is closed and bounded. In general, this is not true for $C^0$. Consider the closed unit ball
+\[
+B = \set{f \in C^0([0, 1], \R) \mid \|f\| \leq 1}.
+\]
+$B$ is closed and bounded, but not compact. The problem is that $C^0$ is infinite-dimensional. 
+
+\begin{df}
+    A family of functions $(f_\alpha)_{\alpha \in I}$ in $C^0$ is equicontinuous if for every $\epsilon > 0$, $\exists \delta > 0$ such that for all $\alpha \in I$ and for all $|x - y| < \delta$,
+    \[
+    |f_\alpha(x) - f_\alpha(y)| < \epsilon.
+    \]
+\end{df}
+
+Note that $\delta$ does not depend on $\alpha$.
+
+\begin{thm}[Arzel\'a-Ascoli]
+    Every bounded equicontinuous sequence of functions in $C^0([a, b], \R)$ has a subsequence that converges uniformly on $[a, b]$.
+    \begin{proof}
+        Let $\mathcal D = \set{d_1, d_2, \ldots}$ be a countable dense subset of $[a, b]$, for example, the set of rational numbers in $[a, b]$. Let $(f_n)$ be a bounded equicontinuous sequence in $C^0([a, b], \R)$. 
+
+        There exists some $M > 0$ such that $|f_n(x)| \leq M$ for all $x \in [a, b]$ and for all $n \in \N$. Since $(f_n(d_1))$ is a bounded sequence in $\R$, it has a convergent subsequence $(f_{n(1, k)}(d_1)) \to y_1$ as $k \to \infty$. Write $f_{k}^{(1)}$ for $f_{n(1, k)}$. Find a subsequence $(f_k^{(2)})$ of $(f_k^{(1)})$ such that $(f_k^{(2)}(d_2))$ converges to some $y_2$. Continuing this process, we obtain a nested sequence of subsequences $(f_k^{(m)})$, and if $j \leq m$ then $f_k^{(m)}(d_j)$ converges to $y_j$ as $k \to \infty$. Define $g_m = f_m^{(m)}$. We claim that $g_m$ converges pointwise on $\mathcal D$.
+
+        Fix $j \in \N$. Since $(f_k^{(m)})$ is a nested sequence of subsequences, for all $m \geq j$, we have
+        \[
+        f_m^{(m)} = f_{r_1}^{(m-1)} = f_{r_2}^{(m-2)} = \cdots = f_{r}^{(j)},
+        \]
+        where $r \geq r_{m-j-1} \geq \cdots \geq r_1 \geq m$. Then
+        \[
+        g_m(d_j) = f_m^{(m)}(d_j) = f_r^{(j)}(d_j) \to y_j \text{ as } m \to \infty,
+        \]
+        hence $g_m$ converges pointwise on $\mathcal D$. 
+        
+        We then show that $(g_m)$ is a Cauchy sequence in $C^0$. Given $\epsilon > 0$, by equicontinuity, $\exists \delta > 0$ such that for all $x, y \in [a, b]$ with $|x - y| < \delta$ and for all $m \in \N$,
+        \[
+        |g_m(x) - g_m(y)| < \frac{\epsilon}{3}.
+        \]
+        Since $[a, b]$ is compact and $\mathcal D$ is dense in $[a, b]$, we can find a finite subset $\set{d_1, d_2, \ldots, d_J} \subseteq \mathcal D$ such that every $x \in [a, b]$ is within $\delta$ of some $d_j$. Since $g_m(d_j) \to y_j$ for each $j$, $\exists N \in \N$ such that for all $l, m \geq N$ and for all $1 \leq j \leq J$,
+        \[
+        |g_m(d_j) - g_l(d_j)| < \frac{\epsilon}{3}.
+        \]
+        Thus, if $l, m \geq N$ and $x \in [a, b]$, then choose some $d_j$ such that $|x - d_j| < \delta$, we have
+        \begin{align*}
+            |g_m(x) - g_l(x)| &\leq |g_m(x) - g_m(d_j)| + |g_m(d_j) - g_l(d_j)| + |g_l(d_j) - g_l(x)| \\
+            &< \frac{\epsilon}{3} + \frac{\epsilon}{3} + \frac{\epsilon}{3} = \epsilon.
+        \end{align*}
+        Therefore, $(g_m)$ is a Cauchy sequence in $C^0$, hence converges in $C^0$, i.e. uniformly on $[a, b]$.
+    \end{proof}
+\end{thm}
+
+\begin{rmk}
+    The theorem can be regarded as a characterization of compactness on $C^0$. If $(f_n)$ is a sequence of bounded equicontinuous functions, then the set $\set{f_n \mid n \in \N}$ is precompact, i.e. its closure is compact.
+\end{rmk}
+
+\begin{prop}
+    If $(f_n)$ is an equicontinuous sequence in $C^0$ that converges pointwise on a dense subset of $[a, b]$, then it converges uniformly on $[a, b]$.
+    \begin{proof}
+        Similar to the second part of the proof of the Arzel\'a-Ascoli Theorem.
+    \end{proof}
+\end{prop}
+
+\begin{cl}
+    Assume that $f_n: [a, b] \to \R$ is a sequence of differentiable functions such whose derivatives are uniformly bounded, i.e. $\exists M > 0$ such that $|f_n'(x)| \leq M$ for all $n \in \N$ and for all $x \in [a, b]$. If for a point $x_0 \in [a, b]$, the sequence $(f_n(x_0))$ is bounded, then $(f_n)$ has a uniformly convergent subsequence.
+    \begin{proof}
+        To use Arzel\'a-Ascoli, we need to show that $(f_n)$ is bounded and equicontinuous. Let $M$ be a bound of the derivatives. For any $x, y \in [a, b]$, by the Mean Value Theorem, $\exists \xi$ between $x$ and $y$ such that
+        \[
+        |f_n(x) - f_n(y)| = |f_n'(\xi)| |x - y| \leq M |x - y|.
+        \]
+        Thus, $(f_n)$ is equicontinuous. 
+
+        Let $K$ be a bound of $|f_n(x_0)|$. Then for any $x \in [a, b]$, by the Mean Value Theorem again, $\exists \xi$ between $x$ and $x_0$ such that
+        \begin{align*}
+            |f_n(x)| &\leq |f_n(x_0)| + |f_n(x) - f_n(x_0)| \\
+            &= |f_n(x_0)| + |f_n'(\xi)| |x - x_0| \\
+            &\leq K + M(b - a).
+        \end{align*}
+        Therefore, $(f_n)$ is bounded. By Arzel\'a-Ascoli, $(f_n)$ has a uniformly convergent subsequence.
+    \end{proof}
+\end{cl}
+
+\begin{thm}
+    A subset $\mathcal E \subseteq C^0$ is compact iff it is closed, bounded and equicontinuous.
+    \begin{proof}
+        Assume that $\mathcal E$ is compact. Then $\mathcal E$ is closed and bounded. Let $\epsilon > 0$. Since $\mathcal E$ is compact, there exists a finite cover of $\mathcal E$ by open balls $B(f_i, \epsilon/3)$, $i = 1, 2, \ldots, N$. Each $f_i$ is uniformly continuous (continuous functions on compact sets are uniformly continuous), hence $\exists \delta > 0$ such that for all $x, y \in [a, b]$ with $|x - y| < \delta$,
+        \[
+        |f_i(x) - f_i(y)| < \frac{\epsilon}{3}, \quad i = 1, 2, \ldots, N.
+        \]
+        If $f \in \mathcal E$, then $f \in B(f_k, \epsilon/3)$ for some $k$, hence for all $x, y \in [a, b]$ with $|x - y| < \delta$,
+        \begin{align*}
+            |f(x) - f(y)| &\leq |f(x) - f_k(x)| + |f_k(x) - f_k(y)| + |f_k(y) - f(y)| \\
+            &< \frac{\epsilon}{3} + \frac{\epsilon}{3} + \frac{\epsilon}{3} = \epsilon.
+        \end{align*}
+        Therefore, $\mathcal E$ is equicontinuous.
+
+        Conversely, assume that $\mathcal E$ is closed, bounded and equicontinuous. Let $(f_n)$ be a sequence in $\mathcal E$. By Arzel\'a-Ascoli, $(f_n)$ has a uniformly convergent subsequence $(f_{n_k})$ that converges to some $f \in C^0$. Since $\mathcal E$ is closed, $f \in \mathcal E$. Therefore, every sequence in $\mathcal E$ has a convergent subsequence whose limit is in $\mathcal E$, hence $\mathcal E$ is compact.
+    \end{proof}
+\end{thm}
+
+We can generalize the above theorem to general metric spaces. Let $X$ be a metric space, and $Y$ be a complete metric space. Let $\mathcal F$ denote the set of functions from $X$ to $Y$. Consider
+\[
+\rho(y, y') = \frac{d_Y(y, y')}{1 + d_Y(y, y')}, \quad y, y' \in Y,
+\]
+then $\rho$ is a bounded metric on $Y$ that induces the same topology as $d_Y$. In particular, $(Y, \rho)$ is also complete. Define a metric on $\mathcal F$ by
+\[
+d(f, g) = \sup_{x \in X} \frac{\rho(f(x), g(x))}{1 + \rho(f(x), g(x))}, \quad f, g \in \mathcal F.
+\]
+We say that a function $f \in \mathcal F$ is bounded with respect to $d_Y$ iff for any constant function $c$, we have $\sup_{x \in X} d_Y(f(x), c) < \infty$, or equivalently, $d(f, c) < 1$. A function $f \in \mathcal F$ is unbounded if $d(f, c) = 1$ for some constant function $c$. 
+
+\begin{prop}
+    In $(\mathcal F, d)$, the following holds:
+    \begin{enumerate}[label=(\alph*)]
+        \item Uniform convergence of $(f_n)$ is equivalent to convergence with respect to $d$.
+        \item Completeness of $Y$ implies completeness of $\mathcal F$.
+        \item The set $\mathcal F_b$ of bounded functions in $\mathcal F$ is closed in $\mathcal F$.
+        \item The set $C^0(X, Y)$ of continuous functions in $\mathcal F$ is closed in $\mathcal F$.
+    \end{enumerate}
+    \begin{proof}
+        \nobreakspace
+        \begin{enumerate}[label=(\alph*)]
+            \item $f$ being the uniform limit of $(f_n)$ is equivalent to $d_Y(f_n(x), f(x)) \rightrightarrows 0$, which is equivalent to $d$-convergence.
+            \item Similar to the proof of completeness of $C_b$. Let $(f_n)$ be a Cauchy sequence in $\mathcal F$. Completeness of $Y$ implies $f(x) := \lim_{n \to \infty} f_n(x)$ exists for each $x \in X$. Cauchyness of $(f_n)$ implies uniform convergence and $f_n \to f$ with respect to $d$.
+            \item If $f_n \in \mathcal F_b$ and $d(f_n, f) \to 0$, then for any constant function $c$,
+            \[
+            d(f, c) \leq d(f, f_n) + d(f_n, c) < 1,
+            \]
+            for sufficiently large $n$, hence $f \in \mathcal F_b$.
+            \item If $f_n \in C^0(X, Y)$ and $d(f_n, f) \to 0$, then for each fixed $x \in X$, $f_n(x) \to f(x)$. Given $\epsilon > 0$, choose $N$ such that for all $n \geq N$ and for all $x \in X$, $d(f_n(x), f(x)) < \epsilon/3$. Since $f_N$ is continuous at $x$, $\exists \delta > 0$ such that for all $y \in X$ with $d_X(x, y) < \delta$, $d_Y(f_N(x), f_N(y)) < \epsilon/3$. Therefore, if $d_X(x, y) < \delta$, then for all $n \geq N$,
+            \begin{align*}
+                d_Y(f(x), f(y)) &\leq d_Y(f(x), f_n(x)) + d_Y(f_n(x), f_n(y)) + d_Y(f_n(y), f(y)) \\
+                &< \frac{\epsilon}{3} + \frac{\epsilon}{3} + \frac{\epsilon}{3} = \epsilon.
+            \end{align*}
+            Hence $f$ is continuous at $x$.
+        \end{enumerate}
+    \end{proof}
+\end{prop}
+
+\begin{df}
+    \nobreakspace
+    \begin{itemize}
+        \item A family of functions $\mathcal E \subseteq \mathcal F$ is equicontinuous if for every $\epsilon > 0$, exists $\delta > 0$ such that for all $f \in \mathcal E$ and for all $x, x' \in X$ with $d_X(x, x') < \delta$,
+        \[
+        d_Y(f(x), f(x')) < \epsilon.
+        \]
+        \item $\mathcal E$ is pointwise equicontinuous if the $\delta$ above may depend on $x$, i.e. for every $\epsilon > 0$ and for every $x \in X$, exists $\delta > 0$ such that for all $f \in \mathcal E$ and for all $x' \in X$ with $d_X(x, x') < \delta$,
+        \[
+        d_Y(f(x), f(x')) < \epsilon.
+        \]
+    \end{itemize}
+\end{df}
+
+\begin{prop}
+    If $X$ is compact, then equicontinuity and pointwise equicontinuity of $\mathcal E$ are equivalent.
+    \begin{proof}
+        Suppose not, then $\exists \epsilon > 0$ such that for all $\delta = 1/n$, $\exists x_n, x_n' \in X$ and functions $f_n \in \mathcal E$ such that $d_X(x_n, x_n') < 1/n$ but $d_Y(f_n(x_n), f_n(x_n')) \geq \epsilon$. By compactness of $X$, exists a subsequence $(x_{n_k})$ that converges to some $x_0 \in X$. Then $x_{n_k}' \to x_0$ as well. By pointwise equicontinuity, $\exists \delta > 0$ such that $d_X(x, x_0) < \delta$ implies $d_Y(f(x), f(x_0)) < \epsilon/2$ for all $f \in \mathcal E$. Take $x = x_{n_k}, x_{n_k}'$ and $f = f_{n_k}$ for sufficiently large $k$, then
+        \begin{align*}
+            \epsilon &\leq d_Y(f_{n_k}(x_{n_k}), f_{n_k}(x_{n_k}')) \\
+            &\leq d_Y(f_{n_k}(x_{n_k}), f_{n_k}(x_0)) + d_Y(f_{n_k}(x_0), f_{n_k}(x_{n_k}')) \\
+            &< \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon,
+        \end{align*}
+        a contradiction.
+    \end{proof}
+\end{prop}
+
+\begin{prop}
+    If the sequence of functions $(f_n)$ in $\mathcal F$ is uniformly equicontinuous, $X$ is compact, and for each $x \in X$, the sequence $(f_n(x))$ lies in a compact subset of $Y$, then $(f_n)$ has a uniformly convergent subsequence.
+    \begin{proof}
+        Since $X$ is compact, it is separable, i.e. has a countable dense subset. The rest is similar to the proof of the Arzel\'a-Ascoli Theorem.
+    \end{proof}
+\end{prop}
+
+\begin{df}
+    A topological space $X$ is $\sigma$-compact if it is a countable union of compact subsets.
+\end{df}
+
+\begin{ex}
+    $\Z, \Q, \R$ are $\sigma$-compact. Uncountable sets equipped with the discrete topology are not $\sigma$-compact.
+\end{ex}
+
+\begin{prop}
+    If $X$ is $\sigma$-compact and if $(f_n)$ is a sequence of pointwise equicontinuous functions in $\mathcal F$ such that for each $x \in X$, the sequence $(f_n(x))$ lies in a compact subset of $Y$, then $(f_n)$ has a subsequence that converges uniformly on every compact subset of $X$.
+\end{prop}
