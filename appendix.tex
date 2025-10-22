@@ -468,3 +468,61 @@ Let $f: \R \to \R$ be a smooth function such that for all $x \in \R$, there exis
         Taking $\liminf$ on both sides, we get the desired result.
     \end{proof}
 \end{thm}
+
+\section{Applications of Arzela-Ascoli Theorem}
+
+Recall that a set of functions $\mathcal F \subseteq C(X, \R)$ is compact iff $\mathcal F$ is closed, uniformly bounded, and equicontinuous. Every sequence in $\mathcal F$ has a uniformly convergent subsequence iff $\mathcal F$ is uniformly bounded and equicontinuous.
+
+\begin{df}
+    Let $U \subseteq \C$ be open. A family of holomorphic functions $\mathcal F \subseteq H(U)$ is normal if every sequence in $\mathcal F$ has a subsequence that converges uniformly on compact subsets of $U$ to a holomorphic function.
+\end{df}
+
+\begin{thm}[Montel's Theorem]
+    Let $D \subseteq \C$ be open. If $\mathcal F \subseteq H(D)$ is locally uniformly bounded, i.e. $\mathcal F|_K := \set{f|_K \mid f \in \mathcal F}$ is uniformly bounded for every compact subset $K \subseteq D$, then $\mathcal F$ is normal.
+    \begin{proof}
+        Given $K \subseteq U$ compact, we first show that $\mathcal F|_K$ is equicontinuous. 
+
+        Since $K$ is compact and $U$ is open, $r_0 = d(K, \partial U) > 0$, then for any $r < r_0$, 
+        \begin{align*}
+            |f'(z_0)| &= \abs{\frac{1}{2\pi i} \int_{|z - z_0| = r} \frac{f(z)}{(z - z_0)^2} \, dz} \\
+            &\leq \frac{1}{2\pi} \cdot \frac{2\pi r M}{r^2} = \frac{M}{r},
+        \end{align*}
+        where $M$ is a uniform bound of $\mathcal F|_K$. Therefore, $\mathcal F|_K$ is uniformly Lipschitz continuous with Lipschitz constant $M/r$ and hence equicontinuous.
+
+        By Arzela-Ascoli Theorem, every sequence in $\mathcal F|_K$ has a uniformly convergent subsequence. Write $U = \bigcup_{n=1}^\infty K_n$ where $K_n$'s are compact and $K_n \subseteq ~int K_{n+1}$, where
+        \[
+        K_n := \set{x \in U \mid d(X, \partial U) \leq \frac{1}{n},\, |x| \leq n}.
+        \]
+        Given a sequence $(f_n)$ in $\mathcal F$ and $K_i$, by the above argument, $\exists$ a subsequence that converges uniformly on $K_i$. By a diagonalization argument, we can find a subsequence that converges uniformly on each $K_i$, hence converges uniformly on compact subsets of $U$.
+    \end{proof}
+\end{thm}
+
+\begin{df}
+    A topological vector space is a vector space $V$ over $\R$ or $\C$ equipped with a topology such that the vector addition $V \times V \to V$, $(x, y) \mapsto x + y$ and scalar multiplication $\F \times V \to V$, $(a, x) \mapsto ax$ are continuous.
+\end{df}
+
+\begin{df}
+    A locally convex topological vector space is a topological vector space $V$ such that the origin has a convex and balanced neighborhood basis. A set $S \subseteq V$ is balanced if for every $c \in \F$ with $|c| \leq 1$, $cS \subseteq S$.
+\end{df}
+
+\begin{thm}[Shauder-Tychonoff Theorem]
+    Every compact and convex subset of a locally convex Hausdorff topological vector space has the fixed point property, i.e. every continuous map from the set to itself has a fixed point.
+\end{thm}
+
+An IVP for ODEs is a problem of the form
+\[
+\begin{cases}
+    x'(t) = f(t, x(t)) \\
+    x(0) = 0
+\end{cases}, \quad x \in \R^n, f: \R_{\geq 0} \times \R^n \to \R^n.
+\]
+
+\begin{thm}
+    Let $f(t, u)$ be defined on $0 \leq t \leq a$ and $u \in \R^n$ such that $\|u\| \leq r$. Assume that $f$ is continuous and $\|f(t, u)\| \leq r/a$, then the IVP has a solution in $C[0, a]$.
+    \begin{proof}
+        Define $(Ax)(t) = \int_0^t f(s, x(s)) \, ds$ and
+        \[
+        D = ~Dom (A) := \set{x \in C^u[a, b] \mid \|x\|_\infty := \sup_{0 \leq t \leq a} \|x(t)\| \leq r}.
+        \]
+    \end{proof}
+\end{thm}
