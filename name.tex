@@ -2292,4 +2292,157 @@ We say that a function $f \in \mathcal F$ is bounded with respect to $d_Y$ iff f
 
 \begin{prop}
     If $X$ is $\sigma$-compact and if $(f_n)$ is a sequence of pointwise equicontinuous functions in $\mathcal F$ such that for each $x \in X$, the sequence $(f_n(x))$ lies in a compact subset of $Y$, then $(f_n)$ has a subsequence that converges uniformly on every compact subset of $X$.
+    \begin{proof}
+        Write $X = \bigcup_{i=1}^\infty X_i$, where each $X_i$ is compact. For each $i$, $(f_n|_{X_i})$ is a sequence of uniformly equicontinuous functions. By the previous proposition, $(f_n|_{X_1})$ has a uniformly convergent subsequence $(f_n^{(1)})$. This subsequence has a further subsequence $(f_n^{(2)})$ that converges uniformly on $X_2$. Continuing this process, we obtain a nested sequence of subsequences $(f_n^{(i)})$. Define $g_n = f_n^{(n)}$, then $g_n$ converges uniformly on each $X_i$.
+
+        Note that $g_n$ converges pointwise on $X$ since for each fixed $x \in X$, exists some $X_i$ containing $x$. Let $A \subseteq X$ be any compact subset, then $(g_n|_A)$ is uniformly equicontinuous and converges pointwise on $A$. We can upgrade the pointwise convergence to uniform convergence on $A$ as in the proof of the Arzel\'a-Ascoli Theorem (the $\epsilon/3$-argument).
+    \end{proof}
 \end{prop}
+
+\begin{cl}
+    If $(f_n)$ is a sequence of pointwise equicontinuous functions from $\R$ to $\R$, and exists $x_0 \in \R$ such that $(f_n(x_0))$ is bounded, then $(f_n)$ has a subsequence that converges uniformly on every compact subset of $\R$.
+    \begin{proof}
+        By the previous proposition, it suffices to show that for each $x \in \R$, $(f_n(x))$ is bounded and hence lies in a compact subset of $\R$. 
+
+        Let $[a, b]$ be any closed interval containing $x_0$, then $(f_n)|_{[a, b]}$ is uniformly equicontinuous. Exists $\delta > 0$ such that for all $s, t \in [a, b]$ with $|s - t| < \delta$ and for all $n \in \N$, $|f_n(s) - f_n(t)| < 1$. Choose points $a = x_0 < x_1 < x_2 < \cdots < x_m = b$ such that $|x_{i} - x_{i-1}| < \delta$ for all $1 \leq i \leq m$. Since $(f_n(x_0))$ is bounded, exists $K > 0$ such that $|f_n(x_0)| \leq K$ for all $n \in \N$. Then for all $n \in \N$ and for all $1 \leq i \leq m$,
+        \[
+        |f_n(x_i)| \leq |f_n(x_{i-1})| + |f_n(x_i) - f_n(x_{i-1})| < K + i.
+        \]
+        Therefore, for all $x \in [a, b]$ and for all $n \in \N$,
+        \[
+        |f_n(x)| \leq |f_n(x_i)| + |f_n(x) - f_n(x_i)| < K + m + 1,
+        \]
+        where $x_i$ is chosen such that $|x - x_i| < \delta$. Hence $(f_n(x))$ is bounded for all $x \in \R$.
+    \end{proof}
+\end{cl}
+
+% Midterm
+% --------------------------------------------
+% Final
+
+\section{Uniform Approximation in $C^0$}
+
+Given a function $f \in C^0([a, b], \R)$, we would like to approximate it $f$ by sunpler functions that we can work with more easily.
+
+\begin{thm}[Weierstrass Approximation Theorem]
+    The set of polynomial functions is dense in $C^0([a, b], \R)$ with respect to the supremum norm, i.e. for every $f \in C^0([a, b], \R)$ and for every $\epsilon > 0$, exists a polynomial function $P$ such that
+    \[
+    \|f - P\| < \epsilon.
+    \]
+    \begin{proof}
+        WLOG, assume that $[a, b] = [0, 1]$. We may also assume that $f(0) = f(1) = 0$ by considering $f(x) - (f(0)(1 - x) + f(1)x)$ instead of $f$. Extend $f$ to $\R$ by defining $f(x) = 0$ for $x \notin [0, 1]$. Consider
+        \[
+        \beta_n(t) = b_n(1 - t^2)^n, \quad -1 \leq t \leq 1,
+        \]
+        where $b_n$ is chosen such that $\int_{-1}^1 \beta_n(t) \, dt = 1$. For $x \in [0, 1]$, define
+        \[
+        P_n(x) = \int_{-1}^1 f(x + t) \beta_n(t) \, dt.
+        \]
+        We claim that $P_n$ is a polynomial function and $P_n \rightrightarrows f$ on $[0, 1]$ as $n \to \infty$.
+
+        Let $u = x + t$, then
+        \begin{align*}
+            P_n(x) &= \int_{x-1}^{x+1} f(u) \beta_n(u - x) \, du \\
+            &= \int_0^1 f(u) \beta_n(u - x) \, du,
+        \end{align*}
+        since $f(u) = 0$ for $u \notin [0, 1]$. Note that $\beta_n(u - x) = b_n(1 - (u - x)^2)^n$ is a polynomial in $x$ and $u$, hence after integrating with respect to $u$, $P_n(x)$ is a polynomial in $x$.
+
+        Note that
+        \begin{align*}
+            1 &= \int_{-1}^1 \beta_n(t) \, dt \\
+            &\geq \int_{-1/\sqrt{n}}^{1/\sqrt{n}} b_n(1 - t^2)^n \, dt \\
+            &= 2 b_n \int_0^{1/\sqrt{n}} (1 - t^2)^n \, dt \\
+            &\geq 2 b_n \int_0^{1/\sqrt{n}} \left(1 - \frac{1}{n}\right)^n \, dt \\
+            &= \frac{2 b_n}{\sqrt{n}} \left(1 - \frac{1}{n}\right)^n,
+        \end{align*}
+        so $\exists c > 0$ such that $b_n \leq c \sqrt{n}$ for all $n \in \N$. For any $\delta > 0$, if $\delta \leq |t| \leq 1$, then
+        \[
+        \beta_n(t) = b_n(1 - t^2)^n < c \sqrt{n} (1 - \delta^2)^n \to 0 \text{ as } n \to \infty.
+        \]
+
+        Let $\epsilon > 0$. Since $f$ is uniformly continuous on $[0, 1]$, $\exists \delta > 0$ such that for all $x, y \in [0, 1]$ with $|x - y| < \delta$, $|f(x) - f(y)| < \epsilon/2$. For the above $\delta$, choose $N$ such that for all $n \geq N$ and for all $|t| \geq \delta$, $\beta_n(t) < \frac{\epsilon}{4M}$, where $M = \sup_{x \in [0, 1]} |f(x)|$. Then for all $n \geq N$ and for all $x \in [0, 1]$,
+        \begin{align*}
+            |P_n(x) - f(x)| &= \abs{\int_{-1}^1 (f(x + t) - f(x)) \beta_n(t) \, dt} \\
+            &= \abs{\int_{-1}^1 (f(x + t) - f(x)) \beta_n(t) \, dt} \\
+            &\leq \int_{|t| < \delta} |f(x + t) - f(x)| \beta_n(t) \, dt + \int_{|t| \geq \delta} |f(x + t) - f(x)| \beta_n(t) \, dt \\
+            &\leq \frac{\epsilon}{2} \cdot 1 + 2M \cdot \frac{\epsilon}{4M} = \epsilon.
+        \end{align*}
+        Therefore, $P_n \rightrightarrows f$ on $[0, 1]$.
+    \end{proof}
+\end{thm}
+
+We now extend this to functions defined on a compact Hausdorff space $X$.
+
+\begin{df}
+    \nobreakspace
+    \begin{itemize}
+        \item A subset $\mathcal A$ of $C^0(X) = C^0(X, \R)$ is an algebra if it is closed under addition, scalar multiplication and function multiplication.
+        \item An algebra $\mathcal A \subset C^0(X)$ vanishes at a point $x \in X$ if $f(x) = 0$ for all $f \in \mathcal A$.
+        \item An algebra $\mathcal A \subset C^0(X)$ separates points if for any distinct points $x_1, x_2 \in X$, exists some $f \in \mathcal A$ such that $f(x_1) \neq f(x_2)$.
+    \end{itemize}
+\end{df}
+
+\begin{lm}
+    If $\mathcal A$ is an algebra in $C^0(X)$ that vanishes nowhere and separates points, then for any distinct points $x_1, x_2 \in X$ and for any $c_1, c_2 \in \R$, exists some $f \in \mathcal A$ such that $f(x_1) = c_1$ and $f(x_2) = c_2$.
+    \begin{proof}
+        Let $x_1, x_2 \in X$ and $c_1, c_2 \in \R$. Since $\mathcal A$ vanishes nowhere, exists $g_1, g_2 \in \mathcal A$ such that $g_1(x_1) \neq 0$ and $g_2(x_2) \neq 0$, then $g_1^2 + g_2^2 \in \mathcal A$ and $(g_1^2 + g_2^2)(x_i) > 0$ for $i = 1, 2$. Since $\mathcal A$ separates points, exists $h \in \mathcal A$ such that $h(x_1) \neq h(x_2)$. Note that the matrix
+        \[
+        \begin{pmatrix}
+            g(x_1) & g(x_1)h(x_1) \\
+            g(x_2) & g(x_2)h(x_2)
+        \end{pmatrix}
+        \]
+        is invertible, hence exists $a, b \in \R$ such that
+        \[
+        \begin{cases}
+            g(x_1)a + g(x_1)h(x_1)b = c_1 \\
+            g(x_2)a + g(x_2)h(x_2)b = c_2
+        \end{cases}.
+        \]
+        Define $f = ag + bgh \in \mathcal A$, then $f(x_1) = c_1$ and $f(x_2) = c_2$.
+    \end{proof}
+\end{lm}
+
+\begin{lm}
+    Let $\mathcal A$ be an algebra in $C^0(X)$. If $f \in \overline{\mathcal A}$, then $|f| \in \overline{\mathcal A}$.
+    \begin{proof}
+        We need to show that $|f|$ can be uniformly approximated by functions in $\overline{\mathcal A}$. Let $\epsilon > 0$. By the Weierstrass Approximation Theorem, exists a polynomial $p$ such that
+        \[
+        \abs{p(y) - y} < \frac{\epsilon}{2}
+        \]
+        for all $y \in [-M, M]$, where $M = \|f\|$. Note that $|p(0)| = |p(0) - 0| < \epsilon/2$. Set $q(y) = p(y) - p(0)$, then $q(0) = 0$ and
+        \begin{align*}
+            |q(y) - |y|| &= \abs{p(y) - p(0) - |y|} \\
+            &\leq |p(y) - |y|| + |p(0)| \\
+            &< \frac{\epsilon}{2} + \frac{\epsilon}{2} = \epsilon
+        \end{align*}
+        for all $y \in [-M, M]$. Define $g(x) = q(f(x))$ for all $x \in X$, then $g \in \overline{\mathcal A}$ since $\mathcal A$ is an algebra and $q$ is a polynomial with zero constant term. If $x \in X$, then
+        \[
+        \abs{g(x) - |f(x)|} = \abs{q(f(x)) - |f(x)|} < \epsilon,
+        \]
+        thus $|f| \in \overline{\overline{\mathcal A}} = \overline{\mathcal A}$.
+    \end{proof}
+\end{lm}
+
+\begin{lm}
+    Let $\mathcal A$ be an algebra in $C^0(X)$. If $f, g \in \overline{\mathcal A}$, then $\max(f, g), \min(f, g) \in \overline{\mathcal A}$.
+    \begin{proof}
+        Note that
+        \[
+        \max(f, g) = \frac{f + g + |f - g|}{2}, \quad \min(f, g) = \frac{f + g - |f - g|}{2}.
+        \]
+        By the previous lemma, $|f - g| \in \overline{\mathcal A}$, hence $\max(f, g), \min(f, g) \in \overline{\mathcal A}$.
+    \end{proof}
+\end{lm}
+
+\begin{thm}[Stone-Weierstrass Theorem]
+    Let $X$ be a compact Hausdorff space. If $\mathcal A$ is an algebra of $C^0(X)$ that vanishes nowhere and separates points, then $\mathcal A$ is dense in $C^0(X)$ with respect to the supremum norm.
+    \begin{proof}
+        Let $\mathcal A$ be such an algebra. Given $f \in C^0(X)$ and $\epsilon > 0$, we want to find some $g \in \mathcal A$ such that $\|f - g\| < \epsilon$.
+        % TODO
+    \end{proof}
+\end{thm}
+
+\begin{rmk}
+    The Hausdorff condition is necessary to ensure that there exists a subalgebra that separates points. Suppose that $X$ is not Hausdorff, and let $x_1, x_2 \in X$ be distinct points that cannot be separated by open neighborhoods. Let $\mathcal A$ be a subalgebra of $C^0(X)$ that separates points. Then exists some $f \in \mathcal A$ such that $f(x_1) \neq f(x_2)$. Since $\R$ is Hausdorff, exists open neighborhoods $U_1, U_2$ of $f(x_1), f(x_2)$ respectively such that $U_1 \cap U_2 = \emptyset$. Then $f^{-1}(U_1), f^{-1}(U_2)$ are open neighborhoods of $x_1, x_2$ respectively such that $f^{-1}(U_1) \cap f^{-1}(U_2) = \emptyset$, a contradiction.
+\end{rmk}
