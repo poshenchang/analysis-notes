@@ -2383,6 +2383,7 @@ We now extend this to functions defined on a compact Hausdorff space $X$.
 \end{df}
 
 \begin{lm}
+    \label{lm:two-point-approx}
     If $\mathcal A$ is an algebra in $C^0(X)$ that vanishes nowhere and separates points, then for any distinct points $x_1, x_2 \in X$ and for any $c_1, c_2 \in \R$, exists some $f \in \mathcal A$ such that $f(x_1) = c_1$ and $f(x_2) = c_2$.
     \begin{proof}
         Let $x_1, x_2 \in X$ and $c_1, c_2 \in \R$. Since $\mathcal A$ vanishes nowhere, exists $g_1, g_2 \in \mathcal A$ such that $g_1(x_1) \neq 0$ and $g_2(x_2) \neq 0$, then $g_1^2 + g_2^2 \in \mathcal A$ and $(g_1^2 + g_2^2)(x_i) > 0$ for $i = 1, 2$. Since $\mathcal A$ separates points, exists $h \in \mathcal A$ such that $h(x_1) \neq h(x_2)$. Note that the matrix
@@ -2439,10 +2440,152 @@ We now extend this to functions defined on a compact Hausdorff space $X$.
     Let $X$ be a compact Hausdorff space. If $\mathcal A$ is an algebra of $C^0(X)$ that vanishes nowhere and separates points, then $\mathcal A$ is dense in $C^0(X)$ with respect to the supremum norm.
     \begin{proof}
         Let $\mathcal A$ be such an algebra. Given $f \in C^0(X)$ and $\epsilon > 0$, we want to find some $g \in \mathcal A$ such that $\|f - g\| < \epsilon$.
-        % TODO
+        
+        Fix distinct $x, y \in X$. By \ref{lm:two-point-approx}, exists some $h_{x, y} \in \mathcal A$ such that
+        \[
+        h_{x, y}(x) = f(x), \quad h_{x, y}(y) = f(y).
+        \]
+        Define
+        \[
+        \mathcal U_{x, y} = \set{z \in X \mid h_{x, y}(z) < f(z) + \epsilon}.
+        \]
+        Then $\mathcal U_{x, y}$ is an open set containing $y$. The collection $\set{\mathcal U_{x, y} \mid y \in X \setminus \set{x}}$ is an open cover of $X$, hence exists a finite subcover $\set{\mathcal U_{x, y_1}, \mathcal U_{x, y_2}, \ldots, \mathcal U_{x, y_n}}$. Define
+        \[
+        g_x = \min\set{h_{x, y_1}, \ldots, h_{x, y_n}} \in \Bar{\mathcal A}.
+        \]
+        For $x \in X$, define 
+        \[
+        V_x = \set{z \in X \mid g_x(z) > f(z) - \epsilon}.
+        \]
+        Then $V_x$ is an open set containing $x$. The collection $\set{V_x \mid x \in X}$ is an open cover of $X$, hence exists a finite subcover $\set{V_{x_1}, V_{x_2}, \ldots, V_{x_m}}$. Define
+        \begin{gather*}
+            g = \max\set{g_{x_1}, g_{x_2}, \ldots, g_{x_m}} \in \Bar{\mathcal A}, \\
+            \implies f(z) - \epsilon < g(z) < f(z) + \epsilon \text{ for all } z \in X.
+        \end{gather*}
+        Since any function in $\overline{\mathcal A}$ can be uniformly approximated by functions in $\mathcal A$, this proves the theorem.
     \end{proof}
 \end{thm}
 
 \begin{rmk}
     The Hausdorff condition is necessary to ensure that there exists a subalgebra that separates points. Suppose that $X$ is not Hausdorff, and let $x_1, x_2 \in X$ be distinct points that cannot be separated by open neighborhoods. Let $\mathcal A$ be a subalgebra of $C^0(X)$ that separates points. Then exists some $f \in \mathcal A$ such that $f(x_1) \neq f(x_2)$. Since $\R$ is Hausdorff, exists open neighborhoods $U_1, U_2$ of $f(x_1), f(x_2)$ respectively such that $U_1 \cap U_2 = \emptyset$. Then $f^{-1}(U_1), f^{-1}(U_2)$ are open neighborhoods of $x_1, x_2$ respectively such that $f^{-1}(U_1) \cap f^{-1}(U_2) = \emptyset$, a contradiction.
 \end{rmk}
+
+\begin{cl}
+    Any $2\pi$-periodic continuous function can be uniformly approximated by trigonometric polynomials, i.e. finite linear combinations of $\set{1, \cos x, \sin x, \cos 2x, \sin 2x, \ldots}$.
+    \begin{proof}
+        Every $2\pi$-periodic continuous function can be regarded as a continuous function on the unit circle $S^1$. The set of trigonometric polynomials forms an algebra that vanishes nowhere and separates points on $S^1$. By the Stone-Weierstrass Theorem, the set of trigonometric polynomials is dense in $C^0(S^1)$ with respect to the supremum norm.
+    \end{proof}
+\end{cl}
+
+\section{Banach Fixed Point Theorem}
+
+\begin{df}
+    Let $M$ be a metric space and $f$ be a function from $M$ to itself. We say that $x \in M$ is a fixed point of $f$ if $f(x) = x$.
+\end{df}
+
+\begin{df}
+    A function $f: M \to M$ is a contraction mapping if exists some constant $0 \leq \alpha < 1$ such that for all $x, y \in M$,
+    \[
+    d(f(x), f(y)) \leq \alpha d(x, y).
+    \]
+\end{df}
+
+\begin{thm}[Banach fixed point theorem]
+    Suppose that $f: M \to M$ is a contraction and $M$ is complete. Then $f$ has a unique fixed point in $M$. Moreover, for any $y \in M$, the sequence defined by $y_0 = y$ and $y_{n+1} = f(y_n)$ converges to the fixed point.
+    \begin{proof}
+        Choose any $y \in M$ and define the sequence $(y_n)$ by $y_0 = y$ and $y_{n+1} = f(y_n)$, then
+        \begin{align*}
+            d(y_n, y_{n+1}) &= d(f(y_{n-1}), f(y_n)) \\
+            &\leq \alpha d(y_{n-1}, y_n) \\
+            &\leq \cdots \\
+            &\leq \alpha^n d(y_0, y_1).
+        \end{align*}
+        Let $\epsilon > 0$. Choose $N$ such that $\alpha^N d(y_0, y_1) < (1 - \alpha) \epsilon$. Then for all $N \leq m < n$,
+        \begin{align*}
+            d(y_m, y_n) &\leq d(y_m, y_{m+1}) + d(y_{m+1}, y_{m+2}) + \cdots + d(y_{n-1}, y_n) \\
+            &\leq \sum_{k=m}^{n-1} \alpha^k d(y_0, y_1) \\
+            &\leq \frac{\alpha^m}{1 - \alpha} d(y_0, y_1) < \epsilon.
+        \end{align*}
+        Therefore, $(y_n)$ is a Cauchy sequence in $M$. By completeness of $M$, exists some $x \in M$ such that $y_n \to x$. Since $f$ is continuous,
+        \[
+        f(x) = f\left(\lim_{n \to \infty} y_n\right) = \lim_{n \to \infty} f(y_n) = \lim_{n \to \infty} y_{n+1} = x,
+        \]
+        hence $x$ is a fixed point of $f$. For uniqueness, suppose that $x'$ is another fixed point of $f$, then
+        \[
+        d(x, x') = d(f(x), f(x')) \leq \alpha d(x, x') \leadsto d(x, x') = 0,
+        \]
+        hence $x = x'$.
+    \end{proof}
+\end{thm}
+
+Let $\mathcal U \subseteq \R^n$ be an open set. A vector ODE on $\mathcal U$ is given as $m$ simulataneous scalar equations
+\[
+\begin{cases}
+    x_1'(t) = f_1(x_1(t), \ldots, x_m(t)), \\
+    \vdots \\
+    x_m'(t) = f_m(x_1(t), \ldots, x_m(t)),
+\end{cases}
+\]
+where each $f_i: \mathcal U \to \R$. We seek $m$ real-valued functions $x_1(t), \ldots, x_m(t)$ such that the above equations hold for all $t$ and simulataneously. If such functions exist, we say that they solve the ODE with initial condition $(x_1(0), \ldots, x_m(0))$.
+
+\[
+F(x) = (f_1(x), f_2(x), \ldots, f_m(x))
+\]
+is called a vector field on $\mathcal U$. We would like to find a curve $\gamma: (a, b) \to \mathcal U$ such that $a < 0 < b$ and $\gamma'(t) = F(\gamma(t))$ for all $t \in (a, b)$, with initial condition $\gamma(0) = p \in \mathcal U$. Components of $\gamma$ give a solution to the vector ODE with initial condition $p$.
+
+Physically, $\gamma(t)$ represents the position of a particle at time $t$ moving in the vector field $F$. The equation $\gamma'(t) = F(\gamma(t))$ means that the velocity of the particle at time $t$ is given by the vector $F(\gamma(t))$.
+
+Assume that $F$ is Lipschitz continuous, i.e. exists some constant $L > 0$ such that for all $x, y \in \mathcal U$,
+\[
+\|F(x) - F(y)\| \leq L \|x - y\|.
+\]
+
+\begin{thm}[Picard]
+    Given $p \in \mathcal U$, exists an $F$-trajectory $\gamma(t)$ in $\mathcal U$ through $p$. Locally, $\gamma$ is unique.
+    \begin{proof}
+        We express $\gamma'(t) = F(\gamma(t))$ as an integral equation. Given $g(x) = (g_1(x), \ldots, g_m(x))$ for $x \in [a, b]$, define
+        \[
+        \int_a^b g(x) \, dx = \left(\int_a^b g_1(x) \, dx, \ldots, \int_a^b g_m(x) \, dx\right).
+        \]
+        Consider
+        \[
+        \gamma(t) = p + \int_0^t F(\gamma(s)) \, ds.
+        \]
+        Note that indefinite integrals are always continuous, hence $\gamma$ is continuous. Since $F$ is Lipschitz continuous, it is also continuous, hence $F \circ \gamma$ is continuous and $\gamma$ is differentiable with $\gamma'(t) = F(\gamma(t))$. Therefore, a solution to the integral equation is also a solution to the ODE.
+
+        Clearly $F$ is continuous, hence exists some compact neighborhood $K := \Bar{B(p, r)} \subseteq \mathcal U$ and $M > 0$ such that $\|F(x)\| \leq M$ for all $x \in K$. Choose $\tau > 0$ small such that $\tau M \leq r$ and $\tau L < 1$. Let $\mathcal C = C^0([-\tau, \tau], K)$. Define a metric on $\mathcal C$ by
+        \[
+        d(\gamma, \sigma) = \sup\set{\|\gamma(t) - \sigma(t)\| \mid t \in [-\tau, \tau]}.
+        \]
+        Then $(\mathcal C, d)$ is a complete metric space. Given $\gamma \in \mathcal C$, define
+        \[
+        \Phi(\gamma)(t) = p + \int_0^t F(\gamma(s)) \, ds.
+        \]
+        We first show that $\Phi(\mathcal C) \subseteq \mathcal C$. For $\gamma \in \mathcal C$ and for $t \in [-\tau, \tau]$,
+        \[
+        \|\Phi(\gamma)(t) - p\| = \left\|\int_0^t F(\gamma(s)) \, ds\right\| \leq \int_0^{|t|} \|F(\gamma(s))\| \, ds \leq M |t| \leq M \tau \leq r,
+        \]
+        hence $\Phi(\gamma)(t) \in K$ and $\Phi(\gamma) \in \mathcal C$. Next, we show that $\Phi$ is a contraction mapping. For $\gamma, \sigma \in \mathcal C$,
+        \begin{align*}
+            d(\Phi(\gamma), \Phi(\sigma)) &= \sup_{t \in [-\tau, \tau]} \left\|\int_0^t (F(\gamma(s)) - F(\sigma(s))) \, ds\right\| \\
+            &\leq \sup_{t \in [-\tau, \tau]} \int_0^{|t|} \|F(\gamma(s)) - F(\sigma(s))\| \, ds \\
+            &\leq \sup_{t \in [-\tau, \tau]} \int_0^{|t|} L \|\gamma(s) - \sigma(s)\| \, ds \\
+            &\leq L \tau d(\gamma, \sigma).
+        \end{align*}
+        Since $\tau L < 1$, $\Phi$ is a contraction mapping. By the Banach Fixed Point Theorem, exists a unique fixed point $\gamma \in \mathcal C$ such that $\Phi(\gamma) = \gamma$, i.e.,
+        \[
+        \gamma(t) = p + \int_0^t F(\gamma(s)) \, ds.
+        \]
+        Any other solution defined on $[-\tau, \tau]$ must also be a fixed point of $\Phi$, hence $\gamma$ is the unique solution on $[-\tau, \tau]$.
+    \end{proof}
+\end{thm}
+
+For simplicity, assume $\mathcal U = \R^m$. Then $\gamma$ can be defined for all $t \in \R$. Let $\gamma(t, p)$ be the $F$-trajectory through $p$ at time $t$. Define
+\[
+\varphi_t(p) = \gamma(t, p),
+\]
+then
+\[
+\varphi_{t+s}(p) = \varphi_t(\varphi_s(p))
+\]
+for all $s, t \in \R$. This is called the flow generated by the vector field $F$. $t\mapsto \varphi_t(p)$ is a group homomorphism from $(\R, +)$ to the group of motions on $\R^m$ under composition.
