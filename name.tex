@@ -2750,3 +2750,126 @@ If $G$ is a countable intersection of open dense subsets of a metric space $M$, 
         For the second part, suppose that $M = \bigcup_{n=1}^\infty F_n$, where each $F_n$ is closed and nowhere dense in $M$, then $\emptyset = M^c = \bigcap_{n=1}^\infty F_n^c$ is thick in $M$, a contradiction.
     \end{proof}
 \end{thm}
+
+\begin{cl}
+    No subset of a complete metric space $M$ is both thick and thin.
+    \begin{proof}
+        If $S \subseteq M$ is both thick and thin, then $S^c$ is also both thick and thin. Therefore, the intersection $S \cap S^c = \emptyset$ is thick in $M$, a contradiction.
+    \end{proof}
+\end{cl}
+
+If $G \subseteq M$ is thick, we say that a property holds generically in $M$ if it holds for all points in $G$.
+
+\begin{thm}
+    A generic continuous function $f \in C^0([a, b], \R)$ is nowhere differentiable. In fact, it does not have a left or right derivative at any point, and is not monotone on any interval.
+    \begin{proof}
+        For $n \in \N$, define
+        \begin{gather*}
+            R_n = \set{f \in C^0 \mid \forall x \in \left[a, b - \frac1n\right], \exists h > 0 \text{ such that } |f(x+h) - f(x)| > n h}, \\
+            L_n = \set{f \in C^0 \mid \forall x \in \left[a + \frac1n, b\right], \exists h > 0 \text{ such that } |f(x-h) - f(x)| > n h}, \\
+            G_n = \set{f \in C^0 \mid f \text{ is not monotone on any interval of length } \frac1n}.
+        \end{gather*}
+        We will show that each $R_n, L_n, G_n$ is open and dense in $C^0([a, b], \R)$. 
+
+        Fix $n \in \N$ and $\epsilon > 0$. For any $f \in C^0$, by Weierstrass approximation theorem, exists some polynomial $P$ such that $\|f - P\| < \epsilon/2$. Consider a sawtooth function $\sigma$ which has period less than $1/n$, $0 \leq \sigma < \epsilon/2$, and
+        \[
+        \min_x \abs{~slope _x(\sigma)} > n + \max_n \abs{~slope _x(P)}.
+        \]
+        Define $g := \sigma + P$, then the slope of $g$ alternate signs with period less than $1/2n$. At any $x \in [a, b - 1/n]$, $g$ has a right difference either greater than $n$ or less than $-n$. Therefore, $g \in R_n$. Similarly, $g \in L_n$ and $g \in G_n$. Since $\|f - g\| < \epsilon$, this shows that $R_n, L_n, G_n$ are dense in $C^0$.
+
+        Let $f \in R_n$. By definition, for any $x \in [a, b - 1/n]$, exists some $h > 0$ such that
+        \[
+        \abs{\frac{f(x+h) - f(x)}{h}} > n.
+        \]
+        Since $f$ is continuous, exists a neighborhood $\mathcal U_x$ of $x$ in $[a, b]$ and a constant $\nu = \nu(x) > 0$ such that for all $y \in \mathcal U_x$,
+        \[
+        \abs{\frac{f(y+h) - f(y)}{h}} > n + \nu.
+        \]
+        The collection $\set{\mathcal U_x \mid x \in [a, b - 1/n]}$ is an open cover of the compact set $[a, b - 1/n]$, hence exists a finite subcover $\set{\mathcal U_{x_1}, \ldots, \mathcal U_{x_m}}$. Let $\nu_0 = \min\set{\nu(x_1), \ldots, \nu(x_m)} > 0$. For any $g \in C^0$ with $\|f - g\| < \nu_0 h / 2$, for all $y \in [a, b - 1/n]$,
+        \begin{align*}
+            \abs{\frac{g(y+h) - g(y)}{h}} &\geq \abs{\frac{f(y+h) - f(y)}{h}} - \abs{\frac{g(y+h) - f(y+h)}{h}} - \abs{\frac{g(y) - f(y)}{h}} \\
+            &> n + \nu_0 - \frac{\nu_0}{2} - \frac{\nu_0}{2} = n.
+        \end{align*}
+        Therefore, $g \in R_n$, hence $R_n$ is open. Similarly, $L_n$ is open.
+
+        Finally, we will show that $G_n^c$ is closed, and thus $G_n$ is open. Let $(f_k)$ be a sequence in $G_n^c$ such that $f_k \rightrightarrows f$. Each $f_k$ is monotone on some interval $I_k$ of length $1/n$. There exists a subsequence of these intervals that converges to a limit interval $I$ of length $1/n$. Since $f_k \rightrightarrows f$, $f$ is also monotone on $I$. Therefore, $f \in G_n^c$, hence $G_n^c$ is closed.
+
+        Therefore, $\bigcap_{n=1}^\infty (R_n \cap L_n \cap G_n)$ is thick in $C^0([a, b], \R)$. Fix $f$ in this intersection, then for any $x \in [a, b]$, exists sequences $(h_n^+)$ and $(h_n^-)$ such that
+        \[
+        \abs{\frac{f(x+h)-f(x)}{h}} > n \quad \text{and} \quad \abs{\frac{f(x-h)-f(x)}{h}} > n.
+        \]
+        Since $f$ is bounded on $[a, b]$, both sequences $(h_n^+)$ and $(h_n^-)$ must converge to $0$. Therefore, $f$ does not have left or right derivative at $x$. Since $x$ is arbitrary, $f$ does not have left or right derivative at any point. Moreover, since $f \in G_n$ for all $n$, $f$ is not monotone on any interval.
+    \end{proof}
+\end{thm}
+
+\section{Function Approximation and Artifical Neural Networks}
+
+Consider $K \subseteq \R^d$, where $d$ is a large number. In many applications, we would like to approximate a continuous function $f \in C^0(K, \R)$ efficiently. 
+
+Let $\sigma: \R \to \R$ be continuous. A single-layer neural network with activation function $\sigma$ is a function
+\[
+h(x) = \sum_{i=1}^n a_i \sigma(\langle w_i, x\rangle + b_i),
+\]
+where $a_i, b_i \in \R$ and $w_i \in \R^d$ for all $1 \leq i \leq n$. The space of single-layer neural networks with $n$ neurons is denoted by
+\[
+\mathcal F_n^\sigma = \set{h(x) = \sum_{i=1}^n a_i \sigma(\langle w_i, x\rangle + b_i), a_i, b_i \in \R, w_i \in \R^d}.
+\]
+The set of all single-layer neural networks is $\mathcal F^\sigma = \bigcup_{n=1}^\infty \mathcal F_n^\sigma$.
+
+\begin{lm}
+    For any continuous $\sigma: \R \to \R$, exists some smooth function $\varphi$ with compact support such that $\varphi * \sigma$ is not a polynomial.
+    \begin{proof}
+        The space $C_c^\infty(\R)$ of smooth functions with compact support can be made complete under the norm
+        \[
+        \rho(\varphi_1, \varphi_2) = \sum_{n=0}^\infty 2^{-n} \frac{\|\varphi_1^{(n)} - \varphi_2^{(n)}\|_\infty}{1 + \|\varphi_1^{(n)} - \varphi_2^{(n)}\|_\infty}.
+        \]
+
+        Suppose that for all $\varphi \in C_c^\infty(\R)$, $\varphi * \sigma$ is a polynomial. Then for each $m \in \N$, define
+        \[
+        V_m = \set{\varphi \in C_c^\infty(\R) \mid \deg(\varphi * \sigma) \leq m}.
+        \]
+        Then $C_c^\infty(\R) = \bigcup_{m=0}^\infty V_m$. We will show that each $V_m$ is closed and nowhere dense in $C_c^\infty(\R)$, contradicting the Baire Category Theorem.
+
+        Note that each $V_m$ is a proper vector subspace of $C_c^\infty(\R)$, hence nowhere dense. 
+
+        % TODO
+    \end{proof}
+\end{lm}
+
+\begin{thm}[Universal Approximation Theorem]
+    Let $\sigma: \R \to \R$ be continuous and $K \subseteq \R^d$ be compact, then $\mathcal F^\sigma$ is dense in $C^0(K, \R)$ if and only if $\sigma$ is not a polynomial.
+    \begin{proof}
+        If $\sigma$ is a polynomial of degree $m$, then any $h \in \mathcal F_n^\sigma$ is a polynomial of degree at most $m$, hence $\mathcal F^\sigma$ cannot approximate non-polynomial functions.
+
+        Assume that $\sigma$ is not a polynomial. We first assume that $\sigma$ is smooth. Fix $w \in \R^d$ and $b \in \R$. Note that $\sigma(\langle w, x\rangle + b) \in C^0(K, \R)$, and thus
+        \[
+        \frac{\sigma(\langle w + he_i, x\rangle + b) - \sigma(\langle w, x\rangle + b)}{h} \in \mathcal F^\sigma
+        \]
+        for any $h \neq 0$. Taking $h \to 0$, we have
+        \[
+        \frac{\partial}{\partial w_i} \sigma(\langle w, x\rangle + b) = x_i \sigma'(\langle w, x\rangle + b) \in \overline{\mathcal F^\sigma},
+        \]
+        Similarly, we see that
+        \[
+        x_1^{\alpha_1}\cdots x_d^{\alpha_d}\sigma^{(r)}(\langle w, x\rangle + b) \in \overline{\mathcal F^\sigma},
+        \]
+        where $\alpha_1 + \cdots + \alpha_d = r$. This holds for all $w \in \R^d$ and $b \in \R$. Since $\sigma$ is not a polynomial, for all $r \geq 0$, $\exists b \in \R$ such that $\sigma^{(r)}(b) \neq 0$. Hence $\overline{\mathcal F^\sigma}$ contains all polynomials on $K$. By the Stone-Weierstrass theorem, $\overline{\mathcal F^\sigma} = C^0(K, \R)$.
+
+        Suppose now that $\sigma$ is only continuous. Define
+        \[
+        C_c^\infty(\R) = \set{\text{smmooth function with compact support}}.
+        \]
+        There exists a function $\varphi \in C_c^\infty(\R)$ such that
+        \[
+        (\varphi * \sigma)(t) = \int_{-\infty}^{\infty} \varphi(t-s)\sigma(s)ds
+        \]
+        is not a polynomial and smooth. Let $\epsilon > 0$ and $f \in C^0(K, \R)$. Let $\Tilde{\sigma} = \varphi * \sigma$, then we can approximate $f$ by some $\Tilde h \in \mathcal F^{\Tilde{\sigma}}$ such that $\|f - h\| < \epsilon/2$. 
+
+        On the other hand, we can approximate $\Tilde{\sigma}$ by a Riemann sum
+        \begin{align*}
+            \Tilde{\sigma}(\langle w_i, x\rangle + b_i) &= \int_{-\infty}^{\infty} \varphi(s)\sigma(\langle w_i, x\rangle + b_i - s)ds \\
+            &\approx \sum_{j=0}^k (s_{j+1} - s_j) \varphi(s_j) \sigma(\langle w_i, x\rangle + b_i - s_j),
+        \end{align*}
+        which is in $\mathcal F^\sigma$. Therefore, we can approximate $\Tilde h$ by some $h \in \mathcal F^\sigma$ such that $\|\Tilde h - h\| < \epsilon/2$. Hence, $\|f - h\| < \epsilon$. This shows that $\mathcal F^\sigma$ is dense in $C^0(K, \R)$.
+    \end{proof}
+\end{thm}
