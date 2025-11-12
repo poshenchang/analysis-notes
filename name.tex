@@ -2817,7 +2817,7 @@ where $a_i, b_i \in \R$ and $w_i \in \R^d$ for all $1 \leq i \leq n$. The space 
 The set of all single-layer neural networks is $\mathcal F^\sigma = \bigcup_{n=1}^\infty \mathcal F_n^\sigma$.
 
 \begin{lm}
-    For any continuous $\sigma: \R \to \R$, exists some smooth function $\varphi$ with compact support such that $\varphi * \sigma$ is not a polynomial.
+    For any non-polynomial $\sigma: \R \to \R$, exists some smooth function $\varphi$ with compact support such that $\varphi * \sigma$ is not a polynomial.
     \begin{proof}
         The space $C_c^\infty(\R)$ of smooth functions with compact support can be made complete under the norm
         \[
@@ -2826,13 +2826,17 @@ The set of all single-layer neural networks is $\mathcal F^\sigma = \bigcup_{n=1
 
         Suppose that for all $\varphi \in C_c^\infty(\R)$, $\varphi * \sigma$ is a polynomial. Then for each $m \in \N$, define
         \[
-        V_m = \set{\varphi \in C_c^\infty(\R) \mid \deg(\varphi * \sigma) \leq m}.
+        V_m = \set{\varphi \in C_c^\infty([a, b]) \mid \deg(\varphi * \sigma) \leq m}.
         \]
-        Then $C_c^\infty(\R) = \bigcup_{m=0}^\infty V_m$. We will show that each $V_m$ is closed and nowhere dense in $C_c^\infty(\R)$, contradicting the Baire Category Theorem.
+        Then $C_c^\infty([a, b]) = \bigcup_{m=0}^\infty V_m$. We will show that each $V_m$ is closed and nowhere dense in $C_c^\infty([a, b])$, contradicting the Baire Category Theorem.
 
-        Note that each $V_m$ is a proper vector subspace of $C_c^\infty(\R)$, hence nowhere dense. 
+        Suppose $V_m = C_c^\infty([a, b])$ for some $m$. Note that the choice of $m$ only depends on the length of the interval $[a, b]$, hence for any $\varphi \in C_c^\infty(\R)$ with support $[A, B]$, we can cover $[A, B]$ with finitely many intervals $\set{[a_i, b_i]}_{1\leq i\leq k}$, where each interval has length $b_i - a_i = b - a$, and partition $\varphi$ into $\set{\varphi_i}_{1\leq i\leq k}$ such that $\varphi_i$ has support $[a_i, b_i]$ and $\varphi = \sum_{i=1}^k \varphi_i$. Since each $\varphi_i \in V_m$, $\varphi * \sigma = \sum_{i=1}^k \varphi_i * \sigma$ is also a polynomial of degree at most $m$. Differentiating $m+1$ times, we have
+        \[
+        \varphi^{(m+1)} * \sigma = 0.
+        \]
+        Since $\varphi$ is arbitrary, this implies that $\sigma$ is a polynomial of degree at most $m$, a contradiction. Therefore, each $V_m$ is a proper subspace of $C_c^\infty([a, b])$.
 
-        % TODO
+        Now since each $V_m$ is a proper vector subspace of $C_c^\infty([a, b])$, hence nowhere dense. Closedness of $V_m$ follows from the fact that if $\varphi_k \in V_m$ and $\varphi_k \rightrightarrows \varphi$, then $\varphi_k * \sigma \rightrightarrows \varphi * \sigma$, hence $\varphi * \sigma$ is also a polynomial of degree at most $m$. Therefore, $V_m$ is closed.
     \end{proof}
 \end{lm}
 
@@ -2857,7 +2861,7 @@ The set of all single-layer neural networks is $\mathcal F^\sigma = \bigcup_{n=1
 
         Suppose now that $\sigma$ is only continuous. Define
         \[
-        C_c^\infty(\R) = \set{\text{smmooth function with compact support}}.
+        C_c^\infty(\R) = \set{\text{smooth function with compact support}}.
         \]
         There exists a function $\varphi \in C_c^\infty(\R)$ such that
         \[
@@ -2871,5 +2875,80 @@ The set of all single-layer neural networks is $\mathcal F^\sigma = \bigcup_{n=1
             &\approx \sum_{j=0}^k (s_{j+1} - s_j) \varphi(s_j) \sigma(\langle w_i, x\rangle + b_i - s_j),
         \end{align*}
         which is in $\mathcal F^\sigma$. Therefore, we can approximate $\Tilde h$ by some $h \in \mathcal F^\sigma$ such that $\|\Tilde h - h\| < \epsilon/2$. Hence, $\|f - h\| < \epsilon$. This shows that $\mathcal F^\sigma$ is dense in $C^0(K, \R)$.
+    \end{proof}
+\end{thm}
+
+\chapter{Fourier Analysis}
+
+The one-dimensional wave equation is given by
+\[
+\frac{\partial^2 u}{\partial t^2} = c^2 \frac{\partial^2 u}{\partial x^2}, \quad u(0, t) = u(\pi, t) = 0,
+\]
+where $u(x, t)$ is the displacement of a string at position $x$ and time $t$, and $c$ is the wave speed. 
+
+To solve this equation, Fourier introduced the idea of separation of variables. Assume that $u(x, t) = \varphi(x)\psi(t)$, then
+\[
+\varphi(x)\psi''(t) = c^2 \varphi''(x)\psi(t) \leadsto \frac{\psi''(t)}{c^2 \psi(t)} = \frac{\varphi''(x)}{\varphi(x)} = -\lambda,
+\]
+where $\lambda$ is some constant independent of $x$ and $t$. Therefore, we arrive at a system of ODEs:
+\[
+\begin{cases}
+    \psi''(t) - c^2\lambda\psi(t) = 0, \\
+    \varphi''(t) - \lambda\varphi(t) = 0.
+\end{cases}
+\]
+If $\lambda \geq 0$, the solutions to $\varphi$ is
+\[
+\psi(t) = A'\cosh(c\sqrt{\lambda}t) + B'\sinh(c\sqrt{\lambda}t), \quad \varphi(x) = A\cosh(\sqrt \lambda x) + B\sinh(\sqrt \lambda x),
+\]
+and if $\lambda < 0$, then
+\[
+\psi(t) = A'\cos(c\sqrt{-\lambda}t) + B'\sin(c\sqrt{-\lambda}t), \quad \varphi(x) = A\cos(\sqrt{-\lambda}x) + B\sin(\sqrt{-\lambda}x).
+\]
+If we write $\lambda = -m^2$, we find that
+\[
+u_m(x, t) = (A_m\cos(mt) + B_m\sin(mt))\sin(mx)
+\]
+is a solution to the wave equation. Since the wave equation is linear, any linear combination of these solutions is also a solution. Therefore, we have the more general solution
+\[
+u(x, t) = \sum_{m=1}^\infty \left(A_m \cos(mt) + B_m \sin(mt)\right) \sin(mx).
+\]
+Suppose further that we're subject to the initial condition $u(x, 0) = f(x)$ for some continuous function $f$ with $f(0) = f(\pi) = 0$, then
+\[
+f(x) = \sum_{m=1}^\infty A_m\sin(mx).
+\]
+This prompts the question whether any (continuous) function on $[0, \pi]$ can be expressed as a sine series with suitable coefficients $A_m$. Note that
+\[
+\int_0^\pi \sin(mx)\sin(nx)dx = \frac{\pi}{2} \delta_{mn},
+\]
+hence
+\[
+\int_0^\pi f(x) \sin(nx)sx = A_n \cdot \frac{\pi}{2}.
+\]
+We extend the domain to $[-\pi, \pi]$ and consider complex values, then $f$ can be written as
+\[
+f(x) = \sum_{n=-\infty}^\infty a_n e^{inx},
+\]
+where the coefficients are given by
+\[
+a_n = \frac{1}{2\pi} \int_{-\pi}^\pi f(x)e^{-inx}dx.
+\]
+The coefficient $a_n$ is called the $n$-th Fourier coefficient of $f$, denoted by $\widehat f(n)$. The $n$-th partial Fourier sum of $f$ is defined as
+\[
+S_n(f)(x) = \sum_{k=-n}^n \widehat f(k) e^{ikx}.
+\]
+
+\begin{prop}
+    There exists a continuous function $f: [-\pi, \pi] \to \R$ with $f(-\pi) = f(\pi)$ such that the Fourier series of $f$ diverges at some point. 
+\end{prop}
+
+\section{Uniqueness of Fourier Series}
+
+We want to know that if $\widehat f(n) = \widehat g(n)$ for all $n \in \Z$, then does it imply that $f = g$ almost everywhere? This is equivalent to asking if $\widehat f(n) = 0$ for all $n \in \Z$ implies that $f = 0$ almost everywhere.
+
+\begin{thm}
+    Suppose that $f$ is $2\pi$-periodic and is Riemann integrable on $[-\pi, \pi]$ such that $\widehat f(n) = 0$ for all $n \in \Z$, then $f(x) = 0$ whenever $f$ is continuous at $x$.
+    \begin{proof}
+        % TODO
     \end{proof}
 \end{thm}
