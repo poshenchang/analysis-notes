@@ -526,3 +526,18 @@ An IVP for ODEs is a problem of the form
         \]
     \end{proof}
 \end{thm}
+
+\section{Nowhere Analytic Smooth Functions}
+
+Take an open set $\mathcal O \subseteq \R$.
+
+\begin{df}[Fr\'echet Metric]
+    Choose an exhaustion $\mathcal O = \bigcup_{j\geq 0} K_j$. For any $f, g \in C^\infty(\mathcal O)$, define
+    \[
+    d(f, g) = \sum_{j,m\geq 0} \frac{1}{2^{j+m+2}} \cdot \frac{\rho_{j, m}(f - g)}{1 + \rho_{j, m}(f - g)},
+    \]
+    where
+    \[
+    \rho_{j, m}(h) = \sup_{x \in K_j} |h^{(m)}(x)|.
+    \]
+\end{df}
