@@ -2949,6 +2949,169 @@ We want to know that if $\widehat f(n) = \widehat g(n)$ for all $n \in \Z$, then
 \begin{thm}
     Suppose that $f$ is $2\pi$-periodic and is Riemann integrable on $[-\pi, \pi]$ such that $\widehat f(n) = 0$ for all $n \in \Z$, then $f(x) = 0$ whenever $f$ is continuous at $x$.
     \begin{proof}
-        % TODO
+        We first assume that $f$ is real-valued, and WLOG assume that $f$ is continuous at $0$ but $f(0) \neq 0$. Since $f$ is continuous at $0$, exists some $\delta \in (0, \pi/2]$ such that for all $x \in (-\delta, \delta)$, $|f(x)| > |f(0)|/2$. Consider
+        \[
+        p(y) = \epsilon + \cos y
+        \]
+        where $\epsilon > 0$ is chosen such that $|p(y)| < 1 - \epsilon/2$ whenever $\delta \leq |y| \leq \pi$. We then choose $0 < \eta < \delta$ such that $p(y) \geq 1 + \epsilon/2$ whenever $|y| < \eta$. Take $p_k(x) = (p(x))^k$, and let $M > 0$ be such that $|f(x)| \leq M$ for all $x \in [-\pi, \pi]$. Each $p_k$ is a trigonometric polynomial, thus
+        \[
+        \int_{-\pi}^\pi f(x)p_k(x) dx = 0
+        \]
+        for all integers $k$. Note that
+        \begin{gather*}
+            \abs{\int_{\delta \leq |x| \leq \pi} f(x)p_k(x) dx} \leq \int_{\delta \leq |x| \leq \pi} |f(x)||p_k(x)| dx \leq 2\pi M (1 - \epsilon/2)^k, \\
+            \int_{\eta \leq |x| < \delta} f(x)p_k(x) dx \geq 0, \\
+            \int_{|x| < \eta} f(x)p_k(x) dx \geq \frac{f(0)}{2} \left(1 + \frac{\epsilon}{2}\right)^k \cdot 2\eta \to \infty
+        \end{gather*}
+        as $k \to \infty$. Therefore,
+        \[
+        \int_{-\pi}^\pi f(x)p_k(x) dx \to \infty
+        \]
+        as $k \to \infty$, a contradiction. 
+
+        In general, we can write $f = u + iv$, where $u, v$ are real-valued functions. Note that
+        \[
+        u = \frac{f + \Bar{f}}{2}, \quad v = \frac{f - \Bar{f}}{2i},
+        \]
+        and $\widehat{\Bar{f}}(n) = \Bar{\widehat{f}(-n)}$, thus
+        \[
+        \widehat u(n) = \frac{\widehat{f}(n) + \widehat{\Bar{f}}(n)}{2} = \frac{\widehat{f}(n) + \Bar{\widehat{f}(-n)}}{2} = 0, \quad \widehat v(n) = \frac{\widehat{f}(n) - \widehat{\Bar{f}}(n)}{2i} = \frac{\widehat{f}(n) - \Bar{\widehat{f}(-n)}}{2i} = 0,
+        \]
+        thus $u(x) = v(x) = 0$ whenever $u, v$ are continuous at $x$. Therefore, $f(x) = 0$ whenever $f$ is continuous at $x$.
     \end{proof}
 \end{thm}
+
+\begin{cl}
+    Let $f$ be a $2\pi$-periodic continuous function, then
+    \begin{enumerate}[label=(\alph*)]
+        \item If $\widehat f(n) = 0$ for all $n \in \Z$, then $f \equiv 0$.
+        \item If $\sum_{n=-\infty}^\infty \abs{\widehat f(n)} < \infty$, then the partial sum $S_N(f)(x) = \sum_{n=-N}^{N} \widehat{f}(n) e^{inx}$ converges to $f$ uniformly on $[-\pi, \pi]$. 
+    \end{enumerate}
+    \begin{proof}
+        (a) This follows directly from the previous theorem since $f$ is continuous everywhere.
+
+        (b) By the Weierstrass M-test, the series $S_N(f)$ converges absolutely and uniformly to
+        \[
+        g(x) = \sum_{n=-\infty}^\infty \widehat f(n) e^{inx}.
+        \]
+        By uniform convergence, $g$ is continuous and $2\pi$-periodic. We can verify that $\widehat g(n) = \widehat f(n)$ for all $n \in \Z$. Therefore, by applying part (a) to $f - g$, we obtain that $f \equiv g$, thus $S_N(f)$ converges uniformly to $f$.
+    \end{proof}
+\end{cl}
+
+\begin{prop}
+    If $f$ is a $2\pi$-periodic twice-differentiable function, then
+    \[
+    \widehat{f}(n) = O(n^{-2}).
+    \]
+    \begin{proof}
+        By integration by parts, we have
+        \[
+        \widehat f(n) = \frac{1}{2\pi} \int_{-\pi}^\pi f(x)e^{-inx} dx = \frac{1}{2\pi in} \int_{-\pi}^\pi f'(x)e^{-inx} dx = \frac{1}{(2\pi in)^2} \int_{-\pi}^\pi f''(x)e^{-inx} dx.
+        \]
+        Since $f''$ is continuous on $[-\pi, \pi]$, it is bounded, hence
+        \[
+        |\widehat f(n)| \leq \frac{1}{(2\pi n)^2} \int_{-\pi}^\pi |f''(x)| dx = O(n^{-2}).
+        \]
+    \end{proof}
+\end{prop}
+
+\section{Convolution}
+
+Given a $2\pi$-periodic function $f$, the partial sum
+\[
+S_N(f) = \sum_{-N}^N f(n) e^{inx}
+\]
+can be written as a convolution. Define the Dirichlet kernel $D_n: [-\pi, \pi] \to \R$ by
+\[
+D_n(x) = \sum_{k=-n}^n e^{ikx} = \frac{\sin\left(\left(n + \frac12\right)x\right)}{\sin(x/2)}.
+\]
+Then
+\begin{align*}
+    S_N(x) &= \sum_{n=-N}^N \widehat f(n) e^{inx} \\
+    &= \sum_{n=-N}^N \left(\frac{1}{2\pi} \int_{-\pi}^\pi f(t)e^{-int}dt\right) e^{inx} \\
+    &= \frac{1}{2\pi} \int_{-\pi}^\pi f(t) \left(\sum_{n=-N}^N e^{in(x-t)}\right) dt \\
+    &= \frac{1}{2\pi} \int_{-\pi}^\pi f(t) D_N(x-t) dt.
+\end{align*}
+
+\begin{prop}
+    Let $f, g, h$ be $2\pi$-periodic integrable functions. Then
+    \begin{itemize}
+        \item $f * (g + h) = f * g + f * h$,
+        \item For all $c \in \C$, $(cf) * g = c(f * g) = f * (cg)$,
+        \item $f * g = g * f$,
+        \item $(f * g) * h = f * (g * h)$.
+    \end{itemize}
+\end{prop}
+
+\begin{lm}
+    \label{lm:riemann-approximation}
+    Suppose that $f$ is Riemann integrable on $[-\pi, \pi]$ and $|f| \leq M$ for some $M > 0$. Then exists a sequence $(f_k)$ of $2\pi$-periodic continuous functions such that for all $k$, $|f_k| \leq M$ and
+    \[
+    \lim_{k \to \infty} \int_{-\pi}^\pi |f(t) - f_k(t)| dt = 0.
+    \]
+    \begin{proof}
+        Although $f$ can be complex-valued, we can approximate its real and imaginary parts separately. Therefore, we may assume that $f$ is real-valued.
+
+        Let $\epsilon > 0$. Choose a partition $\mathcal P = \set{x_0, x_1, \ldots, x_n}$ of $[-\pi, \pi]$ such that the upper and lower Riemann sums satisfy
+        \[
+        U(f, \mathcal P) - L(f, \mathcal P) < \frac{\epsilon}{2}.
+        \]
+        Set $\Tilde f(x) = \sup_{t \in [x_{i-1}, x_i]} f(t)$ for $x \in [x_{i-1}, x_i)$. Then $|\Tilde f| \leq M$ and
+        \[
+        \int_{-\pi}^\pi |\Tilde f(t) - f(t)| dt = U(f, \mathcal P) - \int_{-\pi}^\pi f(t) dt < \frac{\epsilon}{2}.
+        \]
+        Next, we approximate $\Tilde f$ by a $2\pi$-periodic continuous function. Pick $\delta = \epsilon/8nM$, and define $\Tilde\Tilde f(x) = \Tilde f(x)$ for $x$ not in the $\delta$-neighborhood of any $x_i$, and define $\Tilde\Tilde f$ to be linear on each $\delta$-neighborhood of $x_i$. Specially, on the endpoints $x_0 = -\pi$ and $x_n = \pi$, we set $\Tilde\Tilde f(x_0) = \Tilde\Tilde f(x_n) = 0$, and define $\Tilde\Tilde f$ to be linear on the $\delta$-neighborhood of $x_0$ and $x_n$. Then $\Tilde\Tilde f$ is continuous and $2\pi$-periodic. Moreover, $|\Tilde\Tilde f| \leq M$. Note that
+        \begin{align*}
+            \int_{-\pi}^\pi |\Tilde\Tilde f(t) - \Tilde f(t)| dt &\leq \sum_{i=1}^n \int_{x_i - \delta}^{x_i + \delta} |\Tilde\Tilde f(t) - \Tilde f(t)| dt \\
+            &\leq \sum_{i=1}^n \int_{x_i - \delta}^{x_i + \delta} 2M dt = 4Mn\delta = \frac{\epsilon}{2}.
+        \end{align*}
+        Therefore,
+        \[
+        \int_{-\pi}^\pi |\Tilde\Tilde f(t) - f(t)| dt \leq \epsilon.
+        \]
+        By choosing $\epsilon = 1/k$ for $k \in \N$, we obtain a sequence of continuous functions $(f_k) = (\Tilde\Tilde f)$ that converges to $f$ in $L^1$ norm.
+    \end{proof}
+\end{lm}
+
+\begin{prop}
+    If $f, g$ are $2\pi$-periodic integrable functions, then $f * g$ is continuous.
+    \begin{proof}
+        First assume that both $f$ and $g$ are continuous, then
+        \begin{align*}
+            |(f * g)(x) - (f * g)(y)| &= \abs{\frac{1}{2\pi} \int_{-\pi}^\pi f(t)(g(x-t) - g(y-t))dt} \\
+            &\leq \frac{1}{2\pi} \int_{-\pi}^\pi |f(t)| |g(x-t) - g(y-t)| dt \\
+            &\leq \|f\|_\infty \cdot \|g(x - \cdot) - g(y - \cdot)\|_\infty.
+        \end{align*}
+        Since $g$ is continuous on $[-\pi, \pi]$, it is uniformly continuous, thus we can make the last term arbitrarily small by choosing $x$ sufficiently close to $y$. Therefore, $f * g$ is continuous.
+
+        For general integrable $f$ and $g$, we can approximate them by continuous functions. By Lemma \ref{lm:riemann-approximation}, exists sequences of continuous functions $(f_k)$ and $(g_k)$ such that $f_k \to f$ and $g_k \to g$ in $L^1$ norm. Note that
+        \begin{align*}
+            \abs{(f * g)(x) - (f_k * g_k)(x)} &= \abs{f * (g - g_k)(x) + (f - f_k) * g_k(x)} \\
+            &\leq \abs{f * (g - g_k)(x)} + \abs{(f - f_k) * g_k(x)} \\
+            &\leq \frac{1}{2\pi} \int_{-\pi}^\pi |f(t)| |g(t) - g_k(t)| dt + \frac{1}{2\pi} \int_{-\pi}^\pi |f(t) - f_k(t)| |g_k(t)| dt \\
+            &\leq \frac{1}{2\pi} \|f\|_1 \int_{-\pi}^\pi |g(t) - g_k(t)| dt + \frac{1}{2\pi} \|g_k\|_1 \int_{-\pi}^\pi |f(t) - f_k(t)| dt,
+        \end{align*}
+        which approaches $0$ as $k \to \infty$. Since each $f_k * g_k$ is continuous, and $f * g$ is the uniform limit of continuous functions, $f * g$ is also continuous.
+    \end{proof}
+\end{prop}
+
+\begin{prop}
+    If $f, g$ are $2\pi$-periodic integrable functions, then for all $n \in \Z$,
+    \[
+    \widehat{f * g}(n) = \widehat f(n) \cdot \widehat g(n).
+    \]
+    \begin{proof}
+        By definition,
+        \begin{align*}
+            \widehat{f * g}(n) &= \frac{1}{2\pi} \int_{-\pi}^\pi (f * g)(x) e^{-inx} dx \\
+            &= \frac{1}{2\pi} \int_{-\pi}^\pi \left(\frac{1}{2\pi} \int_{-\pi}^\pi f(t) g(x - t) dt\right) e^{-inx} dx \\
+            &= \frac{1}{(2\pi)^2} \int_{-\pi}^\pi f(t) \left(\int_{-\pi}^\pi g(x - t) e^{-inx} dx\right) dt.
+        \end{align*}
+        Making the substitution $y = x - t$, we have
+        \begin{align*}
+            \widehat{f * g}(n) &= \frac{1}{(2\pi)^2} \int_{-\pi}^\pi f(t) \left(\int_{-\pi}^\pi g(y) e^{-in(y+t)} dy\right) dt \\
+            &= \frac{1}{(2\pi)^2} \int_{-\pi}^\pi f(t) e^{-int} dt \cdot \int_{-\pi}^\pi g(y) e^{-iny} dy \\
+            &= \widehat f(n) \cdot \widehat g(n).
+        \end{align*}
+    \end{proof}
+\end{prop}
