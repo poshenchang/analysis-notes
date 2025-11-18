@@ -3115,3 +3115,250 @@ Then
         \end{align*}
     \end{proof}
 \end{prop}
+
+\begin{df}
+    A sequence of $2\pi$-periodic integrable functions $(K_n)$ is said to be an approximation to the identity if
+    \begin{enumerate}[label=(\roman*)]
+        \item For each $n$, 
+        \[
+        \frac{1}{2\pi} \int_{-\pi}^\pi K_n(x)\, dx = 1,
+        \]
+        \item Exists some $M > 0$ such that for all $n$,
+        \[
+        \frac{1}{2\pi} \int_{-\pi}^\pi |K_n(x)|\, dx \leq M,
+        \]
+        \item For all $\delta \in (0, \pi)$,
+        \[
+        \lim_{n \to \infty} \int_{\delta \leq |x| \leq \pi} |K_n(x)|\, dx = 0.
+        \]
+    \end{enumerate}
+\end{df}
+
+\begin{prop}
+    Let $(K_n)$ be an approximation to the identity, and let $f$ be a $2\pi$-periodic integrable function. Then, whenever $f$ is continuous at $x$,
+    \[
+    \lim_{n \to \infty} (f * K_n)(x) = f(x).
+    \]
+    Moreover, the convergence is uniform.
+    \begin{proof}
+        Let $\epsilon > 0$. Since $f$ is continuous at $x$, exists some $\delta \in (0, \pi)$ such that for all $|y| < \delta$, $|f(x - y) - f(x)| < \epsilon/(2M)$, where $M$ is as in condition (ii) of the definition of approximation to the identity. Then
+        \begin{align*}
+            & |(f * K_n)(x) - f(x)| \\
+            =& \abs{\frac{1}{2\pi} \int_{-\pi}^\pi K_n(y)(f(x - y) - f(x)) dy} \\
+            \leq& \frac{1}{2\pi} \int_{|y| < \delta} |K_n(y)| |f(x - y) - f(x)| dy + \frac{1}{2\pi} \int_{\delta \leq |y| \leq \pi} |K_n(y)| |f(x - y) - f(x)| dy \\
+            \leq& \frac{\epsilon}{2M} \cdot \frac{1}{2\pi} \int_{|y| < \delta} |K_n(y)| dy + 2\|f\|_1 \cdot \frac{1}{2\pi} \int_{\delta \leq |y| \leq \pi} |K_n(y)| dy \\
+            \leq& \frac{\epsilon}{2} + 2\|f\|_1 \cdot \frac{1}{2\pi} \int_{\delta \leq |y| \leq \pi} |K_n(y)| dy.
+        \end{align*}
+        By condition (iii) of the definition of approximation to the identity, integrating outside of a $\delta$-neighborhood of $0$ can be made arbitrarily small for sufficiently large $n$. Therefore, exists some $N$ such that for all $n \geq N$,
+        \[
+        |(f * K_n)(x) - f(x)| < \epsilon.
+        \]
+        The convergence is uniform since $\delta$ does not depend on $x$.
+    \end{proof}
+\end{prop}
+
+Note that the Dirichlet kernel $(D_n)$ does not form an approximation to the identity since
+\[
+\frac{1}{2\pi} \int_{-\pi}^\pi |D_n(x)| dx \to \infty
+\]
+as $n \to \infty$, thus in general, we cannot expect pointwise convergence of the Fourier series, even for continuous functions. 
+
+\section{Summability and Convergence}
+
+Let $\sum_{k=0}^\infty c_k$ be a series of complex numbers. Define the $n$-th partial sum $s_n = \sum_{k=0}^n c_k$. We say that the series converges to $s$ if $\lim_{n \to \infty} s_n = s$. Define the $n$-th Ces\'aro mean of the series to be
+\[
+\sigma_n = \frac{1}{n} \sum_{k=0}^{n-1} s_k.
+\]
+
+\begin{df}
+    If $\lim_{n \to \infty} \sigma_n = \sigma$, we say that the series is Ces\'aro summable to $\sigma$.
+\end{df}
+
+We can see that if a series converges, then it is also Ces\'aro summable to the same limit. 
+
+Define the Fej\'er kernel $F_n: [-\pi, \pi] \to \R$ by
+\[
+F_n(x) = \frac{1}{n} \sum_{k=0}^{n-1} D_k(x).
+\]
+
+\begin{lm}
+    For $x \neq 0$, we have
+    \[
+    F_n(x) = \frac{1}{n} \left(\frac{\sin\left(\frac{nx}{2}\right)}{\sin\left(\frac{x}{2}\right)}\right)^2.
+    \]
+    Moreover, $(F_n)$ is an approximation to the identity.
+    \begin{proof}
+        Note that
+        \begin{align*}
+            F_n(x) &= \frac{1}{n} \sum_{k=0}^{n-1} \frac{\sin\left(\left(k + \frac12\right)x\right)}{\sin(x/2)} \\
+            &= \frac{1}{n\sin(x/2)} \cdot ~Im \left(\sum_{k=0}^{n-1} e^{i\left(k + \frac12\right)x}\right) \\
+            &= \frac{1}{n\sin(x/2)} \cdot ~Im \left(e^{ix/2} \cdot \frac{1 - e^{inx}}{1 - e^{ix}}\right) \\
+            &= \frac{1}{n} \cdot \frac{\sin(nx/2)}{\sin(x/2)} \cdot \frac{\sin(nx/2)}{\sin(x/2)} \\
+            &= \frac{1}{n} \left(\frac{\sin\left(\frac{nx}{2}\right)}{\sin\left(\frac{x}{2}\right)}\right)^2.
+        \end{align*}
+
+        We now verify that $(F_n)$ is an approximation to the identity. For each $n$,
+        \[
+        \frac{1}{2\pi} \int_{-\pi}^\pi F_n(x) dx = \frac{1}{n} \sum_{k=0}^{n-1} \frac{1}{2\pi} \int_{-\pi}^\pi D_k(x) dx = 1.
+        \]
+        Moreover,
+        \[
+        F_n(x) \geq 0
+        \]
+        for all $x$, hence
+        \[
+        \frac{1}{2\pi} \int_{-\pi}^\pi |F_n(x)| dx = \frac{1}{2\pi} \int_{-\pi}^\pi F_n(x) dx = 1.
+        \]
+        Finally, for all $\delta \in (0, \pi)$,
+        \begin{align*}
+            \int_{\delta \leq |x| \leq \pi} F_n(x) dx &\leq \int_{\delta}^{\pi} \frac{1}{n} \left(\frac{1}{\sin(x/2)}\right)^2 dx \\
+            &\leq \frac{1}{n} \cdot \frac{\pi - \delta}{\sin^2(\delta/2)} \to 0
+        \end{align*}
+        as $n \to \infty$. Therefore, $(F_n)$ is an approximation to the identity.
+    \end{proof}
+\end{lm}
+
+\begin{cl}
+    If $f$ is a $2\pi$-periodic integrable function, then its Fourier series is Ces\'aro summable to $f(x)$ whenever $f$ is continuous at $x$. Moreover, if $f$ is continuous on $[-\pi, \pi]$, then the Ces\'aro means converge to $f$ uniformly on $[-\pi, \pi]$.
+    \begin{proof}
+        Note that the $n$-th Ces\'aro mean of the Fourier series of $f$ is given by
+        \[
+        \sigma_n(f)(x) = \frac{1}{n} \sum_{k=0}^{n-1} S_k(f)(x) = \frac{1}{2\pi} \int_{-\pi}^\pi f(t) F_n(x - t) dt = (f * F_n)(x).
+        \]
+        By the previous proposition, whenever $f$ is continuous at $x$,
+        \[
+        \lim_{n \to \infty} \sigma_n(f)(x) = f(x).
+        \]
+        Moreover, if $f$ is continuous on $[-\pi, \pi]$, then the convergence is uniform.
+    \end{proof}
+\end{cl}
+
+\begin{cl}
+    $2\pi$-periodic continuous functions can be uniformly approximated by trigonometric polynomials.
+    \begin{proof}
+        Let $f$ be a $2\pi$-periodic continuous function and $\epsilon > 0$. By the previous corollary, the Ces\'aro means $\sigma_n$ converge to $f$ uniformly. Therefore, exists some $N$ such that for all $n \geq N$,
+        \[
+        \|f - \sigma_n\|_\infty < \epsilon.
+        \]
+        Since each $\sigma_n$ is a trigonometric polynomial, we are done.
+    \end{proof}
+\end{cl}
+
+A series of complex numbers $\sum_{k=0}^\infty c_k$ is said to be Abel summable to $s$ if the power series
+\[
+A(r) := \sum_{k=0}^\infty c_kr^k
+\]
+converges for all $r \in [0, 1)$ and
+\[
+\lim_{r \to 1^-} A(r) = s.
+\]
+We can see that if a series converges, then it is also Abel summable to the same limit.
+
+\begin{prop}
+    If a series is Ces\'aro summable to $s$, then it is also Abel summable to $s$.
+    \begin{proof}
+        Let $\sum_{k=0}^\infty c_k$ be a series that is Ces\'aro summable to $s$. Define the partial sums $s_n = \sum_{k=0}^n c_k$ and the Ces\'aro means $\sigma_n = \frac{1}{n} \sum_{k=0}^{n-1} s_k$. By assumption, $\lim_{n \to \infty} \sigma_n = s$.
+
+        For $r \in [0, 1)$, we have
+        \begin{align*}
+            A(r) &= \sum_{k=0}^\infty c_kr^k = (1 - r) \sum_{k=0}^\infty s_k r^k \\
+            &= (1 - r) \sum_{k=0}^\infty \left(\frac{1}{k} \sum_{j=0}^{k-1} s_j + (s_k - \sigma_k)\right) r^k \\
+            &= (1 - r) \sum_{k=0}^\infty \sigma_k r^k + (1 - r) \sum_{k=0}^\infty (s_k - \sigma_k) r^k.
+        \end{align*}
+        As $r \to 1^-$, the first term approaches $s$ by the definition of Ces\'aro summability. The second term approaches $0$ since $s_k - \sigma_k$ is bounded. Therefore, $\lim_{r \to 1^-} A(r) = s$, and the series is Abel summable to $s$.
+    \end{proof}
+\end{prop}
+
+\begin{rmk}
+    Consider the series
+    \[
+    \sum_{n=0}^\infty (-1)^n (n+1).
+    \]
+    The Abel sum of this series is given by
+    \[
+    A(r) = \sum_{n=0}^\infty (-1)^n (n+1) r^n = \frac{1}{(1 + r)^2},
+    \]
+    thus the series is Abel summable to $1/4$. However, the Ces\'aro means of the series diverge. This shows that the converse of the previous proposition is not true in general.
+\end{rmk}
+
+For Fourier series, we define the Abel means of the Fourier series of a $2\pi$-periodic integrable function $f$ to be
+\[
+A_r(f)(x) = \sum_{n=-\infty}^\infty \widehat f(n) r^{|n|} e^{inx}, \quad r \in [0, 1).
+\]
+This is the Abel mean with $c_0 = \widehat f(0)$ and $c_n = \widehat f(n) e^{inx} + \widehat f(-n) e^{-inx}$ for $n \geq 1$. Since
+\[
+|\widehat f(n) e^{inx}| = |\widehat f(n)| \leq \frac{1}{2\pi} \int_{-\pi}^\pi |f(t)| dt = \frac{1}{2\pi} \|f\|_1, 
+\]
+by the Weierstrass M-test, the series converges absolutely and uniformly for all $r \in [0, 1)$. Note that
+\begin{align*}
+    A_r(f)(x) &= \sum_{n=-\infty}^\infty \widehat f(n) r^{|n|} e^{inx} \\
+    &= \sum_{n=-\infty}^\infty \left(\frac{1}{2\pi} \int_{-\pi}^\pi f(t)e^{-int} dt\right) r^{|n|} e^{inx} \\
+    &= \frac{1}{2\pi} \int_{-\pi}^\pi f(t) \left(\sum_{n=-\infty}^\infty r^{|n|} e^{in(x-t)}\right) dt,
+\end{align*}
+thus we can define the Poisson kernel $P_r: [-\pi, \pi] \to \R$ by
+\[
+P_r(x) = \sum_{n=-\infty}^\infty r^{|n|} e^{inx} = \frac{1 - r^2}{1 - 2r\cos x + r^2}.
+\]
+
+\begin{lm}
+    For $r \in [0, 1)$, 
+    \[
+    P_r(x) = \frac{1 - r^2}{1 - 2r\cos x + r^2}.
+    \]
+    Moreover, the Poisson kernels $(P_r)_{r \in [0, 1)}$ form an approximation to the identity as $r \to 1^-$.
+    \begin{proof}
+        Write $\omega = r e^{ix}$. Then
+        \begin{align*}
+            P_r(x) &= \sum_{n=-\infty}^\infty r^{|n|} e^{inx} \\
+            &= \sum_{n=0}^\infty \omega^n + \sum_{n=1}^\infty \Bar{\omega}^n \\
+            &= \frac{1}{1 - \omega} + \frac{1}{1 - \Bar{\omega}} - 1 \\
+            &= \frac{1 - \omega + 1 - \Bar{\omega} - (1 - \omega)(1 - \Bar{\omega})}{(1 - \omega)(1 - \Bar{\omega})} \\
+            &= \frac{1 - |\omega|^2}{|1 - \omega|^2} = \frac{1 - r^2}{1 - 2r\cos x + r^2}.
+        \end{align*}
+        We now know that $P_r$ is nonnegative. Integrating termwise, we obtain
+        \[
+        \frac{1}{2\pi} \int_{-\pi}^\pi P_r(x) dx = 1.
+        \]
+        If $1/2 \leq r < 1$ and $\delta \leq |x| \leq \pi$, then exists $c_\delta > 0$ such that
+        \[
+        1 - 2r\cos x + r^2 = (1-r)^2 + 2r(1 - \cos x) \geq c_\delta,
+        \]
+        thus
+        \[
+        P_r(x) \leq \frac{1 - r^2}{c_\delta} \leq \frac{2(1 - r)}{c_\delta}.
+        \]
+        Therefore,
+        \[
+        \int_{\delta \leq |x| \leq \pi} P_r(x) dx \leq \frac{4\pi(1 - r)}{c_\delta} \to 0
+        \]
+        as $r \to 1^-$. This shows that $(P_r)$ form an approximation to the identity.
+    \end{proof}
+\end{lm}
+
+We say that a sequence $(f_n)$ of $2\pi$-periodic integrable function converges to $f$ in $L^2$ norm if
+\[
+\int_{-\pi}^\pi |f_n(x) - f(x)|^2 dx \to 0
+\]
+as $n \to \infty$. It concerns the global behavior of the functions instead of pointwise behavior, and is closely related to orthogonality.
+
+\begin{thm}
+    Suppose that $f$ is a $2\pi$-periodic integrable function. Then $S_N(f)$ converges to $f$ in $L^2$ norm.
+\end{thm}
+
+\section{Infinite-dimensional Vector Spaces}
+
+The set of all double-sided sequences of complex numbers with finite $2$-norm
+\[
+\ell^2(\Z) = \left\{(a_n)_{n \in \Z} \mid \sum_{n=-\infty}^\infty |a_n|^2 < \infty\right\}
+\]
+is a vector space over $\C$. For two sequences $A = (a_n)$ and $B = (b_n)$ in $\ell^2(\Z)$, we define their inner product to be
+\[
+\langle A, B \rangle = \sum_{n=-\infty}^\infty a_n \Bar{b_n}.
+\]
+This inner product induces a norm $\|A\|_2 = \sqrt{\langle A, A \rangle}$. With this norm, $\ell^2(\Z)$ is a complete metric space. Such a complete inner product space is called a Hilbert space.
+
+Let $\mathcal R$ denote the space of all complex-valued Riemann integrable functions on $[-\pi, \pi]$. For $f, g \in \mathcal R$, we define their inner product to be
+\[
+\langle f, g \rangle = \int_{-\pi}^\pi f(x) \Bar{g(x)} dx.
+\]
+Note that this is technically not an inner product since $\langle f, f \rangle = 0$ only implies that $f$ is continuous and zero almost everywhere. However, if we identify two functions whose difference is continuous and zero almost everywhere, then this becomes a valid inner product. This inner product induces a norm $\|f\|_2 = \sqrt{\langle f, f \rangle}$. 
