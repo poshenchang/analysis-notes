@@ -541,3 +541,95 @@ Take an open set $\mathcal O \subseteq \R$.
     \rho_{j, m}(h) = \sup_{x \in K_j} |h^{(m)}(x)|.
     \]
 \end{df}
+
+\section{Riemann-Lebesgue Lemma}
+
+\begin{prop}
+    If $f$ is Riemann integrable on $[a, b]$, then
+    \[
+    \lim_{n \to \infty} \int_a^b f(x) \sin(nx) \, dx = 0, \quad \lim_{n \to \infty} \int_a^b f(x) \cos(nx) \, dx = 0.
+    \]
+    \begin{pf}
+        First, assume $f$ is a step function. Then the result follows from direct computation. For general Riemann integrable $f$, given $\epsilon > 0$, $\exists$ a step function $g$ such that $\int_a^b |f(x) - g(x)| \, dx < \epsilon$. Then
+        \begin{align*}
+            \abs{\int_a^b f(x) \sin(nx) \, dx} &\leq \abs{\int_a^b (f(x) - g(x)) \sin(nx) \, dx} + \abs{\int_a^b g(x) \sin(nx) \, dx} \\
+            &\leq \int_a^b |f(x) - g(x)| \, dx + \abs{\int_a^b g(x) \sin(nx) \, dx} \\
+            &< \epsilon + \abs{\int_a^b g(x) \sin(nx) \, dx}.
+        \end{align*}
+        Since $\epsilon$ is arbitrary and the second term tends to $0$ as $n \to \infty$, we are done.
+    \end{pf}
+\end{prop}
+
+\begin{cl}
+    $\abs{\widehat f(n)} \to 0$ as $n \to \infty$ for any Riemann integrable function $f$ on $[-\pi, \pi]$, where
+    \[
+    \widehat f(n) = \frac{1}{2\pi} \int_{-\pi}^\pi f(x) e^{-inx} \, dx.
+    \]
+\end{cl}
+
+\begin{prop}
+    If $f$ is $L^1$ on $\R$, then
+    \[
+    \lim_{n \to \infty} \int_{-\infty}^\infty f(t) e^{-i\xi t} \, dt = 0.
+    \]
+    \begin{pf}
+        Suppose that $f$ is continuous and compact supported. Note that
+        \[
+        \int_{-\infty}^\infty f(t) e^{-i\xi t} \, dt = \int_{-\infty}^\infty f\left(t + \frac{\pi}{\xi}\right) e^{-i\xi t} e^{-i\pi} \, dt = -\int_{-\infty}^\infty f\left(t + \frac{\pi}{\xi}\right) e^{-i\xi t} \, dt.
+        \]
+        Thus,
+        \begin{align*}
+            \abs{\int_{-\infty}^\infty f(t) e^{-i\xi t} \, dt} &= \frac{1}{2} \abs{\int_{-\infty}^\infty \left(f(t) - f\left(t + \frac{\pi}{\xi}\right)\right) e^{-i\xi t} \,dt} \\
+            &\leq \frac{1}{2} \int_{-\infty}^\infty \abs{f(t) - f\left(t + \frac{\pi}{\xi}\right)} \, dt.
+        \end{align*}
+        Since $f$ is uniformly continuous, the right hand side tends to $0$ as $\xi \to \infty$. For general $f \in L^1(\R)$, given $\epsilon > 0$, $\exists$ a continuous compact supported function $g$ such that $\int_{-\infty}^\infty |f(t) - g(t)| \, dt < \epsilon$. Then
+        \begin{align*}
+            \abs{\int_{-\infty}^\infty f(t) e^{-i\xi t} \, dt} &\leq \abs{\int_{-\infty}^\infty (f(t) - g(t)) e^{-i\xi t} \, dt} + \abs{\int_{-\infty}^\infty g(t) e^{-i\xi t} \, dt} \\
+            &\leq \int_{-\infty}^\infty |f(t) - g(t)| \, dt + \abs{\int_{-\infty}^\infty g(t) e^{-i\xi t} \, dt} \\
+            &< \epsilon + \abs{\int_{-\infty}^\infty g(t) e^{-i\xi t} \, dt}.
+        \end{align*}
+        Since $\epsilon$ is arbitrary and the second term tends to $0$ as $\xi \to \infty$, we are done.
+    \end{pf}
+\end{prop}
+
+\begin{df}
+    A Banach space is a complete normed space. For Banach spaces $B_1$ and $B_2$, the norm of a (bounded) linear operator $T\colon B_1 \to B_2$ is defined by
+    \[
+    \|T\| = \sup_{x \neq 0} \frac{\|Tx\|_{B_2}}{\|x\|_{B_1}}
+    = \sup_{\|x\|_{B_1} = 1} \|Tx\|_{B_2}
+    = \sup_{\|x\|_{B_1} \le 1} \|Tx\|_{B_2}.
+    \]
+    An operator $T\colon B_1 \to B_2$ is called bounded if $\|T\| < \infty$.
+\end{df}
+
+\begin{lm}
+    A linear operator $T: B_1 \to B_2$ between Banach spaces is bounded iff it is continuous.
+    \begin{pf}
+        If $T$ is bounded, then for any $\epsilon > 0$, let $\delta = \epsilon / \|T\|$. Then for any $x, y \in B_1$ with $\|x - y\|_{B_1} < \delta$, we have
+        \[
+        \|Tx - Ty\|_{B_2} = \|T(x - y)\|_{B_2} \leq \|T\| \cdot \|x - y\|_{B_1} < \|T\| \cdot \delta = \epsilon,
+        \]
+        which shows that $T$ is continuous.
+
+        Conversely, if $T$ is continuous, then it is continuous at $0$. Thus, $\exists \delta > 0$ such that for all $x \in B_1$ with $\|x\|_{B_1} < \delta$, $\|Tx\|_{B_2} < 1$. For any $x \in B_1$ with $\|x\|_{B_1} \neq 0$, let $y = (\delta / (2\|x\|_{B_1})) x$, then $\|y\|_{B_1} < \delta$, hence $\|Ty\|_{B_2} < 1$. Therefore,
+        \[
+        \|Tx\|_{B_2} = \frac{2\|x\|_{B_1}}{\delta} \|Ty\|_{B_2} < \frac{2\|x\|_{B_1}}{\delta}.
+        \]
+        This shows that $T$ is bounded with $\|T\| \leq 2/\delta$.
+    \end{pf}
+\end{lm}
+
+\begin{thm}
+    Given a family $\mathcal A$ of bounded linear operators from a Banach space $B_1$ to a Banach space $B_2$, if $\sup_{T \in \mathcal A} \|T\| = \infty$, then there exists $x \in B_1$ such that $\sup_{T \in \mathcal A} \|Tx\|_{B_2} = \infty$.
+    \begin{pf}
+        Suppose not, then for every $x \in B_1$, $\sup_{T \in \mathcal A} \|Tx\|_{B_2} < \infty$. For each $n \in \N$, define
+        \[
+        F_n = \set{x \in B_1 \mid \sup_{T \in \mathcal A} \|Tx\|_{B_2} \leq n}.
+        \]
+        Note that $B_1 = \bigcup_{n=1}^\infty F_n$. For a sequence $(x_k)$ in $F_n$ that converges to some $x \in B_1$, we also have $x \in F_n$, hence $F_n$ is closed. By Baire Category Theorem, $\exists n_0 \in \N$ such that $int(F_{n_0}) \neq \emptyset$. Thus, $\exists x_0 \in B_1$ and $r > 0$ such that $B(x_0, r) \subseteq F_{n_0}$. For any $x \in B_1$ with $\|x\|_{B_1} = 1$, we have $x_0 + r x \in F_{n_0}$, hence for all $T \in \mathcal A$,
+        \[
+        \|T x\|_{B_2} = \frac{1}{r} \|T(x_0 + r x) - T x_0\|_{B_2} \leq \frac{1}{r} \left(\sup_{T \in \mathcal A} \|T(x_0 + r x)\|_{B_2} + \sup_{T \in \mathcal A} \|T x_0\|_{B_2}\right) \leq \frac{2 n_0}{r}.
+        \]
+        This shows that $\sup_{T \in \mathcal A} \|T\| < \infty$, a contradiction.
+    \end{pf}
+\end{thm}
