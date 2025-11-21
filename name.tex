@@ -3345,7 +3345,7 @@ as $n \to \infty$. It concerns the global behavior of the functions instead of p
     Suppose that $f$ is a $2\pi$-periodic integrable function. Then $S_N(f)$ converges to $f$ in $L^2$ norm.
 \end{thm}
 
-\section{Infinite-dimensional Vector Spaces}
+\section{$L^2$ Convergence}
 
 The set of all double-sided sequences of complex numbers with finite $2$-norm
 \[
@@ -3359,6 +3359,250 @@ This inner product induces a norm $\|A\|_2 = \sqrt{\langle A, A \rangle}$. With 
 
 Let $\mathcal R$ denote the space of all complex-valued Riemann integrable functions on $[-\pi, \pi]$. For $f, g \in \mathcal R$, we define their inner product to be
 \[
-\langle f, g \rangle = \int_{-\pi}^\pi f(x) \Bar{g(x)} dx.
+\langle f, g \rangle = \frac{1}{2\pi}\int_{-\pi}^\pi f(x) \Bar{g(x)} dx.
 \]
 Note that this is technically not an inner product since $\langle f, f \rangle = 0$ only implies that $f$ is continuous and zero almost everywhere. However, if we identify two functions whose difference is continuous and zero almost everywhere, then this becomes a valid inner product. This inner product induces a norm $\|f\|_2 = \sqrt{\langle f, f \rangle}$. 
+
+Let $e_n(x) = e^{inx}$ for $n \in \Z$. Then $\{e_n\}_{n \in \Z}$ is an orthonormal set in $\mathcal R$ since
+\[
+\langle e_m, e_n \rangle = \delta_{mn}.
+\]
+If $f \in \mathcal R$, then its Fourier coefficients are given by
+\[
+\widehat f(n) = \langle f, e_n \rangle.
+\]
+Since we can write
+\[
+S_N(f)(x) = \sum_{n=-N}^N \widehat f(n) e^{inx} = \sum_{n=-N}^N \langle f, e_n \rangle e_n(x),
+\]
+we see that $f - S_N(f)$ is orthogonal to each $e_n$ for $|n| \leq N$. Therefore, by the Pythagorean theorem,
+\[
+\|f\|_2^2 = \|f - S_N(f)\|_2^2 + \|S_N(f)\|_2^2.
+\]
+
+\begin{lm}
+    If $f \in \mathcal R$, then
+    \[
+    \|f - S_N(f)\| \leq \|f - \sum_{n=-N}^N a_n e_n\|
+    \]
+    for all choices of complex numbers $a_n$.
+    \begin{proof}
+        Note that
+        \[
+        \left(f - S_N(f)\right) \perp \left(\sum_{n=-N}^{N} \left(\langle f, e_n\rangle\right) - e_n\right),
+        \]
+        hence by the Pythagorean theorem,
+        \[
+        \|f - \sum_{n=-N}^{N} a_n e_n\|^2 = \|f - S_N(f)\|^2 + \|S_N(f) - \sum_{n=-N}^{N} a_n e_n\|^2 \geq \|f - S_N(f)\|^2.
+        \]
+    \end{proof}
+\end{lm}
+
+\begin{prop}
+    If $f$ is a $2\pi$-periodic integrable function, then
+    \[
+    \lim_{N \to \infty} \|f - S_N(f)\|_2 = 0.
+    \]
+    \begin{proof}
+        First assume that $f$ is continuous, then we can approximate $f$ uniformly by trigonometric polynomials. Given $\epsilon > 0$, exists some trigonometric polynomial $P(x)$ such that $\|f - P\|_\infty < \epsilon$, then we also have $\|f - P\|_2 < \epsilon$. Let $M$ be the degree of $P$, then for all $N \geq M$,
+        \[
+        \|f - S_N(f)\|_2 \leq \|f - P\|_2 < \epsilon.
+        \]
+        For general integrable $f$, we can approximate it by a $2\pi$-periodic continuous function such that
+        \[
+        \sup_{x \in [-\pi, \pi]} |g(x)| \leq \sup_{x \in [-\pi, \pi]} |f(x)| =: K
+        \]
+        and
+        \[
+        \int_{-\pi}^\pi |f(x) - g(x)| dx < \frac{\pi\epsilon^2}{4K}.
+        \]
+        Then
+        \begin{align*}
+            \|f - g\|_2^2 &= \frac{1}{2\pi} \int_{-\pi}^\pi |f(x) - g(x)|^2 dx \\
+            &\leq \frac{2K}{2\pi} \int_{-\pi}^\pi |f(x) - g(x)| dx < \frac{\epsilon^2}{4}.
+        \end{align*}
+        Therefore, $\|f - g\|_2 < \epsilon/2$. Since $g$ is continuous, exists some trigonometric polynomial $P(x)$ such that $\|g - P\|_2 < \epsilon/2$, then
+        \[
+        \|f - S_N(f)\|_2 \leq \|f - P\|_2 \leq \|f - g\|_2 + \|g - P\|_2 < \epsilon.
+        \]        
+    \end{proof}
+\end{prop}
+
+\begin{cl}[Parseval's Identity]
+    If $f$ is a $2\pi$-periodic integrable function, then
+    \[
+    \|f\|_2^2 = \sum_{n=-\infty}^\infty |\widehat f(n)|^2.
+    \]
+    \begin{proof}
+        Note that
+        \[
+        \left(f - S_N(f)\right) \perp S_N(f),
+        \]
+        hence by the Pythagorean theorem,
+        \[
+        \|f\|_2^2 = \|f - S_N(f)\|_2^2 + \|S_N(f)\|_2^2.
+        \]
+        As $N \to \infty$, $\|f - S_N(f)\|_2^2 \to 0$, and
+        \[
+        \|f\|_2^2 = \sum_{n=-\infty}^\infty |\widehat f(n)|^2.
+        \]
+    \end{proof}
+\end{cl}
+
+Parseval's identity implies that the mapping $f \mapsto (\widehat f(n))_{n \in \Z}$ is an isometry from $\mathcal R$ to $\ell^2(\Z)$. Since $\mathcal R$ is not complete, this mapping cannot be surjective. Therefore, exists some sequence $(a_n) \in \ell^2(\Z)$ that is not the sequence of Fourier coefficients of any Riemann integrable function.
+
+\begin{thm}[Riemann-Lebesgue lemma]
+    If $f$ is a $2\pi$-periodic integrable function, then
+    \[
+    \lim_{|n| \to \infty} \widehat f(n) = 0.
+    \]
+    \begin{proof}
+        By Parseval's identity,
+        \[
+        \sum_{n=-\infty}^\infty |\widehat f(n)|^2 = \|f\|_2^2 < \infty,
+        \]
+        thus $|\widehat f(n)|^2 \to 0$ as $|n| \to \infty$.
+    \end{proof}
+\end{thm}
+
+More generally, we have
+\[
+\lim_{|n| \to \infty} \int_{-\pi}^\pi f(x) \sin(nx) dx = \lim_{|n| \to \infty} \int_{-\pi}^\pi f(x) \cos(nx) dx = 0.
+\]
+
+\begin{prop}
+    If $f, g \in \mathcal R$, then
+    \[
+    \frac{1}{2\pi} \int_{-\pi}^\pi f(x)\Bar{g(x)} dx = \sum_{n=-\infty}^\infty \widehat f(n) \cdot \Bar{\widehat g(n)}.
+    \]
+    \begin{proof}
+        The polarization identity states that
+        \[
+        \langle f, g \rangle = \frac{1}{4} \left(\|f + g\|_2^2 - \|f - g\|_2^2 + i\|f + ig\|_2^2 - i\|f - ig\|_2^2\right).
+        \]
+        Therefore by Parseval's identity,
+        \begin{align*}
+            \langle f, g \rangle &= \frac{1}{4} \left(\sum_{n=-\infty}^\infty |\widehat f(n) + \widehat g(n)|^2 - \sum_{n=-\infty}^\infty |\widehat f(n) - \widehat g(n)|^2\right) \\
+            &\quad + \frac{i}{4} \left(\sum_{n=-\infty}^\infty |\widehat f(n) + i\widehat g(n)|^2 - \sum_{n=-\infty}^\infty |\widehat f(n) - i\widehat g(n)|^2\right) \\
+            &= \sum_{n=-\infty}^\infty \widehat f(n) \cdot \Bar{\widehat g(n)}.
+        \end{align*}
+    \end{proof}
+\end{prop}
+
+\begin{thm}
+    Let $f \in \mathcal R$. Suppose that $f$ is Lipschitz at $x_0$, i.e., exists some $L > 0$ and $\delta > 0$ such that
+    \[
+    |f(x_0 + h) - f(x_0)| \leq L |h|
+    \]
+    for all $|h| < \delta$. Then
+    \[
+    \lim_{N \to \infty} S_N(f)(x_0) = f(x_0).
+    \]
+    \begin{proof}
+        Define
+        \[
+        F(t) = \begin{cases}
+            \frac{f(x_0 - t) - f(x_0)}{t}, & 0 < |t| < \pi, \\
+            0, & t = 0.
+        \end{cases}
+        \]
+
+        Since $f$ is Lipschitz at $x_0$, $F$ is bounded by $L$ on $[-\pi, \pi]$. Also, the discontinuity set of $F$ is contained in that of $f$ and possibly at $x_0$, thus $F$ is Riemann integrable on $[-\pi, \pi]$. Recall that $S_N(f)(x_0) = (f * D_N)(x_0)$ and $\frac{1}{2\pi} \int_{-\pi}^\pi D_N(t) dt = 1$, we have
+        \begin{align*}
+            S_N(f)(x_0) - f(x_0) &= \frac{1}{2\pi} \int_{-\pi}^\pi D_N(t) (f(x_0 - t) - f(x_0)) dt \\
+            &= \frac{1}{2\pi} \int_{-\pi}^\pi t F(t) D_N(t) dt.
+        \end{align*}
+        Write
+        \[
+        t D_N(t) = \frac{\sin\left(\left(N + \frac12\right)t\right)}{\sin(t/2)} \cdot t = \frac{t}{\sin(t/2)} \cdot \left(\sin(Nt) \cos(t/2) + \cos(Nt) \sin(t/2)\right).
+        \]
+        Note that $\frac{t/2}{\sin(t/2)}$ is continuous on $[-\pi, \pi]$, thus the functions
+        \[
+        F(t) \cdot \frac{t}{\sin(t/2)} \cdot \cos(t/2) \quad \text{and} \quad F(t) \cdot t
+        \]
+        are Riemann integrable on $[-\pi, \pi]$. By the Riemann-Lebesgue lemma,
+        \[
+        \lim_{N \to \infty} \int_{-\pi}^\pi tF(t) D_N(t) dt = 0,
+        \]
+        hence proved.
+    \end{proof}
+\end{thm}
+
+\begin{cl}[Localization principle]
+    Let $f, g \in \mathcal R$. Suppose that there exists some $\delta > 0$ such that $f(x) = g(x)$ for all $x \in (x_0 - \delta, x_0 + \delta)$. Then
+    \[
+    \lim_{N \to \infty} (S_N(f)(x_0) - S_N(g)(x_0)) = 0.
+    \]
+    \begin{proof}
+        Follows from applying the previous theorem to the function $f - g$.
+    \end{proof}
+\end{cl}
+
+\section{Continuous function with divergent Fourier series}
+
+For each $N \in \N$, define
+\[
+f_N(x) = \sum_{n=-N}^{N} \frac{e^{inx}}{n}, \quad g_N(x) = \sum_{n=-N}^{-1} \frac{e^{inx}}{n}.
+\]
+Note that there exists $c > 0$ such that $|g_N(0)| \geq c \log N$ for all $N$. 
+
+\begin{lm}
+    Suppose that the Abel means $A_r = \sum_{n=1}^\infty c_n r^n$ of a series $\sum_{n=1}^\infty c_n$ are bounded as $r \to 1^-$. If $c_n = O(n^{-1})$, then the partial sums $S_N = \sum_{n=1}^N c_n$ are also bounded.
+    \begin{proof}
+        Fix $N$ and take $r = 1 - 1/N$. Choose $M > 0$ such that $n | c_n| \leq M$ for all $n$. Note that
+        \[
+        1 - r^n = (1 - r)(1 + r + r^2 + \cdots + r^{n-1}) \leq n(1 - r),
+        \]
+        thus
+        \begin{align*}
+            |S_N - A_r| &\leq \sum_{n=1}^N |c_n| (1 - r^n) + \sum_{n=N+1}^\infty |c_n| r^n \\
+            &\leq M \sum_{n=1}^N (1 - r) + \frac{M}{N} \sum_{n=N+1}^\infty r^n \\
+            &\leq M + \frac{M}{N} \cdot \frac{r^{N+1}}{1 - r} \leq M + M = 2M.
+        \end{align*}
+        Since $A_r$ is bounded as $r \to 1^-$, $S_N$ is also bounded.
+    \end{proof}
+\end{lm}
+
+From the lemma, we can deduce that the sums $f_n(x)$ are uniformly bounded in both $n$ and $x$ since the Abel means
+\[
+\sum_{n=1}^\infty \frac{r^n e^{inx}}{n} = -\log(1 - re^{ix})\]
+are bounded as $r \to 1^-$. Therefore, exists some $M > 0$ such that for all $N$ and $x$, $|f_N(x)| \leq M$.
+
+Define
+\[
+P_N(x) = e^{i2Nx} f_N(x), \quad Q_N(x) = e^{i2Nx} g_N(x).
+\]
+Note that $P_N$ has degree $3N$ and $Q_N$ has degree $2N - 1$. Then the partial sums of $P_N$ are
+\[
+S_M(P_N) = \begin{cases}
+    P_N, & M \geq 3N, \\
+    Q_N, & M = 2N, \\
+    0, & M < N.
+\end{cases}
+\]
+Let $(\alpha_k)$ be a convergent series of positive real numbers such that $\sum_k \alpha_k < \infty$. Also, let $(N_k)$ be a increasing sequence of integers such that
+\begin{enumerate}[label=(\roman*)]
+    \item $N_{k+1} > 3N_k$,
+    \item $\alpha_k \log N_k \to \infty$ as $k \to \infty$.
+\end{enumerate}
+Set
+\[
+h(x) = \sum_{k=1}^\infty \alpha_k P_{N_k}(x).
+\]
+Since $|P_{N_k}(x)| = |f_{N_k}(x)| \leq M$ for all $k$ and $x$, the series converges uniformly, thus $h$ is continuous. 
+
+\begin{clm}
+    \[
+    \abs{S_{2N_m}(h)(0)} \geq c'\alpha_m \log N_m
+    \]
+    for all $N$ large enough, where $c' > 0$ is some constant independent of $m$. 
+    \begin{proof}
+        The terms corresponding to $N_k$ for $k < m$ contribute $O(1)$ only since $|P_{N_k}(0)|$ are uniformly bounded and $\sum \alpha_k < \infty$. The term that corresponds to $N_m$ has absolute value at least $\alpha_m |g_{N_m}(0)| \geq c \alpha_m \log N_m$. The terms corresponding to $N_k$ for $k > m$ contribute $0$ since their degrees are greater than $2N_m$. Therefore,
+        \[
+        |S_{2N_m}(h)(0)| \geq c \alpha_m \log N_m - O(1).
+        \]
+        Since $\alpha_m \log N_m \to \infty$ as $m \to \infty$, the claim follows.
+    \end{proof}
+\end{clm}
+
+The claim implies that the partial sums of the Fourier series of $h$ at $0$ are unbounded, thus they do not converge at $0$.
