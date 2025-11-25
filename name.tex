@@ -3606,3 +3606,147 @@ Since $|P_{N_k}(x)| = |f_{N_k}(x)| \leq M$ for all $k$ and $x$, the series conve
 \end{clm}
 
 The claim implies that the partial sums of the Fourier series of $h$ at $0$ are unbounded, thus they do not converge at $0$.
+
+\section{Applications}
+
+Let $\Gamma$ be a simple closed curve in $\R^2$ with length $\ell$. Under fixed $\ell$, we want to find the curve that encloses the largest area. 
+
+\begin{df}
+    A parametrized curve is a continuous map $\gamma: [a, b] \to \R^2$. The image of $\gamma$ is called a curve and is denoted by $\Gamma$. The curve $\Gamma$ is simple and closed if $\gamma(a) = \gamma(b)$ and $\gamma(t_1) \neq \gamma(t_2)$ if $t_1 \neq t_2$ unless $t_1 = a$ and $t_2 = b$.
+\end{df}
+
+For a simple closed curve, we may extend $\gamma$ to be periodic with period $b - a$. Furthermore, we will assume that $\gamma$ is $C^1$, and $\gamma'(t) \neq 0$ for all $t \in [a, b]$. 
+
+Note that any $C^1$ bijective map $t: [c, d] \to [a, b]$ gives rise to a new parametrization of the curve $\Gamma$ by $\gamma \circ t$. Simpleness and closedness of $\Gamma$ is independent of the parametrization. We say that $\gamma$ and $\gamma \circ t$ are equivalent if $t'(s) > 0$ for all $s$. 
+
+\begin{df}
+    If $\Gamma$ is a curve parametrized by $\gamma(t) = (x(t), y(t))$, we define the length of $\Gamma$ by
+    \[
+    \ell = \ell(\Gamma) = \int_a^b \abs{\gamma'(t)} dt = \int_a^b \sqrt{x'(t)^2 + y'(t)^2} dt.
+    \]
+\end{df}
+
+Suppose that $\Tilde \gamma = \gamma \circ t$ and $\gamma$ are equivalent, then
+\begin{align*}
+    \int_a^b \abs{\gamma'(t)} dt &= \int_c^d \abs{\Tilde \gamma'(s)} t'(s) ds \\
+    &= \int_c^d \abs{\Tilde \gamma'(s)} ds.
+\end{align*}
+
+\begin{df}
+    We say that $\gamma$ is an arclength reparametrization if $\abs{\gamma'(t)} = 1$ for all $t$.
+\end{df}
+
+\begin{df}
+    The area enclosed by a simple closed curve $\Gamma$ parametrized by $\gamma(t) = (x(t), y(t))$ is given by
+    \[
+    A(\Gamma) = \frac{1}{2} \abs{\int_\Gamma (x\, dy - y\, dx)} = \frac{1}{2} \abs{\int_a^b x(t) y'(t) - y(t) x'(t) dt}.
+    \]
+\end{df}
+
+\begin{thm}[Isoperimetric inequality]
+    Suppose that $\Gamma$ is a simple closed $C^1$-curve in $\R^2$ with length $\ell$. Let $A$ be the area enclosed by $\Gamma$. Then
+    \[
+    A \leq \frac{\ell^2}{4\pi},
+    \]
+    with equality if and only if $\Gamma$ is a circle.
+    \begin{proof}
+        WLOG rescale the curve such that $\gamma: [0, 2\pi] \to \R^2$ is an arclength parametrization of $\Gamma$, which has length $2\pi$. Write $\gamma(t) = (x(t), y(t))$. Since $\gamma$ is an arclength parametrization, we have
+        \[
+        x'(t)^2 + y'(t)^2 = 1
+        \]
+        for all $t$. Expanding $x$ and $y$ in Fourier series,
+        \[
+        x(t) = \sum_{n=-\infty}^\infty a_n e^{int}, \quad y(t) = \sum_{n=-\infty}^\infty b_n e^{int}.
+        \]
+        By differentiating termwise (justified by integration by parts), we have
+        \[
+        x'(t) = \sum_{n=-\infty}^\infty in a_n e^{int}, \quad y'(t) = \sum_{n=-\infty}^\infty in b_n e^{int}.
+        \]
+        Applying Parseval's identity to $x'$ and $y'$, we obtain
+        \begin{align*}
+            1 &= \frac{1}{2\pi} \int_0^{2\pi} (x'(t)^2 + y'(t)^2) dt \\
+            &= \sum_{n=-\infty}^\infty n^2 (|a_n|^2 + |b_n|^2).
+        \end{align*}
+        The area enclosed by $\Gamma$ is given by
+        \begin{align*}
+            A &= \frac{1}{2} \abs{\int_0^{2\pi} x(t) y'(t) - y(t) x'(t) dt} \\
+            &= \pi \abs{\sum_{n=-\infty}^\infty n (a_n \Bar{b_n} - b_n \Bar{a_n})} \\
+            &\leq \pi \sum_{n=1}^\infty 2n |a_n| |b_n| \\
+            &= \pi \sum_{n=1}^\infty n (|a_n|^2 + |b_n|^2) \\
+            &\leq \pi \sum_{n=-\infty}^\infty n^2 (|a_n|^2 + |b_n|^2) = \pi.
+        \end{align*}
+        Therefore, the area enclosed by $\Gamma$ is at most $\pi$. Equality holds only if $a_n = b_n = 0$ for all $|n| \geq 2$. This means that $x$ and $y$ are of the form
+        \[
+        x(t) = a_0 + a_1 e^{it} + a_{-1} e^{-it}, \quad y(t) = b_0 + b_1 e^{it} + b_{-1} e^{-it}.
+        \]
+        Since $\gamma$ is real-valued, we have $a_{-1} = \Bar{a_1}$ and $b_{-1} = \Bar{b_1}$. Thus $\gamma$ parametrizes a circle. Clearly if $\Gamma$ is a circle, then $A = \pi$, hence proved.
+    \end{proof}
+\end{thm}
+
+The second application looks at a number theory problem. Given $\alpha \in \R$, consider the fractional part of $n\alpha$ for integers $n \geq 1$. We want to know how these fractional parts are distributed in the interval $[0, 1)$.
+
+To formally define this, let $[x]$ denote the largest integer not exceeding $x$. The fractional part of $x$ is defined to be $\{x\} = x - [x]$. 
+
+Given $\alpha \in \R$ consider the sequence
+\[
+a_n = \{n\alpha\}, \quad n = 1, 2, 3, \ldots.
+\]
+If $\alpha$ is rational, then there are only finitely many distinct values in the sequence $(a_n)$. However, if $\alpha$ is irrational, then the sequence $(a_n)$ has infinitely many distinct values. 
+
+\begin{prop}
+    If $\alpha$ is irrational, then the sequence $(\set{n\alpha})_{n=1}^\infty$ is dense in $[0, 1)$.
+    \begin{proof}
+        Divide $[0, 1)$ into $n$ subintervals of equal length. Consider $n+1$ distinct elements
+        \[
+        0, \{\alpha\}, \{2\alpha\}, \ldots, \{n\alpha\}.
+        \]
+        By the pigeonhole principle, exists some distinct $0\leq i, j\leq n$ such that $\{i\alpha\}$ and $\{j\alpha\}$ lie in the same subinterval. WLOG assume that $\{i\alpha\} > \{j\alpha\}$ and $i > j$ (the case $i < j$ is similar). Then
+        \[
+        \{(i - j)\alpha\} = \{i\alpha\} - \{j\alpha\} < \frac{1}{n}.
+        \]
+        Since $\alpha$ is irrational, $i - j \geq 1$. Thus, we have found some positive integer $m = i - j$ such that $\{m\alpha\} < 1/n$. For any open interval $(a, b) \subset [0, 1)$, choose $n$ large enough such that $1/n < b - a$. Then exists some integer $m$ such that $\{m\alpha\} < 1/n < b - a$. Let $k$ be the smallest integer such that $k\{m\alpha\} \geq a$, then
+        \[
+        (k-1)\{m\alpha\} < a \leq k\{m\alpha\} < a + \{m\alpha\} < b.
+        \]
+        Therefore, $\{(km)\alpha\} = k\{m\alpha\} \in (a, b)$, hence proved.
+    \end{proof}
+\end{prop}
+
+\begin{lm}
+    If $f$ is a $1$-periodic continuous function and if $\alpha$ is irrational, then
+    \[
+    \lim_{N \to \infty} \frac{1}{N} \sum_{n=1}^N f(\{n\alpha\}) = \int_0^1 f(x) dx.
+    \]
+    \begin{proof}
+        Consider the special case that $f(x) = e^{2\pi i k x}$ for some integer $k$. When $k = 0$, the result is trivial. When $k \neq 0$, since $\alpha$ is irrational, $e^{2\pi i k \alpha} \neq 1$. Therefore,
+        \begin{align*}
+            \frac{1}{N} \sum_{n=1}^N f(\{n\alpha\}) &= \frac{1}{N} \sum_{n=1}^N e^{2\pi i k n \alpha} \\
+            &= \frac{1}{N} \cdot \frac{e^{2\pi i k \alpha} (1 - e^{2\pi i k N \alpha})}{1 - e^{2\pi i k \alpha}} \to 0
+        \end{align*}
+        as $N \to \infty$. By linearity, the lemma holds for all trigonometric polynomials with period $1$. For general continuous $f$, we can approximate it uniformly by trigonometric polynomials. Given $\epsilon > 0$, exists some trigonometric polynomial $P(x)$ such that $\|f - P\|_\infty < \epsilon/3$. For all $N$ large enough,
+        \[
+        \left|\frac{1}{N} \sum_{n=1}^N P(\{n\alpha\}) - \int_0^1 P(x) dx\right| < \epsilon/3.
+        \]
+        Therefore, for all $N$ large enough,
+        \begin{align*}
+            \left|\frac{1}{N} \sum_{n=1}^N f(\{n\alpha\}) - \int_0^1 f(x) dx\right| \leq& \left|\frac{1}{N} \sum_{n=1}^N (f(\{n\alpha\}) - P(\{n\alpha\}))\right| \\
+            & + \left|\frac{1}{N} \sum_{n=1}^N P(\{n\alpha\}) - \int_0^1 P(x) dx\right| \\
+            & + \left|\int_0^1 (P(x) - f(x)) dx\right| \\
+            <& \epsilon/3 + \epsilon/3 + \epsilon/3 = \epsilon.
+        \end{align*}
+        Hence proved.
+    \end{proof}
+\end{lm}
+
+\begin{df}
+    A sequence of numbers $(\xi_n)$ in $[0, 1)$ is equidistributed if for all $(a, b) \subseteq [0, 1)$,
+    \[
+    \lim_{N \to \infty} \frac{\#\{1 \leq n \leq N \mid \xi_n \in (a, b)\}}{N} = b - a.
+    \]
+    \begin{proof}
+        Consider $\chi_{(a, b)}$ and extend it to $\R$ to be periodic with period $1$. It suffices to show that
+        \[
+        \lim_{N \to \infty} \frac{1}{N} \sum_{n=1}^N \chi_{(a, b)}(\{n\alpha\}) = \int_0^1 \chi_{(a, b)}(x) dx = b-a.
+        \]
+    \end{proof}
+\end{df}
