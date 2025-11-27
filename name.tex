@@ -3743,10 +3743,276 @@ If $\alpha$ is rational, then there are only finitely many distinct values in th
     \[
     \lim_{N \to \infty} \frac{\#\{1 \leq n \leq N \mid \xi_n \in (a, b)\}}{N} = b - a.
     \]
+\end{df}
+
+\begin{thm}[Weyl's equidistribution theorem]
+    If $\alpha$ is irrational, then the sequence $(\{n\alpha\})_{n=1}^\infty$ is equidistributed in $[0, 1)$.
     \begin{proof}
         Consider $\chi_{(a, b)}$ and extend it to $\R$ to be periodic with period $1$. It suffices to show that
         \[
         \lim_{N \to \infty} \frac{1}{N} \sum_{n=1}^N \chi_{(a, b)}(\{n\alpha\}) = \int_0^1 \chi_{(a, b)}(x) dx = b-a.
         \]
+        Approximate $\chi_{(a, b)}$ by continuous functions
+        \[
+        f_\epsilon^-(x) = \begin{cases}
+            0, & x \leq a - \epsilon, \\
+            \frac{x - a}{\epsilon} + 1, & a - \epsilon < x < a, \\
+            1, & a \leq x \leq b, \\
+            \frac{b - x}{\epsilon} + 1, & b < x < b + \epsilon, \\
+            0, & x \geq b + \epsilon,
+        \end{cases}, \quad
+        f_\epsilon^+(x) = \begin{cases}
+            0, & x \leq a, \\
+            \frac{x - a}{\epsilon}, & a < x < a + \epsilon, \\
+            1, & a + \epsilon \leq x \leq b - \epsilon, \\
+            \frac{b - x}{\epsilon}, & b - \epsilon < x < b, \\
+            0, & x \geq b,
+        \end{cases}
+        \]
+        then
+        \[
+        f_\epsilon^-(x) \leq \chi_{(a, b)}(x) \leq f_\epsilon^+(x).
+        \]
+        We have
+        \[
+        \int_0^1 f_\epsilon^-(x) dx \leq \int_0^1 \chi_{(a, b)}(x) dx \leq \int_0^1 f_\epsilon^+(x) dx,
+        \]
+        and since both $f_\epsilon^-$ and $f_\epsilon^+$ differ from $\chi_{(a, b)}$ on an interval of length $2\epsilon$ only, letting $\epsilon \to 0$ gives the desired equality.
     \end{proof}
-\end{df}
+\end{thm}
+
+\begin{cl}
+    For any Riemann integrable function $f$ with period $1$ and any irrational $\alpha$,
+    \[
+    \lim_{N \to \infty} \frac{1}{N} \sum_{n=1}^N f(\{n\alpha\}) = \int_0^1 f(x) dx.
+    \]
+    \begin{proof}
+        Let $\epsilon > 0$ Choose a partition $P = \{x_0, x_1, \ldots, x_n\}$ of $[0, 1]$ such that $U(f, P) - L(f, P) < \epsilon$. Define
+        \begin{gather*}
+            f_U = \sup_{x_{j-1 \leq x \leq x_j}} f(y) \quad \text{if } x \in [x_{j-1}, x_j), \\
+            f_L = \inf_{x_{j-1 \leq x \leq x_j}} f(y) \quad \text{if } x \in [x_{j-1}, x_j).
+        \end{gather*}
+        Then $f_U$ and $f_L$ are step functions such that
+        \[
+        f_L(x) \leq f(x) \leq f_U(x)
+        \]
+        for all $x \in [0, 1]$, and
+        \[
+        L(f, P) = \int_0^1 f_L(x) dx \leq \int_0^1 f(x) dx \leq \int_0^1 f_U(x) dx = U(f, P).
+        \]
+        Since $f_L$ and $f_U$ are linear combinations of characteristic functions of intervals, by Weyl's equidistribution theorem,
+        \[
+        \lim_{N \to \infty} \frac{1}{N} \sum_{n=1}^N f_L(\{n\alpha\}) = \int_0^1 f_L(x) dx, \quad \lim_{N \to \infty} \frac{1}{N} \sum_{n=1}^N f_U(\{n\alpha\}) = \int_0^1 f_U(x) dx.
+        \]
+        Therefore, for all $N$ large enough,
+        \begin{align*}
+            \left|\frac{1}{N} \sum_{n=1}^N f(\{n\alpha\}) - \int_0^1 f(x) dx\right| &\leq \left|\frac{1}{N} \sum_{n=1}^N (f(\{n\alpha\}) - f_L(\{n\alpha\}))\right| \\
+            &+ \left|\frac{1}{N} \sum_{n=1}^N f_L(\{n\alpha\}) - \int_0^1 f_L(x) dx\right| \\
+            &+ \left|\int_0^1 (f_L(x) - f(x)) dx\right|.
+        \end{align*}
+        Letting $N \to \infty$ gives the desired result.
+    \end{proof}
+\end{cl}
+
+Consider the function $\rho: [0, 2\pi) \to [0, 2\pi)$ defined by
+\[
+\rho(\theta) = \theta + 2\pi \alpha \mod 2\pi.
+\]
+The iterations of $\rho$ are given by $\rho^{n}(\theta) = \theta + 2\pi n \alpha \mod 2\pi$. To each Riemann integrable $f$ on the circle, we can associate the corresponding effects of $\rho$, and obtain a sequence of functions
+\[
+f, f(\rho), f(\rho^2), \ldots.
+\]
+By Weyl's equidistribution theorem, if $\alpha \notin \Q$,
+\[
+\lim_{N \to \infty} \frac{1}{N} \sum_{n=0}^{N-1} f(\rho^n(\theta)) = \frac{1}{2\pi} \int_0^{2\pi} f(x) dx,
+\]
+for all $\theta \in [0, 2\pi)$. Intuitively, the summation on the left can be thought of as a "time average", while the integral on the right is the "space average".
+
+\begin{thm}[Weyl's equidistribution criterion]
+    A sequence $(\xi_n)$ in $[0, 1)$ is equidistributed if and only if for all integers $k \neq 0$,
+    \[
+    \lim_{N \to \infty} \frac{1}{N} \sum_{n=1}^N e^{2\pi i k \xi_n} = 0.
+    \]
+    \begin{proof}
+        "$\implies$": % TODO
+
+        "$\impliedby$": By the criterion, we know that it also holds for all trigonometric polynomials. Since we can approximate continuous functions uniformly by trigonometric polynomials, and characteristic functions of intervals can be approximated by continuous functions, the result follows.
+    \end{proof}
+\end{thm}
+
+We can also construct nowhere differentiable continuous functions using Fourier series. 
+
+We first introduce other ways to sum the Fourier series:
+\begin{itemize}
+    \item Ordinary partial sum: $S_N(f) = f * D_N$,
+    \item Cesàro sum: $\sigma_N(f) = f * F_N$, where $F_N$ is the Fejér kernel,
+    \item Delayed means: $\Delta_N(f) = 2\sigma_{2N}(f) - \sigma_N(f) = f * (2F_{2N} - F_N)$.
+\end{itemize}
+$2F_{2N} - F_N$ is called the de la Vallée Poussin kernel. Note that
+\[
+\widehat D_N(n) = \begin{cases}
+    1, & |n| \leq N, \\
+    0, & |n| > N,
+\end{cases}
+\]
+and
+\[
+\widehat F_N(n) = \frac{D_0(n) + D_1(n) + \cdots + D_{N-1}(n)}{N} = \begin{cases}
+    1 - \frac{|n|}{N}, & |n| \leq N, \\
+    0, & |n| > N.
+\end{cases}
+\]
+If $f(x) \sim \sum_n a_n e^{inx}$, then
+\begin{itemize}
+    \item $S_N$ arises by multiplying $a_n e^{inx}$ by $1$ if $|n| \leq N$ and $0$ otherwise,
+    \item $\sigma_N$ arises by multiplying $a_n e^{inx}$ by $1 - \frac{|n|}{N}$ if $|n| \leq N$ and $0$ otherwise,
+    \item $\Delta_N$ arises by multiplying $a_n e^{inx}$ by $1$ if $|n| \leq N$, by $2 - \frac{|n|}{N}$ if $N < |n| \leq 2N$, and $0$ otherwise.
+\end{itemize}
+
+\begin{thm}
+    Let $0 < \alpha < 1$. The function
+    \[
+    f(x) = f_\alpha(x) = \sum_{n=0}^\infty 2^{-n\alpha} e^{i2^n x}
+    \]
+    is continuous but nowhere differentiable.
+    \begin{proof}
+        Note that
+        \[
+        S_N(f) = \Delta_{N'}(f),
+        \]
+        where $N'$ is the largest power of $2$ not exceeding $N$. Suppose that $f$ is differentiable at some $x_0$. 
+        \begin{lm}
+            Let $g$ be differentiable at $x_0$. Then
+            \[
+            (\sigma_N(g))'(x_0) = O(\log N).
+            \]
+            \begin{proof}
+                We have
+                \[
+                (\sigma_N(g))'(x_0) = \frac{1}{2\pi} \int_{-\pi}^\pi F_N'(x_0 - t)g(t) dt = \frac{1}{2\pi} \int_{-\pi}^\pi F_N'(t)g(x_0 - t) dt.
+                \]
+                Note that $\int_{-\pi}^\pi F_N'(t) dt = 0$. Thus,
+                \[
+                (\sigma_N(g))'(x_0) = \frac{1}{2\pi} \int_{-\pi}^\pi F_N'(t) (g(x_0 - t) - g(x_0)) dt.
+                \]
+                Since $g$ is differentiable at $x_0$, exists some $c > 0$ such that
+                \[
+                \abs{(\sigma_N(g))'(x_0)} \leq c \int_{-\pi}^\pi \abs{F_N'(t)} \abs{t} dt.
+                \]
+                It remains to estimate $\abs{F_N'(t)}$.
+
+                Exists some $A > 0$ such that
+                \[
+                \abs{F_N'(t)} \leq A \cdot N^2
+                \]
+                since $F_N$ is a trigonometric polynomial of degree $N$ with coefficients $\leq 1$, hence $F_N'$ is a trigonometric polynomial of degree $N$ with coefficients $\leq N$.
+
+                On the other hand, write
+                \[
+                F_N(t) = \frac{1}{N} \cdot \frac{\sin^2(Nt/2)}{\sin^2(t/2)}.
+                \]
+                Differentiating gives
+                \[
+                F_N'(t) = \frac{\sin(Nt/2) \cdot \cos(Nt/2)}{\sin^2(t/2)} - \frac{1}{N} \frac{\cos(t/2) \cdot \sin^2(Nt/2)}{\sin^3(t/2)}
+                \]
+                Thus, exists some $B > 0$ such that
+                \[
+                \abs{F_N'(t)} \leq \frac{B}{t^2}
+                \]
+                for all $t \in [-\pi, \pi] \setminus \{0\}$. 
+                
+                From the estimates above, we conclude that
+                \begin{align*}
+                    \abs{(\sigma_N(g))'(x_0)} &\leq c \int_{|t| \geq 1/N} \abs{F_N'(t)} \abs{t} dt + c \int_{|t| < 1/N} \abs{F_N'(t)} \abs{t} dt \\
+                    &\leq c \int_{|t| \geq 1/N} \frac{B}{t^2} \abs{t} dt + c \int_{|t| < 1/N} A N^2 \abs{t} dt \\
+                    &= cB \int_{1/N}^\pi \frac{1}{t} dt + cA N^2 \cdot \frac{1}{N^2} \\
+                    &= cB \log(\pi N) + cA = O(\log N).
+                \end{align*}
+            \end{proof}
+        \end{lm}
+        \begin{lm}
+            If $2N = 2^n$, then
+            \[
+            \Delta_{2N}(f)(x) - \Delta_N(f)(x) = 2^{-n\alpha} e^{i2^n x}.
+            \]
+            \begin{proof}
+                Note that
+                \begin{align*}
+                    \widehat{\Delta_{2N}}(k) - \widehat{\Delta_N}(k) &= \begin{cases}
+                        0, & |k| \leq N, \\
+                        1 - \left(2 - \frac{|k|}{N}\right) = \frac{|k|}{N} - 1, & N < |k| \leq 2N, \\
+                        0, & |k| > 2N.
+                    \end{cases} \\
+                    &= \begin{cases}
+                        0, & |k| < 2N, \\
+                        1, & |k| = 2N, \\
+                        0, & |k| > 2N.
+                    \end{cases}
+                \end{align*}
+                Therefore,
+                \[
+                \Delta_{2N}(f)(x) - \Delta_N(f)(x) = 2^{-n\alpha} e^{i2^n x}.
+                \]
+            \end{proof}
+        \end{lm}
+        By lemma 1, we have
+        \[
+        (\Delta_{2N}(f))'(x_0) - (\Delta_N(f))'(x_0) = O(\log N).
+        \]
+        On the other hand, by lemma 2,
+        \[
+        \abs{(\Delta_{2N}(f))'(x_0) - (\Delta_N(f))'(x_0)} = 2^{n(1 - \alpha)} \geq c N^{1 - \alpha}
+        \]
+        for some constant $c > 0$. Since $1 - \alpha > 0$, this is a contradiction. Therefore, $f$ is nowhere differentiable.
+    \end{proof}
+\end{thm}
+
+\begin{rmk}
+    Note that $f$ is complex-valued, so even if $f$ is nowhere differentiable, it does not imply that $~Re (f)$ and $Im (f)$ are also nowhere differentiable. However, we can modify the proof to show that both $Re (f)$ and $Im (f)$ are nowhere differentiable as well.
+
+    Assume that $g = ~Re (f)$ is differentiable at some $x_0$. Then
+    \[
+    (\sigma_N(g))'(x_0) = O(\log N).
+    \]
+    On the other hand,
+    \[
+    \Delta_{2N}(g)(x) - \Delta_N(g)(x) = 2^{-n\alpha} \cos(2^n x).
+    \]
+    Thus,
+    \[
+    \abs{2^{n(1 - \alpha)} \sin(2^n x_0)} = \abs{(\Delta_{2N}(g))'(x_0) - (\Delta_N(g))'(x_0)} = O(\log N).
+    \]
+    Since $1 - \alpha > 0$, this implies that $\sin(2^n x_0) \to 0$ as $n \to \infty$. Therefore, $2^n x_0$ is arbitrarily close to an integer multiple of $\pi$ for all large $n$. This is possible only if $x_0 = 0$, which contradicts the assumption that $g$ is differentiable at $x_0$. Hence, $g$ is nowhere differentiable. A similar argument shows that $~Im (f)$ is also nowhere differentiable.
+\end{rmk}
+
+\section{Heat equation on the circle}
+
+Consider the heat equation on the circle $S^1$:
+\[
+\begin{cases}
+    \frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x^2}, & x \in [0, 1), t > 0, \\
+    u(x, 0) = f(x), & x \in [0, 1),
+\end{cases}
+\]
+By separating variables, we look for solutions of the form $u(x, t) = X(x) T(t)$. Substituting into the heat equation gives
+\[
+X(x) T'(t) = X''(x) T(t) \implies \frac{T'(t)}{T(t)} = \frac{X''(x)}{X(x)} = -\lambda,
+\]
+for some constant $\lambda$. Since $X$ is periodic with period $1$, we have $\lambda = (2\pi n)^2$ for some integer $n$. Therefore, the general solution is given by
+\[
+u(x, t) = \sum_{n=-\infty}^\infty a_n e^{-4\pi^2 n^2 t} e^{2\pi i n x},
+\]
+where
+\[
+a_n = \widehat f(n) = \int_0^1 f(x) e^{-2\pi i n x} dx.
+\]
+If $f$ is Riemann integrable, then $a_n \to 0$ and $e^{-4\pi^2 n^2 t}$ decays to $0$ very rapidly as $|n| \to \infty$. Therefore, the series converges pointwise for all $t > 0$.
+
+Write the heat kernel
+\[
+H_t(x) = \sum_{n=-\infty}^\infty e^{-4\pi^2 n^2 t} e^{2\pi i n x}.
+\]
+Then the solution can be written as
+\[
+u(x, t) = (f * H_t)(x) = \int_0^1 f(y) H_t(x - y) dy.
+\]
