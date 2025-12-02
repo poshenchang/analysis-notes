@@ -4008,11 +4008,242 @@ a_n = \widehat f(n) = \int_0^1 f(x) e^{-2\pi i n x} dx.
 \]
 If $f$ is Riemann integrable, then $a_n \to 0$ and $e^{-4\pi^2 n^2 t}$ decays to $0$ very rapidly as $|n| \to \infty$. Therefore, the series converges pointwise for all $t > 0$.
 
-Write the heat kernel
+\begin{prop}
+    \[
+    \lim_{t \to 0^+} \int_0^1 |u(x, t) - f(x)|^2 dx = 0.
+    \]
+    \begin{proof}
+        Define the heat kernel
+        \[
+        H_t(x) = \sum_{n=-\infty}^\infty e^{-4\pi^2 n^2 t} e^{2\pi i n x}.
+        \]
+        Then the solution can be written as
+        \[
+        u(x, t) = (f * H_t)(x) = \int_0^1 f(y) H_t(x - y) dy.
+        \]
+        By Parseval's identity,
+        \begin{align*}
+            \int_0^1 |u(x, t) - f(x)|^2 dx &= \sum_{n=-\infty}^\infty |\widehat u(n, t) - \widehat f(n)|^2 \\
+            &= \sum_{n=-\infty}^\infty |e^{-4\pi^2 n^2 t} - 1|^2 |\widehat f(n)|^2.
+        \end{align*}
+        Let $\epsilon > 0$ Note that since $\abs{e^{-4\pi^2 n^2 t} - 1} = 1 - e^{-4\pi^2 n^2 t} \leq 1$ for all $n$ and $\sum_n |\widehat f(n)|^2 < \infty$, exists some $N$ such that
+        \[
+        \sum_{|n| > N} |\widehat f(n)|^2 \abs{e^{-4\pi^2 n^2 t} - 1}^2 < \epsilon/2.
+        \]
+        For this fixed $N$, exists some $\delta > 0$ such that if $0 < t < \delta$, then
+        \[
+        \sum_{|n| \leq N} |\widehat f(n)|^2 \abs{e^{-4\pi^2 n^2 t} - 1}^2 < \epsilon/2.
+        \]
+        Therefore, for all $0 < t < \delta$,
+        \[
+        \int_0^1 |u(x, t) - f(x)|^2 dx < \epsilon,
+        \]
+        hence proved.
+    \end{proof}
+\end{prop}
+
+In $d$ dimensions, the heat equation becomes
 \[
-H_t(x) = \sum_{n=-\infty}^\infty e^{-4\pi^2 n^2 t} e^{2\pi i n x}.
+\frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x_1^2} + \frac{\partial^2 u}{\partial x_2^2} + \cdots + \frac{\partial^2 u}{\partial x_d^2} =: \Delta u.
 \]
-Then the solution can be written as
+$\Delta$ is known as the Laplace operator or Laplacian. We will focus on $d = 2$. 
+
+We can imagine that after an extended period of time, the heat exchange between different parts of the object will reach an equilibrium, i.e., the temperature distribution will no longer change with time. In this case, $\frac{\partial u}{\partial t} = 0$, so $\Delta u = 0$. A twice differentiable function $u$ satisfying $\Delta u = 0$ is called a harmonic function.
+
+Consider
+\begin{gather*}
+    \mathbb D = \set{(x, y) \in \R^2 \mid x^2 + y^2 < 1}, \\
+    \partial \mathbb D = \set{(x, y) \in \R^2 \mid x^2 + y^2 = 1}.
+\end{gather*}
+The Dirichlet problem for the Laplace equation on the unit disc is to find a function $u: \bar{\mathbb D} \to \R$ such that $\Delta u = 0$ in $\mathbb D$ and $u = f$ on $\partial \mathbb D$, where $f: \partial \mathbb D \to \R$ is a given continuous function.
+
+In order to perform separation of variables, we use polar coordinates
 \[
-u(x, t) = (f * H_t)(x) = \int_0^1 f(y) H_t(x - y) dy.
+\mathbb D = \set{(r, \theta) \mid 0 \leq r < 1, 0 \leq \theta < 2\pi}.
 \]
+It's not hard to deduce that
+\[
+\Delta u = \frac{\partial^2 u}{\partial r^2} + \frac{1}{r} \frac{\partial u}{\partial r} + \frac{1}{r^2} \frac{\partial^2 u}{\partial \theta^2}.
+\]
+Assume that $u(r, \theta) = A(r)B(\theta)$. Then
+\[
+\frac{A''(r)}{A(r)} + \frac{1}{r} \frac{A'(r)}{A(r)} + \frac{1}{r^2} \frac{B''(\theta)}{B(\theta)} = 0 \implies \frac{r^2 A''(r)}{A(r)} + r \frac{A'(r)}{A(r)} = -\frac{B''(\theta)}{B(\theta)} = \lambda,
+\]
+hence
+\begin{gather*}
+    r^2 A''(r) + r A'(r) - \lambda A(r) = 0, \\
+    B''(\theta) + \lambda B(\theta) = 0.
+\end{gather*}
+Since $B$ is periodic with period $2\pi$, we have $\lambda = n^2$ for some integer $n$. Write $B(\theta) = ce^{in\theta} + de^{-in\theta}$ for some constants $c, d \in \C$. If $n \neq 0$, the simple solutions of $A$ are $r^n$ and $r^{-n}$; if $n = 0$, the simple solutions of $A$ are $1$ and $\log r$. Since $u$ must be bounded at $r = 0$, we discard $r^{-n}$ and $\log r$. Therefore, the general solution is given by
+\[
+u(r, \theta) = \sum_{n=-\infty}^\infty a_n r^{|n|} e^{in\theta},
+\]
+where
+\[
+a_n = \frac{1}{2\pi} \int_0^{2\pi} f(\theta) e^{-in\theta} d\theta.
+\]
+Define the Poisson kernel
+\[
+P_r(\theta) = \sum_{n=-\infty}^\infty r^{|n|} e^{in\theta}.
+\]
+
+\begin{prop}
+    Let $f$ be a $2\pi$-periodic Riemann integrable function. Define
+    \[
+    u(r, \theta) = (f * P_r)(\theta),
+    \]
+    on $\mathbb D$, then
+    \begin{enumerate}[label=(\alph*)]
+        \item $u$ has two continuous derivatives in $\mathbb D$ and satisfies $\Delta u = 0$,
+        \item If $\theta$ is any continuity point of $f$, then
+        \[
+        \lim_{r \to 1^-} u(r, \theta) = f(\theta),
+        \]
+        If $f$ is continuous, then the convergence is uniform.
+        \item If $f$ is continuous, then $u$ is the unique solution to $\Delta u = 0$ in $\mathbb D$ that satisfies conditions (a) and (b).
+    \end{enumerate}
+    \begin{proof}
+        (a) Since $f$ is Riemann integrable, its Fourier coefficients $a_n \to 0$ as $|n| \to \infty$. Therefore, for all $0 \leq r < 1$, the series
+        \[
+        u(r, \theta) = \sum_{n=-\infty}^\infty a_n r^{|n|} e^{in\theta}
+        \]
+        converges absolutely and uniformly in $\theta$. Differentiating term-by-term shows that $u$ has two continuous derivatives in $\mathbb D$ and satisfies $\Delta u = 0$.
+
+        (b) Note that
+        \[
+        u(r, \theta) = \frac{1}{2\pi} \int_0^{2\pi} f(\phi) P_r(\theta - \phi) d\phi.
+        \]
+        Since $P_r(\theta)$ is an approximate identity as $r \to 1^-$, the result follows.
+
+        (c) Suppose that $v$ is another solution satisfying (a) and (b). Write
+        \[
+        v(r, \theta) = \sum_{n=-\infty}^\infty a_n(r) e^{in\theta},
+        \]
+        where
+        \[
+        a_n(r) = \frac{1}{2\pi} \int_0^{2\pi} v(r, \theta) e^{-in\theta} d\theta.
+        \]
+        Since $\Delta v = 0$, we have
+        \[
+        \frac{1}{2\pi} \int_0^{2\pi} \Delta v(r, \theta) e^{-in\theta} d\theta = 0.
+        \]
+        Plugging in the expression of $\Delta v$ gives
+        \[
+        a_n''(r) + \frac{1}{r} a_n'(r) - \frac{n^2}{r^2} a_n(r) = 0.
+        \]
+        Solving this ODE gives $a_n(r) = c_n r^{|n|} + d_n r^{-|n|}$ for some constants $c_n, d_n \in \C$ if $n \neq 0$. Since $v$ is bounded, $a_n(r)$ must also be bounded, so $d_n = 0$ if $n \neq 0$. Similarly, we have $a_0(r) = c_0$ for some constant $c_0 \in \C$. Therefore,
+        \[
+        v(r, \theta) = \sum_{n=-\infty}^\infty c_n r^{|n|} e^{in\theta}.
+        \]
+        By condition (b), we have
+        \[
+        c_n = \frac{1}{2\pi} \int_0^{2\pi} f(\theta) e^{-in\theta} d\theta = a_n.
+        \]
+        By uniqueness of Fourier series for continuous functions, $v = u$.
+    \end{proof}
+\end{prop}
+
+\chapter{Fourier Transform}
+
+In this chapter, we extend the notion of Fourier series to non-periodic functions defined on the whole real line. The Fourier transform is a powerful tool in both pure and applied mathematics, with applications in signal processing, differential equations, and quantum mechanics, among others.
+
+Consider a $1$-periodic function $f$ defined on $\R$. Its Fourier series is given by
+\[
+f(x) \sim \sum_{n=-\infty}^\infty a_n e^{2\pi i n x},
+\]
+where
+\[
+a_n = \int_0^1 f(x) e^{-2\pi i n x} dx.
+\]
+For general $f$, we can extend the frequency variable $n$ from integers to real numbers, and define the Fourier transform of $f$ as
+\[
+\widehat f(\xi) = \int_{-\infty}^\infty f(x) e^{-2\pi i \xi x} dx, \quad \xi \in \R.
+\]
+In order for the integral to make sense, it needs to be at least improperly integrable.
+
+\begin{df}
+    The Schwartz space $\zeta(\R)$ is the set of all infinitely differentiable functions $f: \R \to \C$ such that for all non-negative integers $m, n$,
+    \[
+    \sup_{x \in \R} |x^m f^{(n)}(x)| < \infty.
+    \]
+\end{df}
+
+\begin{ex}
+    $f(x) = e^{-x^2}$ is in the Schwartz space since for all $m, n$,
+    \[
+    f^{(n)}(x) = P_n(x) e^{-x^2},
+    \]
+    where $P_n$ is a polynomial of degree $n$. 
+\end{ex}
+
+We can easily see that $\zeta(\R)$ is a vector space over $\C$, and closed under differentiation and multiplication by polynomials. The Fourier transform is well-defined on $\zeta(\R)$ since for all $f \in \zeta(\R)$ and $\xi \in \R$,
+\[
+\abs{\widehat f(\xi)} \leq \int_{-\infty}^\infty |f(x)| dx < \infty.
+\]
+
+\begin{prop}
+    Let $f \in \zeta(\R)$, $h \in \R$, $\delta > 0$. Then
+    \begin{enumerate}[label=(\alph*)]
+        \item The Fourier transform of $f(x + h)$ is $\widehat f(\xi) e^{2\pi i \xi h}$,
+        \item The Fourier transform of $f(x) e^{-2\pi i x h}$ is $\widehat f(\xi + h)$,
+        \item The Fourier transform of $f(\delta x)$ is $\frac{1}{\delta} \widehat f\left(\frac{\xi}{\delta}\right)$,
+        \item The Fourier transform of $f'(x)$ is $2\pi i \xi \widehat f(\xi)$,
+        \item The Fourier transform of $- 2\pi i x f(x)$ is $\frac{d}{d\xi} \widehat f(\xi)$.
+        \begin{proof}
+            Let $g(x) = -2\pi i x f(x)$. Then
+            \begin{align*}
+                \frac{\widehat f(\xi + h) - \widehat f(\xi)}{h} &= \int_{-\infty}^\infty f(x) \frac{e^{-2\pi i (\xi + h) x} - e^{-2\pi i \xi x}}{h} dx \\
+                &= \int_{-\infty}^\infty f(x) e^{-2\pi i \xi x} \left(\frac{e^{-2\pi i h x} - 1}{h}\right) dx.
+            \end{align*}
+            Since $f(x)$ and $xf(x)$ decrease rapidly and
+            \[
+            \lim_{h \to 0} \frac{e^{-2\pi i h x} - 1}{h} = -2\pi i x,
+            \]
+            by the dominated convergence theorem, we have
+            \[
+            \frac{d}{d\xi} \widehat f(\xi) = \int_{-\infty}^\infty -2\pi i x f(x) e^{-2\pi i \xi x} dx = \widehat g(\xi).
+            \]
+        \end{proof}
+        \item $\widehat f \in \zeta(\R)$.
+        \begin{proof}
+            If $f \in \zeta(\R)$, then
+            \[
+            \widehat{f^{(n)}}(\xi) \leq \int_{-\infty}^\infty |f^{(n)}(x)| dx < \infty,
+            \]
+            so $\widehat f$ is bounded. Also, by (d) and (e),
+            \[
+            \xi^k \left(\frac{d}{d\xi}^l\right) \widehat f(\xi) = \widehat{\frac{1}{(2\pi i)^k} \frac{d}{dx}^k ((-2\pi i x)^l f(x))},
+            \]
+            which is the Fourier transform of a function in $\zeta(\R)$, hence bounded. Therefore, $\widehat f \in \zeta(\R)$. 
+        \end{proof}
+    \end{enumerate}
+\end{prop}
+
+\begin{prop}
+    Let $f(x) = e^{-\pi x^2}$. Then $\widehat f(\xi) = e^{-\pi \xi^2}$.
+    \begin{proof}
+        Note that $f'(x) = -2\pi x f(x)$. Define $F(\xi) = \widehat f(\xi)$, then
+        \begin{align*}
+            F'(\xi) &= \frac{d}{d\xi} \int_{-\infty}^\infty f(x) e^{-2\pi i \xi x} dx \\
+            &= \int_{-\infty}^\infty f(x) (-2\pi i x) e^{-2\pi i \xi x} dx \\
+            &= i \int_{-\infty}^\infty f'(x) e^{-2\pi i \xi x} dx \\
+            &= i \cdot (2\pi i \xi) F(\xi) = -2\pi \xi F(\xi).
+        \end{align*}
+        Solving this differential equation, we get
+        \[
+        F(\xi) = C e^{-\pi \xi^2}.
+        \]
+        Since $F(0) = \int_{-\infty}^\infty e^{-\pi x^2} dx = 1$, we have $C = 1$. Therefore,
+        \[
+        \widehat f(\xi) = e^{-\pi \xi^2}.
+        \]
+    \end{proof}
+\end{prop}
+
+\begin{cl}
+    For $\delta > 0$ and $x \in \R$, define $K_\delta(x) = \delta^{-1/2} e^{-\pi x^2 / \delta}$. Then $\widehat{K_\delta}(\xi) = e^{-\pi \delta \xi^2}$.
+    \begin{proof}
+        By Proposition 1(c) and Proposition 2,
+        \[\widehat{K_\delta}(\xi) = \frac{1}{\delta^{1/2}} \widehat{f}\left(\frac{\xi}{\delta}\right) = \frac{1}{\delta^{1/2}} e^{-\pi (\xi/\delta)^2} = e^{-\pi \delta \xi^2}.\]
+    \end{proof}
+\end{cl}
