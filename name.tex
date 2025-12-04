@@ -4162,7 +4162,7 @@ For general $f$, we can extend the frequency variable $n$ from integers to real 
 In order for the integral to make sense, it needs to be at least improperly integrable.
 
 \begin{df}
-    The Schwartz space $\zeta(\R)$ is the set of all infinitely differentiable functions $f: \R \to \C$ such that for all non-negative integers $m, n$,
+    The Schwartz space $\mathcal S(\R)$ is the set of all infinitely differentiable functions $f: \R \to \C$ such that for all non-negative integers $m, n$,
     \[
     \sup_{x \in \R} |x^m f^{(n)}(x)| < \infty.
     \]
@@ -4176,13 +4176,13 @@ In order for the integral to make sense, it needs to be at least improperly inte
     where $P_n$ is a polynomial of degree $n$. 
 \end{ex}
 
-We can easily see that $\zeta(\R)$ is a vector space over $\C$, and closed under differentiation and multiplication by polynomials. The Fourier transform is well-defined on $\zeta(\R)$ since for all $f \in \zeta(\R)$ and $\xi \in \R$,
+We can easily see that $\mathcal S(\R)$ is a vector space over $\C$, and closed under differentiation and multiplication by polynomials. The Fourier transform is well-defined on $\mathcal S(\R)$ since for all $f \in \mathcal S(\R)$ and $\xi \in \R$,
 \[
 \abs{\widehat f(\xi)} \leq \int_{-\infty}^\infty |f(x)| dx < \infty.
 \]
 
 \begin{prop}
-    Let $f \in \zeta(\R)$, $h \in \R$, $\delta > 0$. Then
+    Let $f \in \mathcal S(\R)$, $h \in \R$, $\delta > 0$. Then
     \begin{enumerate}[label=(\alph*)]
         \item The Fourier transform of $f(x + h)$ is $\widehat f(\xi) e^{2\pi i \xi h}$,
         \item The Fourier transform of $f(x) e^{-2\pi i x h}$ is $\widehat f(\xi + h)$,
@@ -4204,9 +4204,9 @@ We can easily see that $\zeta(\R)$ is a vector space over $\C$, and closed under
             \frac{d}{d\xi} \widehat f(\xi) = \int_{-\infty}^\infty -2\pi i x f(x) e^{-2\pi i \xi x} dx = \widehat g(\xi).
             \]
         \end{proof}
-        \item $\widehat f \in \zeta(\R)$.
+        \item $\widehat f \in \mathcal S(\R)$.
         \begin{proof}
-            If $f \in \zeta(\R)$, then
+            If $f \in \mathcal S(\R)$, then
             \[
             \widehat{f^{(n)}}(\xi) \leq \int_{-\infty}^\infty |f^{(n)}(x)| dx < \infty,
             \]
@@ -4214,10 +4214,12 @@ We can easily see that $\zeta(\R)$ is a vector space over $\C$, and closed under
             \[
             \xi^k \left(\frac{d}{d\xi}^l\right) \widehat f(\xi) = \widehat{\frac{1}{(2\pi i)^k} \frac{d}{dx}^k ((-2\pi i x)^l f(x))},
             \]
-            which is the Fourier transform of a function in $\zeta(\R)$, hence bounded. Therefore, $\widehat f \in \zeta(\R)$. 
+            which is the Fourier transform of a function in $\mathcal S(\R)$, hence bounded. Therefore, $\widehat f \in \mathcal S(\R)$. 
         \end{proof}
     \end{enumerate}
 \end{prop}
+
+\section{Inverse Fourier Transform}
 
 \begin{prop}
     Let $f(x) = e^{-\pi x^2}$. Then $\widehat f(\xi) = e^{-\pi \xi^2}$.
@@ -4247,3 +4249,313 @@ We can easily see that $\zeta(\R)$ is a vector space over $\C$, and closed under
         \[\widehat{K_\delta}(\xi) = \frac{1}{\delta^{1/2}} \widehat{f}\left(\frac{\xi}{\delta}\right) = \frac{1}{\delta^{1/2}} e^{-\pi (\xi/\delta)^2} = e^{-\pi \delta \xi^2}.\]
     \end{proof}
 \end{cl}
+
+\begin{df}
+    If a family of functions $\set{f_\delta}_{\delta > 0}$ satisfy the following conditions, we call it an approximate to the identity on $\R$:
+    \begin{enumerate}[label=(\alph*)]
+        \item 
+        \[
+        \int_{-\infty}^\infty f_\delta(x) dx = 1,
+        \]
+        \item exists some $M > 0$ such that for all $\delta > 0$,
+        \[
+        \int_{-\infty}^\infty |f_\delta(x)| dx \leq M,
+        \]
+        \item For all $\eta > 0$,
+        \[
+        \lim_{\delta \to 0^+} \int_{|x| \geq \eta} f_\delta(x) dx = 0.
+        \]
+    \end{enumerate}
+\end{df}
+
+It's easy to see that $\set{K_\delta}_{\delta > 0}$ is an approximate to the identity on $\R$.
+
+\begin{df}
+    If $f, g \in \mathcal S(\R)$, define their convolution as
+    \[
+    (f * g)(x) = \int_{-\infty}^\infty f(y) g(x - y) dy.
+    \]
+\end{df}
+
+\begin{prop}
+    \label{prop:approx_identity_R}
+    If $f \in \mathcal S(\R)$ and $\set{g_\delta}_{\delta > 0}$ is an approximate to the identity on $\R$, then
+    \[
+    \lim_{\delta \to 0^+} (f * g_\delta)(x) = f(x),
+    \]
+    and the convergence is uniform on $\R$.
+    \begin{proof}
+        Note that
+        \[
+        (f * g_\delta)(x) - f(x) = \int_{-\infty}^\infty (f(x - y) - f(x)) g_\delta(y) dy.
+        \]
+        Given $\epsilon > 0$, since $f$ is uniformly continuous on $\R$, exists some $\eta > 0$ such that if $|y| < \eta$, then $|f(x - y) - f(x)| < \epsilon / (2M)$, where $M$ is as in Definition 3(b). Therefore,
+        \begin{align*}
+            |(f * g_\delta)(x) - f(x)| &\leq \int_{|y| < \eta} |f(x - y) - f(x)| |g_\delta(y)| dy + \int_{|y| \geq \eta} |f(x - y) - f(x)| |g_\delta(y)| dy \\
+            &< \frac{\epsilon}{2M} \int_{-\infty}^\infty |g_\delta(y)| dy + 2 \sup_{x \in \R} |f(x)| \int_{|y| \geq \eta} |g_\delta(y)| dy.
+        \end{align*}
+        By Definition 3(b), the first term is less than $\epsilon / 2$. By Definition 3(c), exists some $\delta_0 > 0$ such that if $0 < \delta < \delta_0$, then the second term is also less than $\epsilon / 2$. Therefore, for all $0 < \delta < \delta_0$,
+        \[
+        |(f * g_\delta)(x) - f(x)| < \epsilon,
+        \]
+        hence proved.
+    \end{proof}
+\end{prop}
+
+\begin{lm}
+    If $f, g \in \mathcal S(\R)$, then
+    \[
+    \int_{-\infty}^\infty f(x) \widehat g(x) dx = \int_{-\infty}^\infty \widehat f(y) g(y) dy.
+    \]
+    \begin{proof}
+        \begin{align*}
+            \int_{-\infty}^\infty f(x) \widehat g(x) dx &= \int_{-\infty}^\infty f(x) \int_{-\infty}^\infty g(y) e^{-2\pi i x y} dy dx \\
+            (Fubini) \quad &= \int_{-\infty}^\infty g(y) \int_{-\infty}^\infty f(x) e^{-2\pi i x y} dx dy \\
+            &= \int_{-\infty}^\infty \widehat f(y) g(y) dy.
+        \end{align*}
+    \end{proof}
+\end{lm}
+
+\begin{thm}[Fourier inversion]
+    If $f \in \mathcal S(\R)$, then
+    \[
+    f(x) = \int_{-\infty}^\infty \widehat f(\xi) e^{2\pi i \xi x} d\xi.
+    \]
+    \begin{proof}
+        We first show that
+        \[
+        f(0) = \int_{-\infty}^\infty \widehat f(\xi) d\xi.
+        \]
+        Let $G_\delta(x) = e^{-\pi \delta x^2}$. Note that $\widehat G_\delta(\xi) = K_\delta(\xi)$. By the previous lemma, 
+        \begin{align*}
+            \int_{-\infty}^\infty \widehat f(\xi) G_\delta(\xi) d\xi &= \int_{-\infty}^\infty f(x) \widehat{G_\delta}(x) dx \\
+            &= \int_{-\infty}^\infty f(x) K_\delta(x) dx \\
+            &= (f * K_\delta)(0).
+        \end{align*}
+        By Proposition \ref{prop:approx_identity_R},
+        \[
+        \lim_{\delta \to 0^+} (f * K_\delta)(0) = f(0).
+        \]
+        On the other hand, by the dominated convergence theorem,
+        \[
+        \lim_{\delta \to 0^+} \int_{-\infty}^\infty \widehat f(\xi) G_\delta(\xi) d\xi = \int_{-\infty}^\infty \widehat f(\xi) d\xi.
+        \]
+
+        For general $x \in \R$, define $F(y) = f(x + y)$, then
+        \[
+        f(x) = F(0) = \int_{-\infty}^\infty \widehat F(\xi) d\xi = \int_{-\infty}^\infty \widehat f(\xi) e^{2\pi i \xi x} d\xi.
+        \]
+    \end{proof}
+\end{thm}
+
+Define $\mathcal F: \mathcal S(\R) \to \mathcal S(\R)$ and $\mathcal F^{-1}: \mathcal S(\R) \to \mathcal S(\R)$ by
+\begin{gather*}
+    \mathcal F(f)(\xi) = \widehat f(\xi) = \int_{-\infty}^\infty f(x) e^{-2\pi i \xi x} dx, \\
+    \mathcal F^{-1}(f)(x) = \int_{-\infty}^\infty f(\xi) e^{2\pi i \xi x} d\xi.
+\end{gather*}
+By the inverse formula, we know that $\mathcal F^{-1} \circ \mathcal F = ~Id $. Also, since $\mathcal F(f)(y) = \mathcal F^{-1}(f)(-y)$, we have $\mathcal F \circ \mathcal F^{-1} = ~Id $. Therefore, $\mathcal F$ is a bijection on $\mathcal S(\R)$ with inverse $\mathcal F^{-1}$.
+
+\section{Convolutions}
+
+\begin{prop}
+    \label{prop:convolution_R}
+    Let $f, g \in \mathcal S(\R)$. Then
+    \begin{enumerate}[label=(\alph*)]
+        \item $f * g \in \mathcal S(\R)$,
+        \item $f * g = g * f$,
+        \item $\widehat{f * g}(\xi) = \widehat f(\xi) \cdot \widehat g(\xi)$.
+        \begin{proof}
+            \nobreakspace
+            \begin{enumerate}[label=(\alph*)]
+                \item We use the fact that for all $l \geq 0$, $\exists A_l > 0$ such that
+                \[
+                \sup_{x \in \R} |x|^l |g(x - y)| \leq A_l (1 + |y|)^l.
+                \]
+                Then, for all non-negative integers $l$, 
+                \[
+                \sup_{x \in \R} |x|^l |(f * g)(x)| \leq \int_{-\infty}^\infty |f(y)| \sup_{x \in \R} |x|^l |g(x - y)| dy \leq A_l \int_{-\infty}^\infty |f(y)| (1 + |y|)^l dy < \infty.
+                \]
+                We can verify that for all $k \geq 1$,
+                \[
+                (f * g)^{(k)}(x) = (f * g^{(k)})(x),
+                \]
+                so by a similar argument, we can show that for all non-negative integers $m, n$,
+                \[
+                \sup_{x \in \R} |x|^m |(f * g)^{(n)}(x)| < \infty.
+                \] Therefore, $f * g \in \mathcal S(\R)$.
+                \item By changing variable $z = x - y$, we have
+                \[
+                (f * g)(x) = \int_{-\infty}^\infty f(y) g(x - y) dy = \int_{-\infty}^\infty f(x - z) g(z) dz = (g * f)(x).
+                \]
+                \item Note that
+                \begin{align*}
+                    \widehat{f * g}(\xi) &= \int_{-\infty}^\infty (f * g)(x) e^{-2\pi i \xi x} dx \\
+                    (\text{Fubini}) \quad &= \int_{-\infty}^\infty \int_{-\infty}^\infty f(y) g(x - y) e^{-2\pi i \xi x} dy dx \\
+                    &= \int_{-\infty}^\infty f(y) e^{-2\pi i \xi y} \int_{-\infty}^\infty g(x - y) e^{-2\pi i \xi (x - y)} dx dy \\
+                    &= \widehat f(\xi) \cdot \widehat g(\xi).
+                \end{align*}
+            \end{enumerate}
+        \end{proof}
+    \end{enumerate}
+\end{prop}
+
+Define an inner profuct on $\mathcal S(\R)$ by
+\[
+\langle f, g \rangle = \int_{-\infty}^\infty f(x) \overline{g(x)} dx, \quad \|f\| = \sqrt{\langle f, f \rangle}.
+\]
+
+\begin{thm}[Plancherel Theorem]
+    For all $f \in \mathcal S(\R)$,
+    \[
+    \langle f \rangle = \langle \widehat f \rangle.
+    \]
+    This implies that $\mathcal F$ is an isometry on $\mathcal S(\R)$.
+    \begin{proof}
+        For $f \in \mathcal S(\R)$, define $f^*(x) = \overline{f(-x)}$. Note that
+        \[
+        \widehat{f^*}(\xi) = \int_{-\infty}^\infty \overline{f(-x)} e^{-2\pi i \xi x} dx = \overline{\widehat f(\xi)}.
+        \]
+        Define $h = f * f^*$. By Proposition \ref{prop:convolution_R}(c),
+        \[
+        \widehat h(\xi) = \widehat f(\xi) \cdot \widehat{f^*}(\xi) = \widehat f(\xi) \cdot \overline{\widehat f(\xi)} = |\widehat f(\xi)|^2.
+        \]
+        On the other hand,
+        \begin{align*}
+            h(0) &= \int_{-\infty}^\infty f(y) f^*(-y) dy \\
+            &= \int_{-\infty}^\infty f(y) \overline{f(y)} dy = \|f\|^2.
+        \end{align*}
+        By the Fourier inversion formula,
+        \[
+        h(0) = \int_{-\infty}^\infty \widehat h(\xi) d\xi = \int_{-\infty}^\infty |\widehat f(\xi)|^2 d\xi = \|\widehat f\|^2.
+        \]
+        Therefore, $\|f\| = \|\widehat f\|$, hence proved.
+    \end{proof}
+\end{thm}
+
+\begin{rmk}
+    $\mathcal S(\R)$ is not complete with respect to the norm induced by the inner product. 
+\end{rmk}
+
+\section{Partial Differential Equations}
+
+We want to find functions $u: \R \times [0, \infty) \to \R$ satisfying the heat equation
+\[
+\frac{\partial u}{\partial t} = \frac{\partial^2 u}{\partial x^2},
+\]
+with initial condition $u(x, 0) = f(x)$. Fourier transform provides a powerful method to solve this problem by turning derivatives into polynomials. Taking Fourier transform with respect to $x$ on both sides gives
+\[
+\frac{\partial \widehat u}{\partial t}(\xi, t) = -4\pi^2 \xi^2 \widehat u(\xi, t).
+\]
+This is an ordinary differential equation in $t$ for each fixed $\xi$. Solving it gives
+\[
+\widehat u(\xi, t) = \widehat f(\xi) e^{-4\pi^2 \xi^2 t}.
+\]
+This $\widehat f(\xi)$ is a constant determined by the initial condition. Note that $e^{-4\pi^2 \xi^2 t}$ is the Fourier transform of
+\[
+\mathcal H_t(x) = \frac{1}{\sqrt{4\pi t}} e^{-x^2 / 4t},
+\]
+the heat kernel on $\R$. Therefore, we should have
+\[
+u(x, t) = (f * \mathcal H_t)(x).
+\]
+
+\begin{thm}
+    Given $f \in \mathcal S(\R)$, define $u(x, t) = (f * \mathcal H_t)(x)$ for $x \in \R$ and $t > 0$. Then
+    \begin{enumerate}[label=(\alph*)]
+        \item $u \in C^2$ and satisfies the heat equation for all $x \in \R$ and $t > 0$,
+        \item $u(\cdot, t) \rightrightarrows f$ as $t \to 0^+$,
+        \item $\int_{-\infty}^\infty |u(x, t) - f(x)|^2 dx \to 0$ as $t \to 0^+$.
+    \end{enumerate}
+    \begin{proof}
+        \nobreakspace
+        \begin{enumerate}[label=(\alph*)]
+            \item Recall that
+            \[
+            \widehat u(\xi, t) = \widehat f(\xi) e^{-4\pi^2 \xi^2 t}.
+            \]
+            By Fourier inversion,
+            \[
+            u(x, t) = \int_{-\infty}^\infty \widehat f(\xi) e^{-4\pi^2 \xi^2 t} e^{2\pi i \xi x} d\xi.
+            \]
+            Since $\widehat f \in \mathcal S(\R)$, we can differentiate under the integral sign to show that $u$ has two continuous derivatives in $x$ and satisfies the heat equation.
+            \item Since $\set{\mathcal H_t}_{t > 0}$ is an approximate to the identity on $\R$, by Proposition \ref{prop:approx_identity_R}, $u(\cdot, t) \rightrightarrows f$ as $t \to 0^+$.
+            \item By Plancherel theorem,
+            \[
+            \int_{-\infty}^\infty |u(x, t) - f(x)|^2 dx = \int_{-\infty}^\infty |\widehat u(\xi, t) - \widehat f(\xi)|^2 d\xi = \int_{-\infty}^\infty |\widehat f(\xi)|^2 |e^{-4\pi^2 \xi^2 t} - 1|^2 d\xi.
+            \]
+            Given $\epsilon > 0$, exists some $N > 0$ such that
+            \[
+            \int_{|\xi| > N} |\widehat f(\xi)|^2 d\xi < \epsilon / 2.
+            \]
+            Since $e^{-4\pi^2 \xi^2 t} \to 1$ as $t \to 0^+$ for all $\xi \in \R$, by the dominated convergence theorem, exists some $\delta > 0$ such that if $0 < t < \delta$, then
+            \[
+            \int_{|\xi| \leq N} |\widehat f(\xi)|^2 |e^{-4\pi^2 \xi^2 t} - 1|^2 d\xi < \epsilon / 2.
+            \]
+            Therefore, for all $0 < t < \delta$,
+            \[
+            \int_{-\infty}^\infty |u(x, t) - f(x)|^2 dx < \epsilon,
+            \]
+            hence proved.
+        \end{enumerate}
+    \end{proof}
+\end{thm}
+
+\begin{prop}
+    Let $f \in \mathcal S(\R)$ and $u(x, t) = (f * \mathcal H_t)(x)$. Then $u(\cdot, t) \in \mathcal S(\R)$ uniformly in $t$, in the sense that for all $T > 0$, 
+    \[
+    \sup_{x \in \R, t \in (0, T)} |x|^k \abs{\frac{\partial^l}{\partial x^l} u(x, t)} < \infty,
+    \]
+    for all non-negative integers $k, l$.
+    \begin{proof}
+        Since $f \in \mathcal S(\R)$, when $\abs{y} \leq |x| / 2$, for all $N \geq 1$, exists $C_N > 0$ such that
+        \[
+        |f(x - y)| \leq \frac{C_N}{1 + |x|^N}.
+        \]
+        When $|y| \geq |x| / 2$, we have
+        \[
+        \mathcal H_t(y) \leq \frac{C}{\sqrt{t}} e^{- c x^2 / t},
+        \]
+        for some constant $C, c > 0$. Therefore, 
+        \begin{align*}
+            \abs{u(x, t)} &\leq \int_{|y| \leq |x| / 2} \frac{C_N}{1 + |x|^N} \mathcal H_t(y) dy + C \int_{|y| \geq |x| / 2} |f(x - y)| \frac{e^{- c x^2 / t}}{\sqrt{t}} dy \\
+            &\leq \frac{C_N}{1 + |x|^N} + \frac{C'}{\sqrt{t}} e^{- c x^2 / t},
+        \end{align*}
+        for some constant $C' > 0$. Multiplying both sides by $|x|^k$ and choosing $N$ large enough shows that $\sup_{x \in \R, t \in (0, T)} |x|^k |u(x, t)| < \infty$. A similar argument works for the derivatives of $u$.
+    \end{proof}
+\end{prop}
+
+\begin{thm}
+    Suppose that $u: \R \times [0, \infty) \to \R$ satisfies the following:
+    \begin{enumerate}[label=(\alph*)]
+        \item $u$ is continuous on $\R \times [0, \infty)$,
+        \item $u$ satisfies the heat equation on $\R \times (0, \infty)$,
+        \item $u(x, 0) = 0$ for all $x \in \R$,
+        \item $u(\cdot, t) \in \mathcal S(\R)$ uniformly in $t$.
+    \end{enumerate}
+    Then $u \equiv 0$.
+    \begin{proof}
+        Define the energy function
+        \[
+        E(t) = \int_{-\infty}^\infty \abs{u(x, t)}^2 dx,
+        \]
+        which is nonnegative and $E(0) = 0$ by condition (c). Note that
+        \begin{align*}
+            E'(t) &= 2 \int_{-\infty}^\infty u(x, t) \frac{\partial u}{\partial t}(x, t) dx \\
+            (\text{integration by parts}) \quad &= -2 \int_{-\infty}^\infty \left(\frac{\partial u}{\partial x}(x, t)\right)^2 dx \leq 0,
+        \end{align*}
+        where the boundary terms vanish since $u(\cdot, t) \in \mathcal S(\R)$ uniformly in $t$ by condition (d). Therefore, $E(t)$ is non-increasing and nonnegative with $E(0) = 0$, so $E(t) \equiv 0$. This implies that $u(x, t) \equiv 0$ for all $x \in \R$ and $t \geq 0$.
+    \end{proof}
+\end{thm}
+
+\begin{rmk}
+    The above theorem shows that the solution to the heat equation with initial condition in $\mathcal S(\R)$ is unique within the class of functions satisfying condition (d).
+\end{rmk}
+
+\section{Laplace equation in the upper half plane}
+
+We can also use Fourier transform to solve the Dirichlet problem for the Laplace equation in the upper half plane $\mathbb H = \set{(x, y) \in \R^2 \mid y > 0}$. Given a function $f \in \mathcal S(\R)$, we want to find a function $u: \mathbb H \to \R$ such that $\Delta u = 0$ in $\mathbb H$ and $u(x, 0) = f(x)$ for all $x \in \R$. 
+
+Define the Poisson kernel on $\mathbb H$ as
+\[
+P_y(x) = \frac{1}{\pi} \frac{y}{x^2 + y^2}, \quad x \in \R, y > 0.
+\]
