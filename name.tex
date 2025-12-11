@@ -4785,6 +4785,138 @@ It turns out that these two periodizations are the same.
             H_t(x) - \mathcal H_t(x) &= \frac{1}{\sqrt{4\pi t}} \sum_{n \neq 0} e^{-(x + n)^2 / 4t} \\
             &\leq C_1 t^{-1/2} \sum_{n = 1}^\infty e^{-C_2 n^2 / t}
         \end{align*}
-        % TODO
+        for some constants $C_1, C_2 > 0$. Note that $n^2/t \geq n^2$ and $n^2/t \geq 1/t$ for all $n \geq 1$ and $t \in (0, 1]$, so $n^2 / t \geq (n^2 + 1/t) / 2$. Therefore,
+        \begin{align*}
+            \abs{E_t(x)} &\leq C_1 t^{-1/2} \sum_{n = 1}^\infty e^{-C_2 (n^2 + 1/t) / 2} \\
+            &= C_1 t^{-1/2} e^{-C_2 / 2t} \sum_{n = 1}^\infty e^{-C_2 n^2 / 2} \\
+            &\leq C_3 t^{-1/2} e^{-C_2 / 2t},
+        \end{align*}
+        Finally, given $\eta > 0$,
+        \[
+        \int_{|x| \geq \eta} H_t(x) dx = \int_{|x| \geq \eta} \mathcal H_t(x) dx + \int_{|x| \geq \eta} E_t(x) dx \to 0
+        \]
+        as $t \to 0^+$, where the first term tends to $0$ since $(\mathcal H_t)$ is an approximate to the identity on $\R$ and the second term tends to $0$ since $E_t(x)$ decays to $0$ exponentially fast as $t \to 0^+$. Hence proved. 
     \end{proof}
 \end{cl}
+
+Similarly, we can use the Poisson summation formula to periodize tha Poisson kernel on $\R$ to obtain the Poisson kernel on the unit disk.
+
+\begin{cl}
+    \[
+    P_r(2 \pi x) = \sum_{n = -\infty}^\infty \mathcal{P}_y (x + n) = \sum_{n = -\infty}^\infty r^{|n|} e^{2\pi i n x},
+    \]
+    where $r = e^{-2\pi y}$. 
+\end{cl}
+
+\section{Heisenberg uncertainty principle}
+
+\begin{thm}
+    Suppose that $f \in \mathcal S(\R)$ satisfies
+    \[
+    \int_{-\infty}^\infty |f(x)|^2 dx = 1, 
+    \]
+    then
+    \[
+    \left(\int_{-\infty}^\infty x^2 |f(x)|^2 dx\right) \left(\int_{-\infty}^\infty \xi^2 |\widehat f(\xi)|^2 d\xi\right) \geq \frac{1}{16 \pi^2},
+    \]
+    with equality if and only if
+    \[
+    f(x) = A e^{-B x^2}
+    \]
+    where $B > 0$ and $|A|^2 = \sqrt{2B / \pi}$. In fact, we have
+    \[
+    \left(\int_{-\infty}^\infty (x - x_0)^2 |f(x)|^2 dx\right) \left(\int_{-\infty}^\infty (\xi - \xi_0)^2 |\widehat f(\xi)|^2 d\xi\right) \geq \frac{1}{16 \pi^2},
+    \]
+    for all $x_0, \xi_0 \in \R$.
+    \begin{proof}
+        The second inequality follows from the first by replacing $f(x)$ by $f(x + x_0) e^{-2\pi i \xi_0 x}$ and changing variables. To prove the first inequality, note that by integration by parts,
+        \begin{align*}
+            1 &= \int_{-\infty}^\infty |f(x)|^2 dx = \left. x |f(x)|^2 \right|_{-\infty}^\infty - \int_{-\infty}^\infty x \frac{d}{dx} |f(x)|^2 dx \\
+            &= -\int_{-\infty}^\infty x \frac{d}{dx} (f(x) \overline{f(x)}) dx \\
+            &= -\int_{-\infty}^\infty x (f'(x) \overline{f(x)} + f(x) \overline{f'(x)}) dx \\
+            \implies \quad 1 &\leq 2 \int_{-\infty}^\infty |x| |f(x)| |f'(x)| dx \\
+            (\text{Cauchy-Schwarz}) \quad &\leq 2 \left(\int_{-\infty}^\infty x^2 |f(x)|^2 dx\right)^{1/2} \left(\int_{-\infty}^\infty |f'(x)|^2 dx\right)^{1/2}.
+        \end{align*}
+        By Plancherel theorem,
+        \[
+        \int_{-\infty}^\infty |f'(x)|^2 dx = \int_{-\infty}^\infty 4\pi^2 \xi^2 |\widehat f(\xi)|^2 d\xi.
+        \]
+        Therefore,
+        \[
+        \left(\int_{-\infty}^\infty x^2 |f(x)|^2 dx\right) \left(\int_{-\infty}^\infty \xi^2 |\widehat f(\xi)|^2 d\xi\right) \geq \frac{1}{16 \pi^2}.
+        \]
+
+        For the equality case, note that equality holds in the Cauchy-Schwarz inequality if and only if there exists some constant $\alpha$ such that
+        \[
+        f'(x) = \alpha x f(x) \implies f(x) = A e^{\frac{\alpha x^2}{2}}.
+        \]
+        Since $\int_{-\infty}^\infty |f(x)|^2 dx = 1$, we must have $\alpha < 0$. Letting $\alpha = -2B$ for some $B > 0$ gives the desired form of $f$. Finally, computing the integral shows that $|A|^2 = \sqrt{2B / \pi}$.
+    \end{proof}
+\end{thm}
+
+Physically, the Heisenberg uncertainty principle states that it is impossible to simultaneously measure the position and momentum of a particle with arbitrary precision. If $f$ represents the wave function of a particle, then $|f(x)|^2$ represents the probability density of finding the particle at position $x$, while
+\[
+\int_{-\infty}^\infty (x - \Bar{x})^2 |f(x)|^2 dx
+\]
+represents the variance in position, where
+\[
+\Bar{x} = \int_{-\infty}^\infty x |f(x)|^2 dx.
+\]
+Similarly, $|\widehat f(\xi)|^2$ represents the probability density of finding the particle with momentum $p = 2\pi \xi$, while
+\[
+\int_{-\infty}^\infty (\xi - \Bar{\xi})^2 |\widehat f(\xi)|^2 d\xi
+\]
+represents the variance in momentum, where
+\[
+\Bar{\xi} = \int_{-\infty}^\infty \xi |\widehat f(\xi)|^2 d\xi.
+\]
+Therefore, the Heisenberg uncertainty principle states that the product of the variance in position and the variance in momentum is bounded below by a positive constant, making it impossible to simultaneously measure both quantities with arbitrary precision.
+
+\section{Generalizations of Fourier transform}
+
+In Fourier series, we considered Riemonn integrable functions on the interval $[0, 1]$. From the Parseval's identity, we know that there exists sequences in $\ell^2(\Z)$ that do not correspond to any Riemann integrable functions on $[0, 1]$. To understand the actual correspondence, we need to understand the completion of $\mathcal R$ under $\|\cdot\|_{L^2}$.
+
+In Fourier transform on $\R$, we considered functions in $\mathcal S(\R)$. We can extend the Fourier transform to a more general class of functions, even if $\int_{-\infty}^\infty |f(x)| dx = \infty$. If we can find a "function" $\widehat f$ such that
+\[
+\int_{-\infty}^\infty f(x) g(x) dx = \int_{-\infty}^\infty \widehat f(\xi) \widehat g(\xi) d\xi,
+\]
+for all $g \in \mathcal S(\R)$, then we can define the Fourier transform of $f$ to be $\widehat f$. 
+
+Periodic functions can be seen as functions on the circle $\mathbb S^1 = \R / \Z$. $\R$ is an abelian group under addition. The circle $\mathbb S^1$ is also an abelian group under addition modulo $1$. Moreover, they are locally compact Hausdorff topological groups under the usual topology. 
+
+\begin{df}
+    A \textbf{locally compact abelian group} (LCA group) is an abelian group $G$ equipped with a topology such that
+    \begin{enumerate}[label=(\alph*)]
+        \item $G$ is a topological group, i.e., the group operations (addition and inversion) are continuous,
+        \item $G$ is Hausdorff,
+        \item $G$ is locally compact, i.e., for every $x \in G$, there exists an open neighborhood $U$ of $x$ such that $\Bar{U}$ is compact.
+    \end{enumerate}
+    A character on an LCA group $G$ is a continuous group homomorphism $\chi: G \to \mathbb S^1$. The set of all characters on $G$ is called the \textbf{dual group} of $G$, denoted by $\widehat G$.
+\end{df}
+
+\begin{ex}
+    $\widehat{\mathbb S^1} \cong \Z$, $\widehat \Z \cong \mathbb S^1$, $\widehat \R \cong \R$, and $\widehat{\Z/n\Z} \cong \Z / n\Z$.
+\end{ex}
+
+Define the topology on $\widehat G$ such that a sequence of characters $\set{\chi_n}$ converges to a character $\chi$ if and only if $\chi_n(x) \rightrightarrows \chi(x)$ on all compact subsets of $G$. With this topology, $\widehat G$ is also an LCA group.
+
+\begin{thm}[Pontryagin duality theorem]
+    For any LCA group $G$, $\widehat{\widehat G} \cong G$.
+\end{thm}
+
+The Fourier transform can be generalized to LCA groups using the dual group.
+\begin{df}
+    Let $G$ be an LCA group with a Haar measure $\mu$. For $f \in L^1(G)$, the Fourier transform of $f$ is the function $\widehat f: \widehat G \to \C$ defined by
+    \[
+    \widehat f(\chi) = \int_G f(x) \overline{\chi(x)} d\mu(x),
+    \]
+    for all $\chi \in \widehat G$.
+\end{df}
+
+The integral $\int_G$ satisfies the following properties for all continuous compactly supported functions $f$:
+\begin{enumerate}[label=(\alph*)]
+    \item $\int_G f(x \cdot y) d\mu(x) = \int_G f(x) d\mu(x)$ for all $y \in G$ (left invariance),
+    \item $\int_G f(x) d\mu(x) \geq 0$ if $f(x) \geq 0$ for all $x \in G$,
+    \item $\int_G f(x) d\mu(x)$ is linear in $f$.
+\end{enumerate}
+In fact, such an integral is unique up to a multiplicative constant.
